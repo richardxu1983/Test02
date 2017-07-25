@@ -31,8 +31,13 @@ public class SpManager : UnitySingleton<SpManager>
         return a;
     }
 
+    public Sprite LoadSprite(string spriteName)
+    {
+        return Resources.Load<GameObject>("Sprites/" + spriteName).GetComponent<SpriteRenderer>().sprite;
+    }
+
     public void init()
     {
-        LoadAllSprites();
+        //LoadAllSprites();
     }
 }

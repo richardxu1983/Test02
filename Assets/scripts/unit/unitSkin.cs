@@ -11,6 +11,7 @@ public class unitSkin : MonoBehaviour {
     private SpriteRenderer headRenderer;
     private unitMovement m_umovement;
     private unitManager m_manager = new unitManager();
+    private bool test = true;
 
     public void init(unitManager v)
     {
@@ -84,7 +85,7 @@ public class unitSkin : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
+        bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
         //headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
         //m_umovement = GetComponent<unitMovement>();
     }
@@ -101,5 +102,18 @@ public class unitSkin : MonoBehaviour {
             m_umovement.setLastFace(m_umovement.getFaceTo());
         }
         */
+        if (Input.GetKeyDown("space"))
+        {
+            if(test)
+            {
+                bodyRenderer.sprite = SpManager.Instance.LoadSprite("player_head_front_1");
+                test = false;
+            }
+            else
+            {
+                bodyRenderer.sprite = SpManager.Instance.LoadSprite("player_body_front_1");
+                test = true;
+            }
+        }
     }
 }
