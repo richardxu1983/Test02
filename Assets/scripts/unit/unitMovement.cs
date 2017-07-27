@@ -72,7 +72,22 @@ public class unitMovement : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
+        //Debug.Log(GlobalControl.Instance.enableDebug);
+        if(GlobalControl.Instance.enableDebug==true)
+        {
+            if(textInfo.enabled==false)
+            {
+                textInfo.enabled = true;
+            }
+            textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
+        }
+        else
+        {
+            if (textInfo.enabled == true)
+            {
+                textInfo.enabled = false;
+            }
+        }
     }
 
     private void Move()

@@ -118,6 +118,10 @@ public class GameManager : MonoBehaviour {
             }
         }
         */
+        if(Input.GetKeyDown("space"))
+        {
+            GlobalControl.Instance.ToggleDebug();
+        }
         //
         if (Input.GetMouseButtonDown(1))
         {

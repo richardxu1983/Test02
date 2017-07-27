@@ -20,12 +20,12 @@ public class unitSkin : MonoBehaviour {
 
     private void setBodySprite(string sp)
     {
-        bodyRenderer.sprite = SpManager.Instance.ReadSpritesByString(sp);
+        bodyRenderer.sprite = SpManager.Instance.LoadSprite(sp);
     }
 
     private void setheadSprite(string sp)
     {
-        headRenderer.sprite = SpManager.Instance.ReadSpritesByString(sp);
+        headRenderer.sprite = SpManager.Instance.LoadSprite(sp);
     }
     private void PlayAnim()
     {
@@ -86,14 +86,14 @@ public class unitSkin : MonoBehaviour {
     // Use this for initialization
     void Start () {
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
-        //headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
-        //m_umovement = GetComponent<unitMovement>();
+        headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
+        m_umovement = GetComponent<unitMovement>();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        /*
+
         if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin() != bodySkinIdNow || m_manager.headSkin() != headSkinIdNow)
         {
             PlayAnim();
@@ -101,7 +101,8 @@ public class unitSkin : MonoBehaviour {
             bodySkinIdNow = m_manager.bodySkin();
             m_umovement.setLastFace(m_umovement.getFaceTo());
         }
-        */
+
+        /*
         if (Input.GetKeyDown("space"))
         {
             if(test)
@@ -115,5 +116,6 @@ public class unitSkin : MonoBehaviour {
                 test = true;
             }
         }
+        */
     }
 }

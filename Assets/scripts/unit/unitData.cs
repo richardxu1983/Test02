@@ -11,7 +11,7 @@ public class unitData
 
     private int[] m_intattr;
     private float[] m_fattr;
-    private unitManager m_manager;
+    //private unitManager m_manager;
     public Vector3 pos;
 
     public unitData()
@@ -22,7 +22,7 @@ public class unitData
 
     public void init(unitManager m)
     {
-        m_manager = m;
+        //m_manager = m;
     }
 
     public void     setInt(UnitIntAttr k, int v)   { m_intattr[(int)k] = v; }

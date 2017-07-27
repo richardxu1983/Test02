@@ -13,6 +13,7 @@ public class unitManager {
     private unitSkin m_skin;
     private bool isSet = false;
 
+
     public unitManager()
     {
         m_data = new unitData();
@@ -94,4 +95,6 @@ public class unitManager {
     {
         m_data.pos = v;
     }
+
+
 }
