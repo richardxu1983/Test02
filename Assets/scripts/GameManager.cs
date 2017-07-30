@@ -74,6 +74,18 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public unitManager getSelectHuman()
+    {
+        if (currentSelHuman >= 0)
+        {
+            return units[currentSelHuman];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     PerfectOverride FindOverride(int size)
     {
         return overrides.FirstOrDefault(x => x.referenceOrthographicSize == size);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MainCancas : MonoBehaviour {
 
     public GameManager manager;
+    private Text txtSelectInfo;
 
     // Use this for initialization
     void Start()
@@ -29,6 +31,8 @@ public class MainCancas : MonoBehaviour {
         btn1.onClick.AddListener(delegate () {
             onClickCreateHuman(btnObj1);
         });
+
+        txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
     }
 
     void onClickQuitGame(GameObject obj)
@@ -48,6 +52,15 @@ public class MainCancas : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+        if (manager.currentSelHuman >= 0)
+        {
+            txtSelectInfo.text = "x : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.x,2)
+                + ", y : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.y,2)
+                + ", z : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.z,2);
+        }
+        else
+        {
+            txtSelectInfo.text = "";
+        }
     }
 }

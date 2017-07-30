@@ -31,10 +31,10 @@ public class camera : MonoBehaviour {
             GL.Begin(GL.LINES);
             //GL.LoadOrtho();
             //Debug.Log(pos);
-            DrawLine((pos.x - 0.5f), (pos.z - 0.7f), 3, (pos.x + 0.5f), (pos.z - 0.7f), 3);
-            DrawLine((pos.x + 0.5f), (pos.z - 0.7f), 3, (pos.x + 0.5f), (pos.z + 1f), 3);
-            DrawLine((pos.x + 0.5f), (pos.z + 1f), 3, (pos.x - 0.5f), (pos.z + 1f), 3);
-            DrawLine((pos.x - 0.5f), (pos.z + 1f), 3, (pos.x - 0.5f), (pos.z - 0.7f), 3);
+            DrawLine((pos.x - 1f), (pos.z - 1.2f), 3, (pos.x + 1f), (pos.z - 1.2f), 3);
+            DrawLine((pos.x + 1f), (pos.z - 1.2f), 3, (pos.x + 1f), (pos.z + 2.2f), 3);
+            DrawLine((pos.x + 1f), (pos.z + 2.2f), 3, (pos.x - 1f), (pos.z + 2.2f), 3);
+            DrawLine((pos.x - 1f), (pos.z + 2.2f), 3, (pos.x - 1f), (pos.z - 1.2f), 3);
             GL.End();
             GL.PopMatrix();
         }
