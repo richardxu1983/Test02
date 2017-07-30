@@ -8,7 +8,7 @@ public class unitSkin : MonoBehaviour {
     private int headSkinIdNow = 0;
     private SpriteRenderer bodyRenderer;
     private SpriteRenderer headRenderer;
-    private SpriteRenderer heairRenderer;
+    private SpriteRenderer hairRenderer;
     private unitMovement m_umovement;
     private unitManager m_manager = new unitManager();
     private bool hasHead = true;
@@ -39,7 +39,7 @@ public class unitSkin : MonoBehaviour {
     private void sethairSprite(string sp)
     {
         //Debug.Log(sp);
-        heairRenderer.sprite = SpManager.Instance.LoadSprite(sp);
+        hairRenderer.sprite = SpManager.Instance.LoadSprite(sp);
     }
     private void PlayAnim()
     {
@@ -121,7 +121,7 @@ public class unitSkin : MonoBehaviour {
         {
             headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
             headRenderer.color = m_manager.skinColor();
-            heairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
+            hairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
         }
         m_umovement = GetComponent<unitMovement>();
     }
@@ -138,6 +138,11 @@ public class unitSkin : MonoBehaviour {
             m_umovement.setLastFace(m_umovement.getFaceTo());
         }
 
+        int so = Mathf.RoundToInt(transform.position.z * -100);
+
+        bodyRenderer.sortingOrder = so;
+        headRenderer.sortingOrder = so;
+        hairRenderer.sortingOrder = so;
         /*
         if (Input.GetKeyDown("space"))
         {

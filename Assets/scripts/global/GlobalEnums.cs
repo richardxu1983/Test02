@@ -71,10 +71,10 @@ public enum Position : byte { TopLeft, TopCenter, TopRight, MiddleLeft, MiddleCe
 
 public static class Globals
 {
-    public static int wander_walk_dis = 5;
-    public static int wander_walk_ran = 1;
-    public static int wander_idle_time = 3;
-    public static int wander_idle_ran = 1;
+    public static int wander_walk_dis = 0;
+    public static int wander_walk_ran = 6;
+    public static int wander_idle_time = 2;
+    public static int wander_idle_ran = 2;
     public static int humanType = 1000;
     public static int animalType = 2000;
     public static System.Random rd = new System.Random();
