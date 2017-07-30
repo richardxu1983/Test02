@@ -17,30 +17,31 @@ public class GameManager : MonoBehaviour {
     public List<PerfectOverride> overrides;
     public int Multiplyer = 1;
     private int lastSize = 0;
-    private unitManager[] m_units;
+    public List<unitManager> units;
     System.Timers.Timer t = new System.Timers.Timer(250);
 
     // Use this for initialization
     void Start () {
 
-        //QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 60;
         SpManager.Instance.init();
+        utils.Instance.init();
 
-        m_units = new unitManager[100];
+        units = new List<unitManager>();
+        CreateRandomHuman();
 
-        for (int i = 0; i < 1; i++)
-        {
-            m_units[i] = new unitManager();
-            m_units[i].Setup(1, 2, 1, 1);
-            m_units[i].spawnAt(new Vector3(0, 1, 0));
-            m_units[i].ai().wander(true);
-        }
-
-        //t = new System.Timers.Timer(250);//实例化Timer类，设置间隔时间
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
         t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
         t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+    }
+
+    public void CreateRandomHuman()
+    {
+        unitManager v = new unitManager();
+        units.Add(v);
+        int index = units.IndexOf(v);
+        units[index].CreateHuman(index, 2);
+        units[index].spawnAt(new Vector3(0, 1, 0));
+        units[index].ai().wander(true);
     }
 
     public void OnDestroy()
@@ -63,9 +64,9 @@ public class GameManager : MonoBehaviour {
 
     public void theout(object source, System.Timers.ElapsedEventArgs e)
     {
-        for (int i = 0; i < 1; i++)
+        foreach (unitManager v in units)
         {
-            m_units[i].ai().loop();
+            v.ai().loop();
         }
     }
 
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour {
         //
         if (Input.GetMouseButtonDown(1))
         {
-            m_units[0].ai().moveTo(Camera.main.ScreenToWorldPoint(Input.mousePosition), true);
+            units[0].ai().moveTo(Camera.main.ScreenToWorldPoint(Input.mousePosition), true);
         }
     }
 }

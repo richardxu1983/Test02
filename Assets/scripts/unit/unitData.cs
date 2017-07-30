@@ -13,11 +13,19 @@ public class unitData
     private float[] m_fattr;
     //private unitManager m_manager;
     public Vector3 pos;
+    private string m_name;
+    public Color skinColor;
 
     public unitData()
     {
         m_intattr = new int[64];
         m_fattr = new float[16];
+    }
+
+    public string name
+    {
+        get { return m_name; }
+        set { m_name = value; }
     }
 
     public void init(unitManager m)

@@ -11,6 +11,7 @@ public class unitManager {
     public GameObject m_Instance;
     private unitMovement m_movement;
     private unitSkin m_skin;
+    private int m_type = 0;
     private bool isSet = false;
 
 
@@ -32,12 +33,34 @@ public class unitManager {
         m_skin.init(this);
     }
 
-    public void Setup(int id,int speed, int headSkin, int bodySkin)
+    public void CreateHuman(int id, int speed)
     {
         setId(id);
+        m_type = Globals.humanType;
+        int headSkin = 0;
+        int bodySkin = 0;
+        int skinColorId = Globals.rd.Next(10);
+        setHeadSkin(utils.Instance.getHumanHeadById(headSkin));
+        setBodySkin(utils.Instance.getHumanBodyById(bodySkin));
+        setSkinColor(skinColorId);
+        Setup(speed);
+    }
+
+    public void CreateAnimal(int id, int speed)
+    {
+        setId(id);
+        int bodySkin = 0;
+        m_type = Globals.animalType;
+        setHeadSkin(-1);
+        setSkinColor(0);
+        setBodySkin(utils.Instance.getAnimalBodyById(bodySkin));
+        Setup(speed);
+    }
+
+    public void Setup(int speed)
+    {
         setRunSpeed(speed);
-        setHeadSkin(headSkin);
-        setBodySkin(bodySkin);
+        m_data.skinColor = utils.Instance.getHumanColor(m_data.getInt(UnitIntAttr.skinColor));
         isSet = true;
     }
 
@@ -51,6 +74,8 @@ public class unitManager {
     public unitData attr() { return m_data; }
     public int headSkin() { return m_data.getInt(UnitIntAttr.headSkin); }
     public int bodySkin() { return m_data.getInt(UnitIntAttr.bodySkin); }
+    public string name() { return m_data.name; }
+    public Color skinColor() { return m_data.skinColor; }
 
     public void hpAdd(int v)
     {
@@ -61,9 +86,19 @@ public class unitManager {
         m_data.setInt(UnitIntAttr.hp, hp);
     }
 
+    public void setName(string v)
+    {
+        m_data.name = v;
+    }
+
     public void setId(int v)
     {
         m_data.setInt(UnitIntAttr.uid, v);
+    }
+
+    public void setSkinColor(int v)
+    {
+        m_data.setInt(UnitIntAttr.skinColor, v);
     }
 
     public void setTargetPos(Vector3 v)
@@ -95,6 +130,4 @@ public class unitManager {
     {
         m_data.pos = v;
     }
-
-
 }

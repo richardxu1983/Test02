@@ -125,7 +125,7 @@ public class unitAi {
         ai = UnitAi.moveTo;
         op = UnitOp.moving;
         TargetPos = v;
-        TargetPos.z = 0;
+        TargetPos.y = 0;
 
         if (isCmd)
         {

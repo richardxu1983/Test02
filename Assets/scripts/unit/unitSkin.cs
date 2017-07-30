@@ -4,28 +4,42 @@ using UnityEngine;
 
 public class unitSkin : MonoBehaviour {
 
-    private int uid = 0;
     private int bodySkinIdNow = 0;
     private int headSkinIdNow = 0;
     private SpriteRenderer bodyRenderer;
     private SpriteRenderer headRenderer;
+    private SpriteRenderer heairRenderer;
     private unitMovement m_umovement;
     private unitManager m_manager = new unitManager();
-    private bool test = true;
+    private bool hasHead = true;
 
     public void init(unitManager v)
     {
         m_manager = v;
+        if(m_manager.headSkin()<0)
+        {
+            hasHead = false;
+            headSkinIdNow = m_manager.headSkin();
+        }
     }
 
     private void setBodySprite(string sp)
     {
+        //Debug.Log(sp);
         bodyRenderer.sprite = SpManager.Instance.LoadSprite(sp);
+        
     }
 
     private void setheadSprite(string sp)
     {
+        //Debug.Log(sp);
         headRenderer.sprite = SpManager.Instance.LoadSprite(sp);
+        
+    }
+    private void sethairSprite(string sp)
+    {
+        //Debug.Log(sp);
+        heairRenderer.sprite = SpManager.Instance.LoadSprite(sp);
     }
     private void PlayAnim()
     {
@@ -61,32 +75,54 @@ public class unitSkin : MonoBehaviour {
 
     private void faceDown()
     {
-        setBodySprite("player_body_front_" + m_manager.bodySkin());
-        setheadSprite("player_head_front_" + m_manager.headSkin());
+        setBodySprite(m_manager.bodySkin()+"_body_front");
+        if(hasHead)
+        {
+            setheadSprite(m_manager.headSkin()+"_head_front");
+            sethairSprite(m_manager.headSkin() + "_hair_front");
+        }
     }
 
     private void faceUp()
     {
-        setBodySprite("player_body_back_" + m_manager.bodySkin());
-        setheadSprite("player_head_back_" + m_manager.headSkin());
+        setBodySprite(m_manager.bodySkin() + "_body_back");
+        if (hasHead)
+        {
+            setheadSprite(m_manager.headSkin() + "_head_back");
+            sethairSprite(m_manager.headSkin() + "_hair_back");
+        }
     }
 
     private void faceLeft()
     {
-        setBodySprite("player_body_left_" + m_manager.bodySkin());
-        setheadSprite("player_head_left_" + m_manager.headSkin());
+        setBodySprite(m_manager.bodySkin() + "_body_left");
+        if (hasHead)
+        {
+            setheadSprite(m_manager.headSkin() + "_head_left");
+            sethairSprite(m_manager.headSkin() + "_hair_left");
+        }
     }
 
     private void faceRight()
     {
-        setBodySprite("player_body_right_" + m_manager.bodySkin());
-        setheadSprite("player_head_right_" + m_manager.headSkin());
+        setBodySprite(m_manager.bodySkin() + "_body_right");
+        if (hasHead)
+        {
+            setheadSprite(m_manager.headSkin() + "_head_right");
+            sethairSprite(m_manager.headSkin() + "_hair_right");
+        }
     }
 
     // Use this for initialization
     void Start () {
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
-        headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
+        bodyRenderer.color = m_manager.skinColor();
+        if (hasHead)
+        {
+            headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
+            headRenderer.color = m_manager.skinColor();
+            heairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
+        }
         m_umovement = GetComponent<unitMovement>();
     }
 	

@@ -8,8 +8,6 @@ public class unitMovement : MonoBehaviour {
 
 
     [SerializeField] int fps;
-    float frameTime;
-    float frameTimer = 0;
     public Text textInfo;
     private unitManager m_manager = new unitManager();
     private faceTo playerFace;//0:down,1:up,2:left,3:right
@@ -51,7 +49,6 @@ public class unitMovement : MonoBehaviour {
     {
         playerFace = faceTo.down;
         playerFaceLast = faceTo.none;
-        frameTime = 1 / (float)fps;
     }
 
     // Update is called once per frame
@@ -101,7 +98,7 @@ public class unitMovement : MonoBehaviour {
             movement.Normalize();
             //Debug.Log("Normalize : " + movement);
 
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
+            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z))
             {
                 if (movement.x > 0)
                 {
@@ -114,7 +111,7 @@ public class unitMovement : MonoBehaviour {
             }
             else
             {
-                if (movement.y > 0)
+                if (movement.z > 0)
                 {
                     playerFace = faceTo.up;
                 }
