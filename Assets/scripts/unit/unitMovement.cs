@@ -24,6 +24,11 @@ public class unitMovement : MonoBehaviour {
 
     }
 
+    public unitManager manager()
+    {
+        return m_manager;
+    }
+
     public faceTo getFaceTo()
     {
         return playerFace;

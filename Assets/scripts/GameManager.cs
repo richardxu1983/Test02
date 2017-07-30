@@ -12,10 +12,12 @@ public class PerfectOverride
 
 public class GameManager : MonoBehaviour {
 
+    
     public int referenceOrthographicSize;
     public float referencePixelsPerUnit;
     public List<PerfectOverride> overrides;
     public int Multiplyer = 1;
+    public int currentSelHuman = -1;
     private int lastSize = 0;
     public List<unitManager> units;
     System.Timers.Timer t = new System.Timers.Timer(250);
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour {
 
         SpManager.Instance.init();
         utils.Instance.init();
+        //CreateLineMaterial();
 
         units = new List<unitManager>();
         CreateRandomHuman();
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour {
         unitManager v = new unitManager();
         units.Add(v);
         int index = units.IndexOf(v);
+        //Debug.Log(index);
         units[index].CreateHuman(index, 2);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
@@ -100,24 +104,26 @@ public class GameManager : MonoBehaviour {
         Debug.Log(lastSize + " " + orthoSize + " " + multiplier + " " + ppu);
     }
 
+
+
+    public Vector3 getSelectPos()
+    {
+        if (currentSelHuman >= 0)
+        {
+            return units[currentSelHuman].m_Instance.transform.position;
+        }
+        else
+        {
+            return new Vector3(0, 0, 0);
+        }
+    }
+
+
     // Update is called once per frame
     void Update () {
         /*
         if (lastSize != Screen.height)
             UpdateOrthoSize();
-        
-        //test skin change
-        if (Input.GetKeyDown("space"))
-        {
-            if (m_units[0].bodySkin() == 2)
-            {
-                m_units[0].setBodySkin(1);
-            }
-            else
-            {
-                m_units[0].setBodySkin(2);
-            }
-        }
         */
         if(Input.GetKeyDown("space"))
         {
@@ -126,7 +132,35 @@ public class GameManager : MonoBehaviour {
         //
         if (Input.GetMouseButtonDown(1))
         {
-            units[0].ai().moveTo(Camera.main.ScreenToWorldPoint(Input.mousePosition), true);
+            if(currentSelHuman>=0)
+            {
+                units[currentSelHuman].ai().moveTo(Camera.main.ScreenToWorldPoint(Input.mousePosition), true);
+            }
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if(hit.collider.gameObject.tag == "unit")
+                {
+                    currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id();
+                }
+                else
+                {
+                    currentSelHuman = -1;
+                }
+                
+                //Debug.Log("currentSelHuman : "+ currentSelHuman);
+                //Debug.Log(hit.transform.tag);
+            }
+            else
+            {
+                currentSelHuman = -1;
+            }
         }
     }
 }
