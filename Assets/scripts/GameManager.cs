@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class PerfectOverride
@@ -44,6 +45,17 @@ public class GameManager : MonoBehaviour {
         int index = units.IndexOf(v);
         //Debug.Log(index);
         units[index].CreateHuman(index, 2);
+        units[index].spawnAt(new Vector3(0, 1, 0));
+        units[index].ai().wander(true);
+    }
+
+    public void CreateRandomAnimal()
+    {
+        unitManager v = new unitManager();
+        units.Add(v);
+        int index = units.IndexOf(v);
+        //Debug.Log(index);
+        units[index].CreateAnimal(index, 2);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
     }
@@ -163,11 +175,11 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-                    currentSelHuman = -1;
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                        currentSelHuman = -1;
                 }
                 
                 //Debug.Log("currentSelHuman : "+ currentSelHuman);
-                //Debug.Log(hit.transform.tag);
             }
             else
             {

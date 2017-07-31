@@ -33,28 +33,47 @@ public class MainCancas : MonoBehaviour {
         });
 
         txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
+
+
+        //获取按钮游戏对象
+        GameObject btnObj2 = GameObject.Find("Canvas/CreateAnimal");
+        //获取按钮脚本组件
+        Button btn2 = btnObj2.GetComponent<Button>();
+        Debug.Log(btn2);
+        //添加点击侦听
+        btn2.onClick.AddListener(delegate () {
+            onClickCreateAnimal(btnObj2);
+        });
+
+        txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
     }
 
     void onClickQuitGame(GameObject obj)
     {
-        Debug.Log("click: " + obj.name);
+        //Debug.Log("click: " + obj.name);
         //Application.LoadLevel("Scene_2");
         SceneManager.LoadScene("menu");
     }
 
     void onClickCreateHuman(GameObject obj)
     {
-        Debug.Log("click: " + obj.name);
+        //Debug.Log("click: " + obj.name);
         //Application.LoadLevel("Scene_2");
         manager.CreateRandomHuman();
     }
+
+    void onClickCreateAnimal(GameObject obj)
+    {
+        manager.CreateRandomAnimal();
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         if (manager.currentSelHuman >= 0)
         {
-            txtSelectInfo.text = "x : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.x,2)
+            txtSelectInfo.text = manager.getSelectHuman().name()+"\nx : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.x,2)
                 + ", y : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.y,2)
                 + ", z : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.z,2);
         }

@@ -115,13 +115,20 @@ public class unitSkin : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
+        hairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
+        headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
+
         bodyRenderer.color = m_manager.skinColor();
         if (hasHead)
         {
-            headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
             headRenderer.color = m_manager.skinColor();
-            hairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            headRenderer.enabled = false;
+            hairRenderer.enabled = false;
         }
         m_umovement = GetComponent<unitMovement>();
     }
@@ -141,8 +148,11 @@ public class unitSkin : MonoBehaviour {
         int so = Mathf.RoundToInt(transform.position.z * -100);
 
         bodyRenderer.sortingOrder = so;
-        headRenderer.sortingOrder = so;
-        hairRenderer.sortingOrder = so;
+        if (hasHead)
+        {
+            headRenderer.sortingOrder = so;
+            hairRenderer.sortingOrder = so;
+        }
         /*
         if (Input.GetKeyDown("space"))
         {

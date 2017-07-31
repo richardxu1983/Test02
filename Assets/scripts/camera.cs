@@ -26,9 +26,9 @@ public class camera : MonoBehaviour {
             // Set transformation matrix for drawing to
             // match our transform
             GL.MultMatrix(transform.localToWorldMatrix);
-            //GL.Color(Color.red);
             // Draw lines
             GL.Begin(GL.LINES);
+            GL.Color(Color.green);
             //GL.LoadOrtho();
             //Debug.Log(pos);
             DrawLine((pos.x - 1f), (pos.z - 1.2f), 3, (pos.x + 1f), (pos.z - 1.2f), 3);

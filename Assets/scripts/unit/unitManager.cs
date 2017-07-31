@@ -33,9 +33,9 @@ public class unitManager {
         m_skin.init(this);
     }
 
-    public void CreateHuman(int id, int speed)
+    public void CreateHuman(int uid, int speed)
     {
-        setId(id);
+        setId(uid);
         m_type = Globals.humanType;
         int headSkin = 0;
         int bodySkin = 0;
@@ -43,17 +43,19 @@ public class unitManager {
         setHeadSkin(utils.Instance.getHumanHeadById(headSkin));
         setBodySkin(utils.Instance.getHumanBodyById(bodySkin));
         setSkinColor(skinColorId);
+        setName("human");
         Setup(speed);
     }
 
-    public void CreateAnimal(int id, int speed)
+    public void CreateAnimal(int uid, int speed)
     {
-        setId(id);
+        setId(uid);
         int bodySkin = 0;
         m_type = Globals.animalType;
         setHeadSkin(-1);
         setSkinColor(0);
         setBodySkin(utils.Instance.getAnimalBodyById(bodySkin));
+        setName("amimal");
         Setup(speed);
     }
 
