@@ -13,7 +13,7 @@ public class unitData
     private float[] m_fattr;
     //private unitManager m_manager;
     public Vector3 pos;
-    private string m_name;
+    private string m_name = "name";
     public Color skinColor;
 
     public unitData()
@@ -38,4 +38,9 @@ public class unitData
     public void     setF(UnitFloatAttr k, float v)   { m_fattr[(int)k] = v; }
     public float    getF(UnitFloatAttr k)            { return m_fattr[(int)k]; }
 
+
+    public void loop()
+    {
+
+    }
 }

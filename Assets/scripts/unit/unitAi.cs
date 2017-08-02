@@ -70,6 +70,12 @@ public class unitAi {
         }
     }
 
+    public void die()
+    {
+        ai = UnitAi.die;
+        op = UnitOp.die;
+    }
+
     public void Do()
     {
         switch (m_ai)
@@ -122,6 +128,9 @@ public class unitAi {
 
     public void moveTo(Vector3 v, bool isCmd)
     {
+        if (m_manager.isDead())
+            return;
+
         ai = UnitAi.moveTo;
         op = UnitOp.moving;
         TargetPos = v;

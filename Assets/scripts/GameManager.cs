@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour {
     {
         foreach (unitManager v in units)
         {
-            v.ai().loop();
+            v.loop();
         }
     }
 
@@ -164,6 +164,13 @@ public class GameManager : MonoBehaviour {
         if(Input.GetKeyDown("space"))
         {
             GlobalControl.Instance.ToggleDebug();
+        }
+        if (Input.GetKeyDown("a"))
+        {
+            if (currentSelHuman >= 0)
+            {
+                units[currentSelHuman].hpAdd(-100);
+            }
         }
         //
         if (Input.GetMouseButtonDown(1))

@@ -19,6 +19,8 @@ public enum UnitIntAttr
     headSkin,
     bodySkin,
     cloth,
+    fed,
+    hungry_tick,
     grid_x,
     grid_y,
 }
@@ -34,6 +36,7 @@ public enum UnitOp
     idle,
     moving,
     walking,
+    die,
 }
 
 public enum UnitAi
@@ -41,6 +44,7 @@ public enum UnitAi
     idle,
     wander,
     moveTo,
+    die,
 }
 
 public struct ColorNew

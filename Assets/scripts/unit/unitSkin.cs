@@ -151,11 +151,9 @@ public class unitSkin : MonoBehaviour {
             m_collider.size = new Vector3(bodyRenderer.bounds.size.x*1.2f, 0.1f, bodyRenderer.bounds.size.z*1.2f);
         }
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
 
+    public void updateSkin()
+    {
         if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin() != bodySkinIdNow || m_manager.headSkin() != headSkinIdNow)
         {
             PlayAnim();
@@ -166,27 +164,57 @@ public class unitSkin : MonoBehaviour {
         }
 
         int so = Mathf.RoundToInt(transform.position.z * -100);
-
         bodyRenderer.sortingOrder = so;
         if (hasHead)
         {
             headRenderer.sortingOrder = so;
             hairRenderer.sortingOrder = so;
         }
-        /*
-        if (Input.GetKeyDown("space"))
+    }
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        if(m_manager.isDead()==false)
         {
-            if(test)
-            {
-                bodyRenderer.sprite = SpManager.Instance.LoadSprite("player_head_front_1");
-                test = false;
-            }
-            else
-            {
-                bodyRenderer.sprite = SpManager.Instance.LoadSprite("player_body_front_1");
-                test = true;
-            }
+            updateSkin();
         }
-        */
+    }
+
+    public void die()
+    {
+        updateSkin();
+        switch(m_umovement.getFaceTo())
+        {
+            case faceTo.down:
+                {
+                    if (Globals.rd.Next(10) > 5)
+                        transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                    else
+                        transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                    break;
+                }
+            case faceTo.up:
+                {
+                    if (Globals.rd.Next(10) > 5)
+                        transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                    else
+                        transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                    break;
+                }
+            case faceTo.left:
+                {
+                    transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                    break;
+                }
+            case faceTo.right:
+                {
+                    transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                    break;
+                }
+            default:
+                break;
+
+        }
     }
 }

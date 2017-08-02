@@ -10,9 +10,9 @@ public class unitManager {
     public unitData m_data;
     public GameObject m_Instance;
     private unitMovement m_movement;
-    
     public unitSkin m_skin;
     private int m_type = 0;
+    private bool m_isDead = false;
     private bool isSet = false;
 
 
@@ -63,6 +63,7 @@ public class unitManager {
     public void Setup(int speed)
     {
         setRunSpeed(speed);
+        m_data.setInt(UnitIntAttr.hp, 100);
         m_data.skinColor = utils.Instance.getHumanColor(m_data.getInt(UnitIntAttr.skinColor));
         isSet = true;
     }
@@ -83,10 +84,17 @@ public class unitManager {
     public void hpAdd(int v)
     {
         int hp = this.hp();
-        hp += v;
-        hp = hp < 0 ? 0 : hp;
-        hp = hp > hpMax() ? hpMax() : hp;
-        m_data.setInt(UnitIntAttr.hp, hp);
+        if(hp>0)
+        {
+            hp += v;
+            hp = hp < 0 ? 0 : hp;
+            hp = hp > hpMax() ? hpMax() : hp;
+            m_data.setInt(UnitIntAttr.hp, hp);
+        }
+        if( hp<=0 && m_isDead==false )
+        {
+            die();
+        }
     }
 
     public void setName(string v)
@@ -132,5 +140,28 @@ public class unitManager {
     public void setPos(Vector3 v)
     {
         m_data.pos = v;
+    }
+
+    public void die()
+    {
+        setDead(true);
+        m_ai.die();
+        m_skin.die();
+    }
+
+    public bool isDead()
+    {
+        return m_isDead;
+    }
+
+    public void setDead(bool v)
+    {
+        m_isDead = v;
+    }
+
+    public void loop()
+    {
+        m_data.loop();
+        m_ai.loop();
     }
 }
