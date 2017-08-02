@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
         //CreateLineMaterial();
 
         units = new List<unitManager>();
-        CreateRandomHuman();
+        //CreateRandomHuman();
 
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
         t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
@@ -139,6 +139,18 @@ public class GameManager : MonoBehaviour {
         else
         {
             return new Vector3(0, 0, 0);
+        }
+    }
+
+    public GameObject getSelectObj()
+    {
+        if (currentSelHuman >= 0)
+        {
+            return units[currentSelHuman].m_Instance;
+        }
+        else
+        {
+            return null;
         }
     }
 

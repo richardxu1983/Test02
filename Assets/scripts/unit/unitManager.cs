@@ -10,7 +10,8 @@ public class unitManager {
     public unitData m_data;
     public GameObject m_Instance;
     private unitMovement m_movement;
-    private unitSkin m_skin;
+    
+    public unitSkin m_skin;
     private int m_type = 0;
     private bool isSet = false;
 

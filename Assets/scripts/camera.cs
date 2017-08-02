@@ -6,9 +6,21 @@ public class camera : MonoBehaviour {
 
     public GameManager manager;
     private Vector3 pos;
+    private Vector3 ext;
     private Material mat;
-
-
+    private Vector3 leftTop_1 = new Vector3();
+    private Vector3 leftTop_2 = new Vector3();
+    private Vector3 leftTop_3 = new Vector3();
+    private Vector3 rightTop_1 = new Vector3();
+    private Vector3 rightTop_2 = new Vector3();
+    private Vector3 rightTop_3 = new Vector3();
+    private Vector3 leftBottom_1 = new Vector3();
+    private Vector3 leftBottom_2 = new Vector3();
+    private Vector3 leftBottom_3 = new Vector3();
+    private Vector3 rightBottom_1 = new Vector3();
+    private Vector3 rightBottom_2 = new Vector3();
+    private Vector3 rightBottom_3 = new Vector3();
+    private float length = 0.5f;
 
     // Use this for initialization
     void Start () {
@@ -19,7 +31,66 @@ public class camera : MonoBehaviour {
     {
         if(manager.currentSelHuman>=0)
         {
-            pos = manager.getSelectPos();
+            //pos = manager.getSelectPos();
+            pos = manager.getSelectHuman().m_skin.bodyRenderer.bounds.center;
+            ext = manager.getSelectHuman().m_skin.bodyRenderer.bounds.extents * 1.2f;
+            if(manager.getSelectHuman().m_skin.hasHead)
+            {
+                ext.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z;
+                pos.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.25f;
+            }
+
+            leftBottom_2.x = (pos.x - ext.x);
+            leftBottom_2.y = (pos.z - ext.z);
+            leftBottom_2.z = 3;
+
+            leftBottom_1.x = (pos.x - ext.x);
+            leftBottom_1.y = (pos.z - ext.z) + length;
+            leftBottom_1.z = 3;
+
+            leftBottom_3.x = (pos.x - ext.x) + length;
+            leftBottom_3.y = (pos.z - ext.z);
+            leftBottom_3.z = 3;
+
+
+            rightBottom_2.x = (pos.x + ext.x);
+            rightBottom_2.y = (pos.z - ext.z);
+            rightBottom_2.z = 3;
+
+            rightBottom_1.x = (pos.x + ext.x) - length;
+            rightBottom_1.y = (pos.z - ext.z);
+            rightBottom_1.z = 3;
+
+            rightBottom_3.x = (pos.x + ext.x);
+            rightBottom_3.y = (pos.z - ext.z) + length;
+            rightBottom_3.z = 3;
+
+            rightTop_2.x = (pos.x + ext.x);
+            rightTop_2.y = (pos.z + ext.z);
+            rightTop_2.z = 3;
+
+            rightTop_1.x = (pos.x + ext.x);
+            rightTop_1.y = (pos.z + ext.z) - length;
+            rightTop_1.z = 3;
+
+            rightTop_3.x = (pos.x + ext.x) - length;
+            rightTop_3.y = (pos.z + ext.z);
+            rightTop_3.z = 3;
+
+            leftTop_2.x = (pos.x - ext.x);
+            leftTop_2.y = (pos.z + ext.z);
+            leftTop_2.z = 3;
+
+            leftTop_1.x = (pos.x - ext.x) + length;
+            leftTop_1.y = (pos.z + ext.z);
+            leftTop_1.z = 3;
+
+            leftTop_3.x = (pos.x - ext.x);
+            leftTop_3.y = (pos.z + ext.z) - length;
+            leftTop_3.z = 3;
+
+            //Debug.Log(pos);
+            //Debug.Log(ext);
             CreateLineMaterial();
             mat.SetPass(0);
             GL.PushMatrix();
@@ -29,22 +100,33 @@ public class camera : MonoBehaviour {
             // Draw lines
             GL.Begin(GL.LINES);
             GL.Color(Color.green);
-            //GL.LoadOrtho();
-            //Debug.Log(pos);
-            DrawLine((pos.x - 1f), (pos.z - 1.2f), 3, (pos.x + 1f), (pos.z - 1.2f), 3);
-            DrawLine((pos.x + 1f), (pos.z - 1.2f), 3, (pos.x + 1f), (pos.z + 2.2f), 3);
-            DrawLine((pos.x + 1f), (pos.z + 2.2f), 3, (pos.x - 1f), (pos.z + 2.2f), 3);
-            DrawLine((pos.x - 1f), (pos.z + 2.2f), 3, (pos.x - 1f), (pos.z - 1.2f), 3);
+            DrawLine(leftBottom_1, leftBottom_2);
+            DrawLine(leftBottom_2, leftBottom_3);
+            GL.End();
+            GL.Begin(GL.LINES);
+            GL.Color(Color.green);
+            DrawLine(rightBottom_1, rightBottom_2);
+            DrawLine(rightBottom_2, rightBottom_3);
+            GL.End();
+            GL.Begin(GL.LINES);
+            GL.Color(Color.green);
+            DrawLine(rightTop_1, rightTop_2);
+            DrawLine(rightTop_2, rightTop_3);
+            GL.End();
+            GL.Begin(GL.LINES);
+            GL.Color(Color.green);
+            DrawLine(leftTop_1, leftTop_2);
+            DrawLine(leftTop_2, leftTop_3);
             GL.End();
             GL.PopMatrix();
         }
     }
 
-    void DrawLine(float x1, float y1, float z1, float x2, float y2, float z2)
+    void DrawLine(Vector3 v1, Vector3 v2)
     {
         //绘制线段  
-        GL.Vertex(new Vector3(x1, y1, z1));
-        GL.Vertex(new Vector3(x2, y2, z2));
+        GL.Vertex(v1);
+        GL.Vertex(v2);
     }
 
 

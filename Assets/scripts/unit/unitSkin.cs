@@ -6,12 +6,13 @@ public class unitSkin : MonoBehaviour {
 
     private int bodySkinIdNow = 0;
     private int headSkinIdNow = 0;
-    private SpriteRenderer bodyRenderer;
-    private SpriteRenderer headRenderer;
-    private SpriteRenderer hairRenderer;
+    public SpriteRenderer bodyRenderer;
+    public SpriteRenderer headRenderer;
+    public SpriteRenderer hairRenderer;
+    private BoxCollider m_collider;
     private unitMovement m_umovement;
     private unitManager m_manager = new unitManager();
-    private bool hasHead = true;
+    public bool hasHead = true;
 
     public void init(unitManager v)
     {
@@ -119,6 +120,7 @@ public class unitSkin : MonoBehaviour {
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
         hairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
         headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
+        m_collider = GetComponent<BoxCollider>();
 
         bodyRenderer.color = m_manager.skinColor();
         if (hasHead)
@@ -131,6 +133,23 @@ public class unitSkin : MonoBehaviour {
             hairRenderer.enabled = false;
         }
         m_umovement = GetComponent<unitMovement>();
+        Update();
+    }
+
+    void setCollider()
+    {
+        float zOffset = (0.5f - bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height);
+        if (hasHead)
+        {
+            
+            m_collider.center = new Vector3(0, 0, (bodyRenderer.bounds.size.z + headRenderer.bounds.size.z)* zOffset - 0.25f);
+            m_collider.size = new Vector3(bodyRenderer.bounds.size.x, 0.1f, bodyRenderer.bounds.size.z + headRenderer.bounds.size.z - 0.125f);
+        }
+        else
+        {
+            m_collider.center = new Vector3(0, 0, bodyRenderer.bounds.size.z* zOffset);
+            m_collider.size = new Vector3(bodyRenderer.bounds.size.x*1.2f, 0.1f, bodyRenderer.bounds.size.z*1.2f);
+        }
     }
 	
 	// Update is called once per frame
@@ -143,6 +162,7 @@ public class unitSkin : MonoBehaviour {
             headSkinIdNow = m_manager.headSkin();
             bodySkinIdNow = m_manager.bodySkin();
             m_umovement.setLastFace(m_umovement.getFaceTo());
+            setCollider();
         }
 
         int so = Mathf.RoundToInt(transform.position.z * -100);
