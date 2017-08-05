@@ -10,6 +10,7 @@ public class unitManager {
     public unitData m_data;
     public GameObject m_Instance;
     private unitMovement m_movement;
+    private unitUI m_unitUI;
     public unitSkin m_skin;
     private int m_type = 0;
     private bool m_isDead = false;
@@ -30,8 +31,10 @@ public class unitManager {
         m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         m_movement = m_Instance.GetComponent<unitMovement>();
         m_skin = m_Instance.GetComponent<unitSkin>();
+        m_unitUI = m_Instance.GetComponent<unitUI>();
         m_movement.init(this);
         m_skin.init(this);
+        m_unitUI.init(this);
     }
 
     public void CreateHuman(int uid, int speed)

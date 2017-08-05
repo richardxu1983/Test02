@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 
 public class unitMovement : MonoBehaviour {
 
 
     [SerializeField] int fps;
-    public Text textInfo;
+
     private unitManager m_manager = new unitManager();
     private faceTo playerFace;//0:down,1:up,2:left,3:right
     private faceTo playerFaceLast;//0:down,1:up,2:left,3:right
@@ -70,26 +70,6 @@ public class unitMovement : MonoBehaviour {
     void LateUpdate()
     {
 
-    }
-
-    private void FixedUpdate()
-    {
-        //Debug.Log(GlobalControl.Instance.enableDebug);
-        if(GlobalControl.Instance.enableDebug==true)
-        {
-            if(textInfo.enabled==false)
-            {
-                textInfo.enabled = true;
-            }
-            textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
-        }
-        else
-        {
-            if (textInfo.enabled == true)
-            {
-                textInfo.enabled = false;
-            }
-        }
     }
 
     private void Move()

@@ -167,8 +167,8 @@ public class unitSkin : MonoBehaviour {
         bodyRenderer.sortingOrder = so;
         if (hasHead)
         {
-            headRenderer.sortingOrder = so;
-            hairRenderer.sortingOrder = so;
+            headRenderer.sortingOrder = so+1;
+            hairRenderer.sortingOrder = so+2;
         }
     }
 	
