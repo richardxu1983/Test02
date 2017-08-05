@@ -27,11 +27,9 @@ public class GameManager : MonoBehaviour {
     void Start () {
 
         SpManager.Instance.init();
-        utils.Instance.init();
-        //CreateLineMaterial();
+        GlobalControl.Instance.GameInit();
 
         units = new List<unitManager>();
-        //CreateRandomHuman();
 
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
         t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
@@ -43,7 +41,6 @@ public class GameManager : MonoBehaviour {
         unitManager v = new unitManager();
         units.Add(v);
         int index = units.IndexOf(v);
-        //Debug.Log(index);
         units[index].CreateHuman(index, 2);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
@@ -54,8 +51,7 @@ public class GameManager : MonoBehaviour {
         unitManager v = new unitManager();
         units.Add(v);
         int index = units.IndexOf(v);
-        //Debug.Log(index);
-        units[index].CreateAnimal(index, 2);
+        units[index].CreateAnimalById(index, 0);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
     }

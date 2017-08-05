@@ -9,64 +9,82 @@ public class MainCancas : MonoBehaviour {
 
     public GameManager manager;
     private Text txtSelectInfo;
+    private GameObject debugPanel;
+    private GameObject btnShowDebug;
 
     // Use this for initialization
     void Start()
     {
-        //获取按钮游戏对象
-        GameObject btnObj = GameObject.Find("Canvas/Quit");
-        //获取按钮脚本组件
-        Button btn = btnObj.GetComponent<Button>();
-        //添加点击侦听
-        btn.onClick.AddListener(delegate () {
-            onClickQuitGame(btnObj);
+
+        btnRegister("Canvas/debugPanel/Quit", delegate ()
+        {
+            onClickQuitGame();
         });
 
-        //获取按钮游戏对象
-        GameObject btnObj1 = GameObject.Find("Canvas/CreateHuman");
-        //获取按钮脚本组件
-        Button btn1 = btnObj1.GetComponent<Button>();
-        Debug.Log(btn1);
-        //添加点击侦听
-        btn1.onClick.AddListener(delegate () {
-            onClickCreateHuman(btnObj1);
+        btnRegister("Canvas/debugPanel/CreateHuman", delegate ()
+        {
+            onClickCreateHuman();
         });
 
+        btnRegister("Canvas/debugPanel/CreateAnimal", delegate ()
+        {
+            onClickCreateAnimal();
+        });
+
+        btnRegister("Canvas/debugPanel/HideDebug", delegate ()
+        {
+            onClickHideDebug();
+        });
+
+        btnRegister("Canvas/btnShowDbg", delegate ()
+        {
+            onClickShowDebug();
+        });
+
+        debugPanel = GameObject.Find("Canvas/debugPanel");
+        btnShowDebug = GameObject.Find("Canvas/btnShowDbg");
         txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
-
-
-        //获取按钮游戏对象
-        GameObject btnObj2 = GameObject.Find("Canvas/CreateAnimal");
-        //获取按钮脚本组件
-        Button btn2 = btnObj2.GetComponent<Button>();
-        Debug.Log(btn2);
-        //添加点击侦听
-        btn2.onClick.AddListener(delegate () {
-            onClickCreateAnimal(btnObj2);
-        });
-
-        txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
+        onClickHideDebug();
     }
 
-    void onClickQuitGame(GameObject obj)
+    void btnRegister(string btnPath,UnityEngine.Events.UnityAction action)
     {
-        //Debug.Log("click: " + obj.name);
-        //Application.LoadLevel("Scene_2");
+        GameObject btnObj2 = GameObject.Find(btnPath);
+        //获取按钮脚本组件
+        Button btn2 = btnObj2.GetComponent<Button>();
+        //Debug.Log(btn2);
+        //添加点击侦听
+        btn2.onClick.AddListener(action);
+    }
+
+    void onClickQuitGame()
+    {
         SceneManager.LoadScene("menu");
     }
 
-    void onClickCreateHuman(GameObject obj)
+    void onClickCreateHuman()
     {
-        //Debug.Log("click: " + obj.name);
-        //Application.LoadLevel("Scene_2");
         manager.CreateRandomHuman();
     }
 
-    void onClickCreateAnimal(GameObject obj)
+    void onClickCreateAnimal()
     {
         manager.CreateRandomAnimal();
     }
 
+    void onClickHideDebug()
+    {
+        //debugPanel.enabled = false;
+        debugPanel.SetActive(false);
+        btnShowDebug.SetActive(true);
+    }
+
+    void onClickShowDebug()
+    {
+        //debugPanel.enabled = true;
+        debugPanel.SetActive(true);
+        btnShowDebug.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()

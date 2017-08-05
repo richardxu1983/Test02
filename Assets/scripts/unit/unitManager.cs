@@ -38,33 +38,32 @@ public class unitManager {
     {
         setId(uid);
         m_type = Globals.humanType;
-        int headSkin = 0;
-        int bodySkin = 0;
-        int skinColorId = Globals.rd.Next(10);
-        setHeadSkin(utils.Instance.getHumanHeadById(headSkin));
-        setBodySkin(utils.Instance.getHumanBodyById(bodySkin));
+        int headSkin = 1000;
+        int bodySkin = 1000;
+        int skinColorId = Globals.rd.Next(utils.Instance.maxColors);
+        setHeadSkin(headSkin);
+        setBodySkin(bodySkin);
         setSkinColor(skinColorId);
+        m_data.skinColor = utils.Instance.getSkinColor(m_data.getInt(UnitIntAttr.skinColor));
         setName("human");
         Setup(speed);
     }
 
-    public void CreateAnimal(int uid, int speed)
+    public void CreateAnimalById(int uid, int typeId)
     {
         setId(uid);
-        int bodySkin = 0;
         m_type = Globals.animalType;
-        setHeadSkin(-1);
-        setSkinColor(0);
-        setBodySkin(utils.Instance.getAnimalBodyById(bodySkin));
-        setName("amimal");
-        Setup(speed);
+        setHeadSkin(XMLLoader.Instance.animalConfig[typeId].headId);
+        m_data.skinColor = utils.Instance.getSkinColor(m_data.getInt(UnitIntAttr.skinColor));
+        setBodySkin(XMLLoader.Instance.animalConfig[typeId].bodyId);
+        setName(XMLLoader.Instance.animalConfig[typeId].name);
+        Setup(XMLLoader.Instance.animalConfig[typeId].speed);
     }
 
-    public void Setup(int speed)
+    public void Setup(float speed)
     {
         setRunSpeed(speed);
         m_data.setInt(UnitIntAttr.hp, 100);
-        m_data.skinColor = utils.Instance.getHumanColor(m_data.getInt(UnitIntAttr.skinColor));
         isSet = true;
     }
 
