@@ -11,8 +11,11 @@ public class unitSkin : MonoBehaviour {
     public SpriteRenderer hairRenderer;
     private BoxCollider m_collider;
     private unitMovement m_umovement;
+    private GameObject mainImg;
     private unitManager m_manager = new unitManager();
     public bool hasHead = true;
+    private Vector3 bottomPos;
+    private Vector3 headPos;
 
     public void init(unitManager v)
     {
@@ -22,6 +25,52 @@ public class unitSkin : MonoBehaviour {
             hasHead = false;
             headSkinIdNow = m_manager.headSkin();
         }
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+
+        bodyRenderer = transform.Find("img/body").GetComponent<SpriteRenderer>();
+        hairRenderer = transform.Find("img/hair").GetComponent<SpriteRenderer>();
+        headRenderer = transform.Find("img/head").GetComponent<SpriteRenderer>();
+        mainImg = transform.Find("img").gameObject;
+        m_collider = GetComponent<BoxCollider>();
+
+        bodyRenderer.color = m_manager.skinColor();
+        if (hasHead)
+        {
+            headRenderer.color = m_manager.skinColor();
+        }
+        else
+        {
+            headRenderer.enabled = false;
+            hairRenderer.enabled = false;
+        }
+        m_umovement = GetComponent<unitMovement>();
+        Update();
+    }
+
+    public Vector3 getBottomPos()
+    {
+        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height) * -1 * bodyRenderer.bounds.size.z - Globals.UNIT_IMG_BOTTOM;
+        Vector3 p1 = new Vector3(0, 0, zOffset);
+        bottomPos = transform.position + p1;
+        return bottomPos;
+    }
+
+    public Vector3 getHeadPos()
+    {
+        float hOffset = bodyRenderer.bounds.size.z;
+        if (hasHead)
+        {
+            hOffset += headRenderer.bounds.size.z;
+        }
+
+        hOffset += Globals.UNIT_IMG_HEAD;
+        Vector3 p2 = new Vector3(0, 0, hOffset);
+        headPos = transform.position + p2;
+        return headPos;
     }
 
     private void setBodySprite(string sp)
@@ -114,27 +163,7 @@ public class unitSkin : MonoBehaviour {
         }
     }
 
-    // Use this for initialization
-    void Start () {
 
-        bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
-        hairRenderer = transform.Find("hair").GetComponent<SpriteRenderer>();
-        headRenderer = transform.Find("head").GetComponent<SpriteRenderer>();
-        m_collider = GetComponent<BoxCollider>();
-
-        bodyRenderer.color = m_manager.skinColor();
-        if (hasHead)
-        {
-            headRenderer.color = m_manager.skinColor();
-        }
-        else
-        {
-            headRenderer.enabled = false;
-            hairRenderer.enabled = false;
-        }
-        m_umovement = GetComponent<unitMovement>();
-        Update();
-    }
 
     void setCollider()
     {
@@ -189,27 +218,27 @@ public class unitSkin : MonoBehaviour {
             case faceTo.down:
                 {
                     if (Globals.rd.Next(10) > 5)
-                        transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                        mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
                     else
-                        transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                        mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
                     break;
                 }
             case faceTo.up:
                 {
                     if (Globals.rd.Next(10) > 5)
-                        transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                        mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
                     else
-                        transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                        mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
                     break;
                 }
             case faceTo.left:
                 {
-                    transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                    mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
                     break;
                 }
             case faceTo.right:
                 {
-                    transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                    mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
                     break;
                 }
             default:

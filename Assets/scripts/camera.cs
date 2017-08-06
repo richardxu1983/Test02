@@ -43,8 +43,8 @@ public class camera : MonoBehaviour {
             ext = manager.getSelectHuman().m_skin.bodyRenderer.bounds.extents * 1.2f;
             if(manager.getSelectHuman().m_skin.hasHead)
             {
-                ext.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z;
-                pos.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.25f;
+                ext.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
+                pos.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
             }
 
             leftBottom_2.x = (pos.x - ext.x);

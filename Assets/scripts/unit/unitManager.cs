@@ -69,6 +69,7 @@ public class unitManager {
     {
         setRunSpeed(speed);
         m_data.setInt(UnitIntAttr.hp, 100);
+        m_data.setInt(UnitIntAttr.hpMax, 100);
         isSet = true;
     }
 
@@ -162,6 +163,7 @@ public class unitManager {
         setDead(true);
         m_ai.die();
         m_skin.die();
+        m_unitUI.die();
     }
 
     public bool isDead()

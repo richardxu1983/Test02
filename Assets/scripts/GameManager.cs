@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour {
         {
             if (currentSelHuman >= 0)
             {
-                units[currentSelHuman].hpAdd(-100);
+                units[currentSelHuman].hpAdd(-10);
             }
         }
         //

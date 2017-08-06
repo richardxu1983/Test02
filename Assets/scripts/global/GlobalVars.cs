@@ -14,6 +14,14 @@ public static class Globals
     public static float CAMERA_STEP = 1.1f;
     public static float NAME_SHOW_SIZE = 35.0f;
 
+    //----------unit ui vars-------//
+    public static float HP_YELLOW = 0.75f;
+    public static float HP_RED = 0.35f;
+
+    //----------unit ui img vars-------//
+    public static float UNIT_IMG_BOTTOM = 0.35f;
+    public static float UNIT_IMG_HEAD = 0.5f;
+
     //------------------------------------//
     public static int wander_walk_dis = 0;
     public static int wander_walk_ran = 6;
@@ -23,7 +31,6 @@ public static class Globals
     public static int animalType = 2000;
     public static System.Random rd = new System.Random();
 }
-
 
 public static class Files
 {

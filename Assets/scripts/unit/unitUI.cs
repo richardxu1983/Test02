@@ -6,11 +6,14 @@ using UnityEngine.UI;
 public class unitUI : MonoBehaviour {
 
     public Text txtUnitName;
+    public Slider hpBar;
+    public GameObject hpBarObj;
     private Image bottomPanel;
+    public Image hpFill;
     private GameObject bPanel;
     public Text textInfo;
     private unitManager m_manager = new unitManager();
-    public SpriteRenderer bodyRenderer;
+    private SpriteRenderer bodyRenderer;
 
     public void init(unitManager v)
     {
@@ -19,38 +22,61 @@ public class unitUI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
+        bodyRenderer = transform.Find("img/body").GetComponent<SpriteRenderer>();
         bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
         bPanel = transform.Find("Canvas/bottomPanel").gameObject;
+        hpBarObj = transform.Find("Canvas/hpBar").gameObject;
         txtUnitName.text = m_manager.name();
         bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
         setNamePos();
     }
 
-    void OnGUI()
-    {
-        //GUI.Label(new Rect(position.x - (nameSize.x / 2), position.y - nameSize.y - bloodSize.y, nameSize.x, nameSize.y), m_manager.name());
-    }
-
     void setNamePos()
     {
-        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height)*-1* bodyRenderer.bounds.size.z - 0.2f;
+        bPanel.transform.position = m_manager.m_skin.getBottomPos();
+        hpBarObj.transform.position = m_manager.m_skin.getHeadPos();
+    }
 
-        //得到NPC头顶在3D世界中的坐标
-        //默认NPC坐标点在脚底下，所以这里加上npcHeight它模型的高度即可
-        Vector3 worldPosition = new Vector3(0, 0, zOffset);
-        //根据NPC头顶的3D坐标换算成它在2D屏幕中的坐标
-        //Vector2 position = camera.WorldToScreenPoint(worldPosition);
-        Vector3 position = transform.position + worldPosition;
+    void refresHpBar()
+    {
+        if (!m_manager.isDead())
+        {
+            float hp = m_manager.hp();
+            float hpMax = m_manager.hpMax();
 
-        //txtUnitName.transform.position = new Vector3(0,0, bodyRenderer.bounds.size.z* zOffset);
-        bPanel.transform.position = position;
+            if (m_manager.hp() < m_manager.hpMax())
+            {
+                float rate = hp / hpMax;
+                if (rate>Globals.HP_YELLOW)
+                {
+                    hpFill.color = Color.green;
+                }
+                else if(rate>=Globals.HP_RED)
+                {
+                    hpFill.color = Color.yellow;
+                }
+                else
+                {
+                    hpFill.color = Color.red;
+                }
+                hpBarObj.SetActive(true);
+                hpBar.maxValue = m_manager.hpMax();
+                hpBar.value = m_manager.hp();
+            }
+            else
+            {
+                hpBarObj.SetActive(false);
+            }
+        }
+    }
+
+    public void die()
+    {
+        hpBarObj.SetActive(false);
     }
 
     private void FixedUpdate()
     {
-
-        //Debug.Log(GlobalControl.Instance.enableDebug);
         if(m_manager.bDebugInfo)
         {
             if (GlobalControl.Instance.enableDebug == true)
@@ -75,15 +101,14 @@ public class unitUI : MonoBehaviour {
         }
 
         setNamePos();
+        refresHpBar();
 
-        if(GlobalControl.Instance.showUnitName)
+        if (GlobalControl.Instance.showUnitName)
         {
-            //bottomPanel.enabled = true;
             bPanel.SetActive(true);
         }
         else
         {
-            //bottomPanel.enabled = false;
             bPanel.SetActive(false);
         }
     }
