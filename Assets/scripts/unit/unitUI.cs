@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class unitUI : MonoBehaviour {
 
     public Text txtUnitName;
+    private Image bottomPanel;
     public Text textInfo;
     private unitManager m_manager = new unitManager();
     public SpriteRenderer bodyRenderer;
@@ -18,6 +19,9 @@ public class unitUI : MonoBehaviour {
     // Use this for initialization
     void Start () {
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
+        bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
+        txtUnitName.text = m_manager.name();
+        bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
     }
 
     void OnGUI()
@@ -27,19 +31,17 @@ public class unitUI : MonoBehaviour {
 
     void setNamePos()
     {
-        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height)* bodyRenderer.bounds.size.z*-1f - 0.1f;
+        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height)*-1* bodyRenderer.bounds.size.z - 0.2f;
 
-        //Debug.Log(zOffset);
         //得到NPC头顶在3D世界中的坐标
         //默认NPC坐标点在脚底下，所以这里加上npcHeight它模型的高度即可
         Vector3 worldPosition = new Vector3(0, 0, zOffset);
         //根据NPC头顶的3D坐标换算成它在2D屏幕中的坐标
         //Vector2 position = camera.WorldToScreenPoint(worldPosition);
         Vector3 position = transform.position + worldPosition;
-        
-        //Debug.Log(bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height);
+
         //txtUnitName.transform.position = new Vector3(0,0, bodyRenderer.bounds.size.z* zOffset);
-        txtUnitName.rectTransform.position = position;
+        bottomPanel.transform.position = position;
     }
 
     private void FixedUpdate()
@@ -62,7 +64,6 @@ public class unitUI : MonoBehaviour {
             }
         }
         setNamePos();
-        txtUnitName.text = m_manager.name();
     }
 
     // Update is called once per frame
