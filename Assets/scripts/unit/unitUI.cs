@@ -33,7 +33,7 @@ public class unitUI : MonoBehaviour {
 
     void setNamePos()
     {
-        bPanel.transform.position = m_manager.m_skin.getBottomPos();
+        bPanel.transform.position = m_manager.m_skin.getBottomPos(0f);
         hpBarObj.transform.position = m_manager.m_skin.getHeadPos();
     }
 

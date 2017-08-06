@@ -16,6 +16,7 @@ public class unitSkin : MonoBehaviour {
     public bool hasHead = true;
     private Vector3 bottomPos;
     private Vector3 headPos;
+    private float imgHeight = 0;
 
     public void init(unitManager v)
     {
@@ -51,9 +52,9 @@ public class unitSkin : MonoBehaviour {
         Update();
     }
 
-    public Vector3 getBottomPos()
+    public Vector3 getBottomPos(float v)
     {
-        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height) * -1 * bodyRenderer.bounds.size.z - Globals.UNIT_IMG_BOTTOM;
+        float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height) * -1 * bodyRenderer.bounds.size.z - Globals.UNIT_IMG_BOTTOM + v;
         Vector3 p1 = new Vector3(0, 0, zOffset);
         bottomPos = transform.position + p1;
         return bottomPos;
@@ -66,7 +67,8 @@ public class unitSkin : MonoBehaviour {
         {
             hOffset += headRenderer.bounds.size.z;
         }
-
+        hOffset = hOffset < imgHeight ? imgHeight : hOffset;
+        imgHeight = hOffset;
         hOffset += Globals.UNIT_IMG_HEAD;
         Vector3 p2 = new Vector3(0, 0, hOffset);
         headPos = transform.position + p2;
