@@ -14,8 +14,13 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     /// <returns></returns>  
     public XmlDocument ReadAndLoadXml(string file)
     {
+        //XmlDocument doc = new XmlDocument();
+        //doc.Load(Application.dataPath + "/Resources/xml/" + file + ".xml");
+        
+
+        string data = Resources.Load("xml/"+ file).ToString();
         XmlDocument doc = new XmlDocument();
-        doc.Load(Application.dataPath + "/Resources/xml/" + file + ".xml");
+        doc.LoadXml(data);
         return doc;
     }
 
