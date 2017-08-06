@@ -13,8 +13,10 @@ public class unitManager {
     private unitUI m_unitUI;
     public unitSkin m_skin;
     private int m_type = 0;
+
     private bool m_isDead = false;
     private bool isSet = false;
+    private bool m_showDebugInfo = false;
 
 
     public unitManager()
@@ -97,6 +99,17 @@ public class unitManager {
         {
             die();
         }
+    }
+
+    public bool bDebugInfo
+    {
+        set { m_showDebugInfo = value; }
+        get { return m_showDebugInfo; }
+    }
+
+    public void onFreeSelect()
+    {
+        m_showDebugInfo = false;
     }
 
     public void setName(string v)

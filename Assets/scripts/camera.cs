@@ -24,7 +24,14 @@ public class camera : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        if (Camera.main.orthographicSize >= Globals.NAME_SHOW_SIZE)
+        {
+            GlobalControl.Instance.showUnitName = false;
+        }
+        else
+        {
+            GlobalControl.Instance.showUnitName = true;
+        }
     }
 
     void OnPostRender()
@@ -151,6 +158,25 @@ public class camera : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        //Zoom out  
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            Camera.main.orthographicSize += Globals.CAMERA_STEP;
+            Camera.main.orthographicSize = Camera.main.orthographicSize >= Globals.MAX_CAMERA ? Globals.MAX_CAMERA : Camera.main.orthographicSize;
+            if(Camera.main.orthographicSize>= Globals.NAME_SHOW_SIZE)
+            {
+                GlobalControl.Instance.showUnitName = false;
+            }
+        }
+        //Zoom in  
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            Camera.main.orthographicSize -= Globals.CAMERA_STEP;
+            Camera.main.orthographicSize = Camera.main.orthographicSize <= Globals.MIN_CAMERA ? Globals.MIN_CAMERA : Camera.main.orthographicSize;
+            if (Camera.main.orthographicSize <= Globals.NAME_SHOW_SIZE)
+            {
+                GlobalControl.Instance.showUnitName = true;
+            }
+        }
+    }
 }

@@ -5,9 +5,11 @@ using UnityEngine;
 public class GlobalControl : UnitySingleton<GlobalControl>
 {
     public bool enableDebug = false;
+    public bool showUnitName = true;
 
     public void GameInit()
     {
+        SpManager.Instance.init();
         utils.Instance.init();
         XMLLoader.Instance.init();
         XMLLoader.Instance.load();

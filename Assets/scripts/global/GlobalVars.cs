@@ -8,6 +8,12 @@ public static class Globals
     public static int MAX_ANIMAL_CONFIG_NUM = 100;
     public static int MAX_SKINCOLOR_CONFIG_NUM = 100;
 
+    //----------camera vars--------//
+    public static float MAX_CAMERA = 50.0f;
+    public static float MIN_CAMERA = 20.0f;
+    public static float CAMERA_STEP = 1.1f;
+    public static float NAME_SHOW_SIZE = 35.0f;
+
     //------------------------------------//
     public static int wander_walk_dis = 0;
     public static int wander_walk_ran = 6;

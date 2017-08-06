@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        SpManager.Instance.init();
         GlobalControl.Instance.GameInit();
 
         units = new List<unitManager>();
@@ -150,6 +149,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void freeSelect()
+    {
+        if(currentSelHuman>=0)
+        {
+            units[currentSelHuman].onFreeSelect();
+        }
+    }
 
     // Update is called once per frame
     void Update () {
@@ -186,18 +192,23 @@ public class GameManager : MonoBehaviour {
             {
                 if(hit.collider.gameObject.tag == "unit")
                 {
+                    freeSelect();
                     currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id();
+                    units[currentSelHuman].bDebugInfo = true;
                 }
                 else
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
+                    {
+                        freeSelect();
                         currentSelHuman = -1;
+                    }
                 }
-                
                 //Debug.Log("currentSelHuman : "+ currentSelHuman);
             }
             else
             {
+                freeSelect();
                 currentSelHuman = -1;
             }
         }

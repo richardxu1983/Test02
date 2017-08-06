@@ -7,6 +7,7 @@ public class unitUI : MonoBehaviour {
 
     public Text txtUnitName;
     private Image bottomPanel;
+    private GameObject bPanel;
     public Text textInfo;
     private unitManager m_manager = new unitManager();
     public SpriteRenderer bodyRenderer;
@@ -20,8 +21,10 @@ public class unitUI : MonoBehaviour {
     void Start () {
         bodyRenderer = transform.Find("body").GetComponent<SpriteRenderer>();
         bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
+        bPanel = transform.Find("Canvas/bottomPanel").gameObject;
         txtUnitName.text = m_manager.name();
         bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
+        setNamePos();
     }
 
     void OnGUI()
@@ -41,29 +44,48 @@ public class unitUI : MonoBehaviour {
         Vector3 position = transform.position + worldPosition;
 
         //txtUnitName.transform.position = new Vector3(0,0, bodyRenderer.bounds.size.z* zOffset);
-        bottomPanel.transform.position = position;
+        bPanel.transform.position = position;
     }
 
     private void FixedUpdate()
     {
 
         //Debug.Log(GlobalControl.Instance.enableDebug);
-        if (GlobalControl.Instance.enableDebug == true)
+        if(m_manager.bDebugInfo)
         {
-            if (textInfo.enabled == false)
+            if (GlobalControl.Instance.enableDebug == true)
             {
-                textInfo.enabled = true;
+                if (textInfo.enabled == false)
+                {
+                    textInfo.enabled = true;
+                }
+                textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
             }
-            textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
+            else
+            {
+                if (textInfo.enabled == true)
+                {
+                    textInfo.enabled = false;
+                }
+            }
         }
         else
         {
-            if (textInfo.enabled == true)
-            {
-                textInfo.enabled = false;
-            }
+            textInfo.enabled = false;
         }
+
         setNamePos();
+
+        if(GlobalControl.Instance.showUnitName)
+        {
+            //bottomPanel.enabled = true;
+            bPanel.SetActive(true);
+        }
+        else
+        {
+            //bottomPanel.enabled = false;
+            bPanel.SetActive(false);
+        }
     }
 
     // Update is called once per frame
