@@ -13,6 +13,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         utils.Instance.init();
         XMLLoader.Instance.init();
         XMLLoader.Instance.load();
+        GTime.Instance.init();
     }
 
     public void ToggleDebug()
