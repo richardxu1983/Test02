@@ -64,12 +64,12 @@ public class MainCancas : MonoBehaviour {
 
     void onClickCreateHuman()
     {
-        manager.CreateRandomHuman();
+        unitPool.Instance.CreateRandomHuman();
     }
 
     void onClickCreateAnimal()
     {
-        manager.CreateRandomAnimal();
+        unitPool.Instance.CreateRandomAnimal();
     }
 
     void onClickHideDebug()
@@ -89,11 +89,11 @@ public class MainCancas : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (manager.currentSelHuman >= 0)
+        if (unitPool.Instance.currentSelHuman >= 0)
         {
-            txtSelectInfo.text = manager.getSelectHuman().name()+"\nx : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.x,2)
-                + ", y : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.y,2)
-                + ", z : " + Math.Round(manager.getSelectHuman().m_Instance.transform.position.z,2);
+            txtSelectInfo.text = unitPool.Instance.getSelectHuman().name()+"\nx : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.x,2)
+                + ", y : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.y,2)
+                + ", z : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.z,2);
         }
         else
         {

@@ -36,15 +36,15 @@ public class camera : MonoBehaviour {
 
     void OnPostRender()
     {
-        if(manager.currentSelHuman>=0)
+        if(unitPool.Instance.currentSelHuman>=0)
         {
             //pos = manager.getSelectPos();
-            pos = manager.getSelectHuman().m_skin.bodyRenderer.bounds.center;
-            ext = manager.getSelectHuman().m_skin.bodyRenderer.bounds.extents * 1.2f;
-            if(manager.getSelectHuman().m_skin.hasHead)
+            pos = unitPool.Instance.getSelectHuman().m_skin.bodyRenderer.bounds.center;
+            ext = unitPool.Instance.getSelectHuman().m_skin.bodyRenderer.bounds.extents * 1.2f;
+            if(unitPool.Instance.getSelectHuman().m_skin.hasHead)
             {
-                ext.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
-                pos.z += manager.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
+                ext.z += unitPool.Instance.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
+                pos.z += unitPool.Instance.getSelectHuman().m_skin.headRenderer.bounds.extents.z - 0.2f;
             }
 
             leftBottom_2.x = (pos.x - ext.x);
