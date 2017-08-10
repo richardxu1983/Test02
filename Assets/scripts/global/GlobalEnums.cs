@@ -13,6 +13,7 @@ public enum faceTo
 public enum UnitIntAttr
 {
     uid,
+    typeId,
     hp,
     hpMax,
     skinColor,

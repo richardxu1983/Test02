@@ -35,7 +35,10 @@ public class MainCancas : MonoBehaviour {
         {
             onClickHideDebug();
         });
-
+        btnRegister("Canvas/debugPanel/ClearAll", delegate ()
+        {
+            onClickClearAll();
+        });
         btnRegister("Canvas/btnShowDbg", delegate ()
         {
             onClickShowDebug();
@@ -77,6 +80,11 @@ public class MainCancas : MonoBehaviour {
         //debugPanel.enabled = false;
         debugPanel.SetActive(false);
         btnShowDebug.SetActive(true);
+    }
+
+    void onClickClearAll()
+    {
+        unitPool.Instance.ClearAll();
     }
 
     void onClickShowDebug()

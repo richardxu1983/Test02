@@ -67,9 +67,18 @@ public class unitMovement : MonoBehaviour {
         m_manager.setPos(transform.position);
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
+        if (m_manager.ToDelete == 1)
+        {
+            Destroy(m_manager.m_Instance, Globals.UNIT_DELETE_TIME);
+        }
+    }
 
+    void OnDestroy()
+    {
+        unitPool.Instance.freeSelect();
+        m_manager.ToDelete = 2;
     }
 
     private void Move()

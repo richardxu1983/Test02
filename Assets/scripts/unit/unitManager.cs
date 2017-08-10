@@ -17,6 +17,7 @@ public class unitManager {
     private bool m_isDead = false;
     private bool isSet = false;
     private bool m_showDebugInfo = false;
+    private int m_ToDelete = 0;
 
 
     public unitManager()
@@ -45,6 +46,7 @@ public class unitManager {
         m_type = Globals.humanType;
         int headSkin = 1000;
         int bodySkin = 1000;
+        m_data.setInt(UnitIntAttr.typeId, 0);
         int skinColorId = Globals.rd.Next(utils.Instance.maxColors);
         setHeadSkin(headSkin);
         setBodySkin(bodySkin);
@@ -58,6 +60,7 @@ public class unitManager {
     {
         setId(uid);
         m_type = Globals.animalType;
+        m_data.setInt(UnitIntAttr.typeId, typeId);
         setHeadSkin(XMLLoader.Instance.animalConfig[typeId].headId);
         m_data.skinColor = utils.Instance.getSkinColor(m_data.getInt(UnitIntAttr.skinColor));
         setBodySkin(XMLLoader.Instance.animalConfig[typeId].bodyId);
@@ -99,7 +102,14 @@ public class unitManager {
         if( hp<=0 && m_isDead==false )
         {
             die();
+            ToDelete = 1;
         }
+    }
+
+    public int ToDelete
+    {
+        set { m_ToDelete = value; }
+        get { return m_ToDelete; }
     }
 
     public bool bDebugInfo

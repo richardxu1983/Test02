@@ -18,6 +18,14 @@ public class unitPool : UnitySingleton<unitPool>
         foreach (unitManager v in units)
         {
             v.loop();
+            if (v.ToDelete == 2)
+            {
+                units.Remove(v);
+                foreach (unitManager k in units)
+                {
+                    k.setId(units.IndexOf(k));
+                }
+            }
         }
     }
 
@@ -26,6 +34,7 @@ public class unitPool : UnitySingleton<unitPool>
         unitManager v = new unitManager();
         units.Add(v);
         int index = units.IndexOf(v);
+        //Debug.Log("添加" + index + "位置角色");
         units[index].CreateHuman(index, 2);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
@@ -36,6 +45,7 @@ public class unitPool : UnitySingleton<unitPool>
         unitManager v = new unitManager();
         units.Add(v);
         int index = units.IndexOf(v);
+        //Debug.Log("添加" + index + "位置角色");
         units[index].CreateAnimalById(index, 0);
         units[index].spawnAt(new Vector3(0, 1, 0));
         units[index].ai().wander(true);
@@ -83,6 +93,7 @@ public class unitPool : UnitySingleton<unitPool>
         {
             units[currentSelHuman].onFreeSelect();
         }
+        currentSelHuman = -1;
     }
 
     public void debug_AtkSelectUnit()
@@ -119,14 +130,23 @@ public class unitPool : UnitySingleton<unitPool>
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
                     freeSelect();
-                    currentSelHuman = -1;
                 }
             }
         }
         else
         {
             freeSelect();
-            currentSelHuman = -1;
+        }
+    }
+
+    public void ClearAll()
+    {
+        foreach (unitManager v in units)
+        {
+            if (v.ToDelete == 0)
+            {
+                v.ToDelete = 1;
+            }
         }
     }
 }

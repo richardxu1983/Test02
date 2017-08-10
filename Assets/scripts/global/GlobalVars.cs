@@ -28,6 +28,7 @@ public static class Globals
     //----------unit ui vars-------//
     public static float HP_YELLOW = 0.75f;
     public static float HP_RED = 0.35f;
+    public static int UNIT_DELETE_TIME = 1;
 
     //----------unit ui img vars-------//
     public static float UNIT_IMG_BOTTOM = 0.35f;
