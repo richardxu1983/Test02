@@ -5,25 +5,26 @@ using UnityEngine.EventSystems;
 
 public class unitPool : UnitySingleton<unitPool>
 {
-    public List<unitManager> units;
+    //public List<unitManager> units;
     public int currentSelHuman = -1;
+    public nList<unitManager> units;
 
     public void init()
     {
-        units = new List<unitManager>();
+        units = new nList<unitManager>();
+        units.init(100);
     }
 
     public void loop()
     {
-        foreach (unitManager v in units)
+        for(int i=0;i< units.index;i++)
         {
-            v.loop();
-            if (v.ToDelete == 2)
+            if(units.get(i)!=null)
             {
-                units.Remove(v);
-                foreach (unitManager k in units)
+                units.get(i).loop();
+                if (units.get(i).ToDelete == 2)
                 {
-                    k.setId(units.IndexOf(k));
+                    units.removeAt(units.get(i).id());
                 }
             }
         }
@@ -32,30 +33,28 @@ public class unitPool : UnitySingleton<unitPool>
     public void CreateRandomHuman()
     {
         unitManager v = new unitManager();
-        units.Add(v);
-        int index = units.IndexOf(v);
+        int index = units.add(v);
         //Debug.Log("添加" + index + "位置角色");
-        units[index].CreateHuman(index, 2);
-        units[index].spawnAt(new Vector3(0, 1, 0));
-        units[index].ai().wander(true);
+        units.get(index).CreateHuman(index, 2);
+        units.get(index).spawnAt(new Vector3(0, 1, 0));
+        units.get(index).ai().wander(true);
     }
 
     public void CreateRandomAnimal()
     {
         unitManager v = new unitManager();
-        units.Add(v);
-        int index = units.IndexOf(v);
+        int index = units.add(v);
         //Debug.Log("添加" + index + "位置角色");
-        units[index].CreateAnimalById(index, 0);
-        units[index].spawnAt(new Vector3(0, 1, 0));
-        units[index].ai().wander(true);
+        units.get(index).CreateAnimalById(index, 0);
+        units.get(index).spawnAt(new Vector3(0, 1, 0));
+        units.get(index).ai().wander(true);
     }
 
     public unitManager getSelectHuman()
     {
         if (currentSelHuman >= 0)
         {
-            return units[currentSelHuman];
+            return units.get(currentSelHuman);
         }
         else
         {
@@ -67,7 +66,7 @@ public class unitPool : UnitySingleton<unitPool>
     {
         if (currentSelHuman >= 0)
         {
-            return units[currentSelHuman].m_Instance.transform.position;
+            return units.get(currentSelHuman).m_Instance.transform.position;
         }
         else
         {
@@ -79,7 +78,7 @@ public class unitPool : UnitySingleton<unitPool>
     {
         if (currentSelHuman >= 0)
         {
-            return units[currentSelHuman].m_Instance;
+            return units.get(currentSelHuman).m_Instance;
         }
         else
         {
@@ -91,7 +90,7 @@ public class unitPool : UnitySingleton<unitPool>
     {
         if (currentSelHuman >= 0)
         {
-            units[currentSelHuman].onFreeSelect();
+            units.get(currentSelHuman).onFreeSelect();
         }
         currentSelHuman = -1;
     }
@@ -100,7 +99,7 @@ public class unitPool : UnitySingleton<unitPool>
     {
         if (currentSelHuman >= 0)
         {
-            units[currentSelHuman].hpAdd(-10);
+            units.get(currentSelHuman).hpAdd(-10);
         }
     }
 
@@ -108,7 +107,7 @@ public class unitPool : UnitySingleton<unitPool>
     {
         if (currentSelHuman >= 0)
         {
-            units[currentSelHuman].ai().moveTo(v, true);
+            units.get(currentSelHuman).ai().moveTo(v, true);
         }
     }
 
@@ -123,7 +122,7 @@ public class unitPool : UnitySingleton<unitPool>
             {
                 freeSelect();
                 currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id();
-                units[currentSelHuman].bDebugInfo = true;
+                units.get(currentSelHuman).bDebugInfo = true;
             }
             else
             {
@@ -141,11 +140,14 @@ public class unitPool : UnitySingleton<unitPool>
 
     public void ClearAll()
     {
-        foreach (unitManager v in units)
+        for (int i = 0; i < units.index; i++)
         {
-            if (v.ToDelete == 0)
+            if (units.get(i) != null)
             {
-                v.ToDelete = 1;
+                if (units.get(i).ToDelete == 0)
+                {
+                    units.get(i).ToDelete = 1;
+                }
             }
         }
     }
