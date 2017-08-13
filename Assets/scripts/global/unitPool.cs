@@ -11,8 +11,7 @@ public class unitPool : UnitySingleton<unitPool>
 
     public void init()
     {
-        units = new nList<unitManager>();
-        units.init(100);
+        units = new nList<unitManager>(Globals.MAX_UNIT_NUM);
     }
 
     public void loop()
@@ -30,24 +29,32 @@ public class unitPool : UnitySingleton<unitPool>
         }
     }
 
-    public void CreateRandomHuman()
+    public int tryCreate()
     {
         unitManager v = new unitManager();
-        int index = units.add(v);
-        //Debug.Log("添加" + index + "位置角色");
-        units.get(index).CreateHuman(index, 2);
-        units.get(index).spawnAt(new Vector3(0, 1, 0));
-        units.get(index).ai().wander(true);
+        return units.add(v);
+    }
+
+    public void CreateRandomHuman()
+    {
+        int index = tryCreate();
+        if (index >= 0)
+        {
+            units.get(index).CreateHuman(index, 2);
+            units.get(index).spawnAt(new Vector3(0, 1, 0));
+            units.get(index).ai().wander(true);
+        }
     }
 
     public void CreateRandomAnimal()
     {
-        unitManager v = new unitManager();
-        int index = units.add(v);
-        //Debug.Log("添加" + index + "位置角色");
-        units.get(index).CreateAnimalById(index, 0);
-        units.get(index).spawnAt(new Vector3(0, 1, 0));
-        units.get(index).ai().wander(true);
+        int index = tryCreate();
+        if (index >= 0)
+        {
+            units.get(index).CreateAnimalById(index, 0);
+            units.get(index).spawnAt(new Vector3(0, 1, 0));
+            units.get(index).ai().wander(true);
+        }
     }
 
     public unitManager getSelectHuman()
