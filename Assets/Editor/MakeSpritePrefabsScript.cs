@@ -30,7 +30,7 @@ public class MakeSpritePrefabsScript
     /// <summary>
     /// Assets 目录下的小图片目录, 包括子目录的所有图片文件都会进行处理.
     /// </summary>
-    private const string ORIGIN_DIR = "\\RawData\\Sprites";
+    private const string ORIGIN_DIR = "\\RawData";
 
     /// <summary>
     /// Assets 目录下的小图预制件生成的目标目录, 注意该目录下不要存放其他资源, 每次生成时都会清空该目录下的所有文件.

@@ -32,6 +32,7 @@ public class unitManager {
     {
         Assert.IsTrue(isSet);
         m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
+        m_Instance.transform.parent = GameObject.Find("units").transform;
         m_movement = m_Instance.GetComponent<unitMovement>();
         m_skin = m_Instance.GetComponent<unitSkin>();
         m_unitUI = m_Instance.GetComponent<unitUI>();
