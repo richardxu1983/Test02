@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
         GlobalControl.Instance.GameInit();
         GSceneMap.Instance.CreateMap();
 
-
+        Application.targetFrameRate = 60;
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
         t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
         t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
