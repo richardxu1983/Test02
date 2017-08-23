@@ -13,3 +13,9 @@ public struct ST_AnimalConfig
     public float g;
     public float b;
 }
+
+public struct ST_Grid
+{
+    public int x;
+    public int y;
+}

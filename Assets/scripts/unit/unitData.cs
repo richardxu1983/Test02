@@ -15,6 +15,7 @@ public class unitData
     public Vector3 pos;
     private string m_name = "name";
     public Color skinColor;
+    public ST_Grid grid;
 
     public unitData()
     {

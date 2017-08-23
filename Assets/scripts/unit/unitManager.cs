@@ -89,6 +89,7 @@ public class unitManager {
     public int bodySkin() { return m_data.getInt(UnitIntAttr.bodySkin); }
     public string name() { return m_data.name; }
     public Color skinColor() { return m_data.skinColor; }
+    public ST_Grid grid() { return m_data.grid; }
 
     public void hpAdd(int v)
     {

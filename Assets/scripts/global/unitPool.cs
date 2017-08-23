@@ -41,7 +41,7 @@ public class unitPool : UnitySingleton<unitPool>
         if (index >= 0)
         {
             units.get(index).CreateHuman(index, 2);
-            units.get(index).spawnAt(new Vector3(0, 1, 0));
+            units.get(index).spawnAt(GSceneMap.Instance.gridToWorldPosition(100,100));
             units.get(index).ai().wander(true);
         }
     }
@@ -52,7 +52,7 @@ public class unitPool : UnitySingleton<unitPool>
         if (index >= 0)
         {
             units.get(index).CreateAnimalById(index, 0);
-            units.get(index).spawnAt(new Vector3(0, 1, 0));
+            units.get(index).spawnAt(GSceneMap.Instance.gridToWorldPosition(100, 100));
             units.get(index).ai().wander(true);
         }
     }
