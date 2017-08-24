@@ -101,7 +101,11 @@ public class MainCancas : MonoBehaviour {
         {
             txtSelectInfo.text = unitPool.Instance.getSelectHuman().name()+"\nx : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.x,2)
                 + ", y : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.y,2)
-                + ", z : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.z,2);
+                + ", z : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.z,2)
+                + "\n gx : " + unitPool.Instance.getSelectHuman().grid().x
+                + ", gy : " + unitPool.Instance.getSelectHuman().grid().y
+                +"\n tx : " + unitPool.Instance.getSelectHuman().ai().TargetPos.x
+                + ", ty : " + unitPool.Instance.getSelectHuman().ai().TargetPos.y;
         }
         else
         {

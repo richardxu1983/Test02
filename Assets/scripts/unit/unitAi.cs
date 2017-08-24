@@ -6,8 +6,8 @@ public class unitAi {
 
     UnitOp m_op = UnitOp.idle;
     UnitAi m_ai = UnitAi.idle;
-    public Vector3 TargetPos;
-    public Vector3 wanderPos;
+    public GridID TargetPos;
+    public GridID wanderPos;
     public bool wanderByPoint;
     public int m_tick;
     public int m_tickMax;
@@ -41,10 +41,9 @@ public class unitAi {
 
     public bool arriveTPos()
     {
-        Vector3 movement = m_manager.ai().TargetPos - m_manager.pos();
-        movement.y = 0;
-        //Debug.Log("arriveTPos : " + movement);
-        return movement.sqrMagnitude >= 0.1f ? false : true;
+        //Debug.Log("TargetPos : " + m_manager.ai().TargetPos.x + " , " + m_manager.ai().TargetPos.y);
+        //Debug.Log("grid : " + m_manager.grid().x + " , " + m_manager.grid().y);
+        return m_manager.ai().TargetPos == m_manager.grid() ? true : false;
     }
 
     public void init(unitManager m)
@@ -104,29 +103,28 @@ public class unitAi {
         wanderByPoint = byPoint;
         if(byPoint)
         {
-            wanderPos = m_manager.pos();
+            wanderPos = m_manager.grid();
             TargetPos = wanderPos + getWanderPos();
         }
         else
         {
-            TargetPos = m_manager.pos() + getWanderPos();
+            TargetPos = m_manager.grid() + getWanderPos();
         }
-        //Debug.Log("wander : " + TargetPos);
         timeLeft = 0;
     }
 
-    public Vector3 getWanderPos()
+    public GridID getWanderPos()
     {
-        int dis = Globals.wander_walk_dis + Globals.rd.Next(0, 2*Globals.wander_walk_ran) - Globals.wander_walk_ran;
+        int dis = Mathf.RoundToInt( Globals.wander_walk_dis + Globals.rd.Next(0, 2*Globals.wander_walk_ran) - Globals.wander_walk_ran);
         float an = (float)Globals.rd.NextDouble() * 6.28f;
         //Debug.Log(an);
-        float x = dis * Mathf.Cos(an);
-        float z = dis * Mathf.Sin(an);
+        int x = Mathf.RoundToInt(dis * Mathf.Cos(an));
+        int y = Mathf.RoundToInt(dis * Mathf.Sin(an));
         //Debug.Log("Mathf.Cos(an) : " + Mathf.Cos(an) + " , Mathf.Sin(an) : " + Mathf.Sin(an) + " , dis="+ dis);
-        return new Vector3(x, 0, z);
+        return new GridID(x, y);
     }
 
-    public void moveTo(Vector3 v, bool isCmd)
+    public void moveTo(GridID v, bool isCmd)
     {
         if (m_manager.isDead())
             return;
@@ -185,7 +183,7 @@ public class unitAi {
                 }
                 else
                 {
-                    TargetPos = m_manager.pos() + getWanderPos();
+                    TargetPos = m_manager.grid() + getWanderPos();
                 }
             }
         }

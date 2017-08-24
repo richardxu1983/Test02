@@ -41,7 +41,7 @@ public class unitPool : UnitySingleton<unitPool>
         if (index >= 0)
         {
             units.get(index).CreateHuman(index, 2);
-            units.get(index).spawnAt(GSceneMap.Instance.gridToWorldPosition(100,100));
+            units.get(index).spawnAt(100,100);
             units.get(index).ai().wander(true);
         }
     }
@@ -52,7 +52,7 @@ public class unitPool : UnitySingleton<unitPool>
         if (index >= 0)
         {
             units.get(index).CreateAnimalById(index, 0);
-            units.get(index).spawnAt(GSceneMap.Instance.gridToWorldPosition(100, 100));
+            units.get(index).spawnAt(100, 100);
             units.get(index).ai().wander(true);
         }
     }
@@ -110,11 +110,11 @@ public class unitPool : UnitySingleton<unitPool>
         }
     }
 
-    public void MoveSelectTo(Vector3 v)
+    public void MoveSelectToWorldPos(Vector3 v)
     {
         if (currentSelHuman >= 0)
         {
-            units.get(currentSelHuman).ai().moveTo(v, true);
+            units.get(currentSelHuman).ai().moveTo(GSceneMap.Instance.nodeFromWorldPoint(v).gridId, true);
         }
     }
 

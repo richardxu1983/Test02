@@ -10,15 +10,15 @@ public class Grid : MonoBehaviour {
 
     float gridDiameter;
     int gridSizeX, gridSizeY;
-
+    /*
     private void Start()
     {
         gridDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / gridDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / gridDiameter);
-        CreateGrid();
+        //CreateGrid();
     }
-
+    
     void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
@@ -61,5 +61,5 @@ public class Grid : MonoBehaviour {
             }
         }
     }
-
+    */
 }

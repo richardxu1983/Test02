@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class GSceneMap : UnitySingleton<GSceneMap>
 {
-
-    float mapWidth = 200.0f;
-    float mapLength = 200.0f;
+    int gridSizeX, gridSizeY;
+    float mapWidth, mapLength;
     float gridSize = 3.0f;
 
     GameObject terrain;
@@ -17,7 +16,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     public Vector2 gridWorldSize;
     Node[,] grid;
     Vector3 worldBottomLeft;
-    int gridSizeX, gridSizeY;
+
 
     public void CreateMap()
     {
@@ -63,20 +62,21 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     public Node nodeFromWorldPoint(Vector3 worldPosition)
     {
-        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
-
-        int gridX = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int gridY = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        int gridX = Mathf.RoundToInt((worldPosition.x - worldBottomLeft.x - gridSize / 2) / gridSize);
+        int gridY = Mathf.RoundToInt((worldPosition.z - worldBottomLeft.z - gridSize / 2) / gridSize);
 
         return grid[gridX, gridY];
     }
 
     public Vector3 gridToWorldPosition(int x, int y)
     {
-        Vector3 pos = new Vector3(worldBottomLeft.x + x * gridSize + gridSize / 2, 1, worldBottomLeft.z + y * gridSize);
+        Vector3 pos = new Vector3(worldBottomLeft.x + x * gridSize + gridSize / 2, 1, worldBottomLeft.z + y * gridSize + gridSize / 2);
+        return pos;
+    }
+
+    public Vector3 gridToWorldPosition(GridID id)
+    {
+        Vector3 pos = new Vector3(worldBottomLeft.x + id.x * gridSize + gridSize / 2, 1, worldBottomLeft.z + id.y * gridSize + gridSize / 2);
         return pos;
     }
 
@@ -84,14 +84,16 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         grid = new Node[gridSizeX, gridSizeY];
         worldBottomLeft = new Vector3(0,0,0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        //Debug.Log("worldBottomLeft : "+ worldBottomLeft);
+        Vector3 worldPoint;
 
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * gridSize + gridSize/2) + Vector3.forward * (y * gridSize + gridSize / 2);
+                worldPoint = worldBottomLeft + Vector3.right * (x * gridSize + gridSize/2) + Vector3.forward * (y * gridSize + gridSize / 2);
                 bool block = Globals.rd.Next(0, 10) > 7 ? true : false;
-                grid[x, y] = new Node(block, worldPoint);
+                grid[x, y] = new Node(block, worldPoint, new GridID(x,y));
             }
         }
     }

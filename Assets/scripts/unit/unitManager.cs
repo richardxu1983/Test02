@@ -28,8 +28,10 @@ public class unitManager {
         m_ai.init(this);
     }
 
-    public void spawnAt(Vector3 v)
+    public void spawnAt(int x, int y)
     {
+        Vector3 v = GSceneMap.Instance.gridToWorldPosition(new GridID(x, y));
+        m_data.grid = new GridID(x, y);
         Assert.IsTrue(isSet);
         m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         m_Instance.transform.parent = GameObject.Find("units").transform;
@@ -89,7 +91,7 @@ public class unitManager {
     public int bodySkin() { return m_data.getInt(UnitIntAttr.bodySkin); }
     public string name() { return m_data.name; }
     public Color skinColor() { return m_data.skinColor; }
-    public ST_Grid grid() { return m_data.grid; }
+    public GridID grid() { return m_data.grid; }
 
     public void hpAdd(int v)
     {
@@ -140,9 +142,9 @@ public class unitManager {
         m_data.setInt(UnitIntAttr.skinColor, v);
     }
 
-    public void setTargetPos(Vector3 v)
+    public void setTargetGrid(GridID g)
     {
-        m_ai.TargetPos = v;
+        m_ai.TargetPos = g;
     }
 
     public void setRunSpeed(float v)
@@ -168,6 +170,7 @@ public class unitManager {
     public void setPos(Vector3 v)
     {
         m_data.pos = v;
+        m_data.grid = GSceneMap.Instance.nodeFromWorldPoint(v).gridId;
     }
 
     public void die()

@@ -84,10 +84,10 @@ public class unitMovement : MonoBehaviour {
     private void Move()
     {
 
-        Vector3 movement = m_manager.ai().TargetPos - transform.position;
-        //Debug.Log("Move : "+ movement);
-        movement.y = 0;
-        if (movement.sqrMagnitude >= 0.1f)
+        Vector3 movement = GSceneMap.Instance.gridToWorldPosition( m_manager.ai().TargetPos) - transform.position;
+        //Debug.Log("tp : " + GSceneMap.Instance.gridToWorldPosition(m_manager.ai().TargetPos)+" , pos : " + transform.position);
+        //movement.y = 0;
+        if (Mathf.Abs(movement.x) >= 0.01f|| Mathf.Abs(movement.z) >= 0.01f)
         {
             movement.Normalize();
             //Debug.Log("Normalize : " + movement);
