@@ -14,9 +14,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     Terrain t;
 
     public Vector2 gridWorldSize;
-    Node[,] grid;
+    public Node[,] grid;
     Vector3 worldBottomLeft;
-
 
     public void CreateMap()
     {
@@ -64,8 +63,13 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         int gridX = Mathf.RoundToInt((worldPosition.x - worldBottomLeft.x - gridSize / 2) / gridSize);
         int gridY = Mathf.RoundToInt((worldPosition.z - worldBottomLeft.z - gridSize / 2) / gridSize);
-
+        //Debug.Log(gridX + " , "+ gridY);
         return grid[gridX, gridY];
+    }
+
+    public Node nodeFromGrid(GridID g)
+    {
+        return grid[g.x, g.y];
     }
 
     public Vector3 gridToWorldPosition(int x, int y)
@@ -94,8 +98,45 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 worldPoint = worldBottomLeft + Vector3.right * (x * gridSize + gridSize/2) + Vector3.forward * (y * gridSize + gridSize / 2);
                 bool block = Globals.rd.Next(0, 10) > 7 ? true : false;
                 grid[x, y] = new Node(block, worldPoint, new GridID(x,y));
+                if(block)
+                {
+                    GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    obj1.transform.position = worldPoint;
+                }
             }
         }
+    }
+
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeY;
+        }
+    }
+
+    public List<Node> GetNeighbours(Node node)
+    {
+        List<Node> neighbours = new List<Node>();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+
+                int checkX = node.gridId.x + x;
+                int checkY = node.gridId.y + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                {
+                    neighbours.Add(grid[checkX, checkY]);
+                }
+            }
+        }
+
+        return neighbours;
     }
 }
 

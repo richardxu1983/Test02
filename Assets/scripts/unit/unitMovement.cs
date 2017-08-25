@@ -119,7 +119,6 @@ public class unitMovement : MonoBehaviour {
             //transform.position = transform.position + (new Vector3(0.01f,0.01f,0));
             transform.Translate(m_movement);
             //transform.position = Vector3.MoveTowards(transform.position, m_manager.ai().TargetPos, m_manager.runSpeed() * Time.deltaTime);
-            
         }
         else
         {

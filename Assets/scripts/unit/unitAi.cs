@@ -14,6 +14,7 @@ public class unitAi {
     public int timeLeft;
     public UnitAiReason reason = UnitAiReason.none;
     private unitManager m_manager;
+    public List<Node> path;
 
     public UnitOp op
     {
@@ -132,7 +133,6 @@ public class unitAi {
         ai = UnitAi.moveTo;
         op = UnitOp.moving;
         TargetPos = v;
-        TargetPos.y = 0;
 
         if (isCmd)
         {

@@ -112,6 +112,8 @@ public class unitPool : UnitySingleton<unitPool>
 
     public void MoveSelectToWorldPos(Vector3 v)
     {
+        //Debug.Log(v);
+        //Debug.Log(GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x+" , "+ GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x);
         if (currentSelHuman >= 0)
         {
             units.get(currentSelHuman).ai().moveTo(GSceneMap.Instance.nodeFromWorldPoint(v).gridId, true);
