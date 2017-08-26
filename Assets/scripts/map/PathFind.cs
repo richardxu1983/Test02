@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class PathFind : UnitySingleton<PathFind>
 {
+    Heap<Node> openSet;
+    HashSet<Node> closedSet;
+    Node currentNode;
+
+    public void init()
+    {
+        openSet = new Heap<Node>(GSceneMap.Instance.MaxSize);
+        closedSet = new HashSet<Node>();
+    }
+
     public void FindPath(Node startNode, Node targetNode, ref List<Node> path)
     {
-        Heap<Node> openSet = new Heap<Node>(GSceneMap.Instance.MaxSize);
-        HashSet<Node> closedSet = new HashSet<Node>();
+        closedSet.Clear();
+        openSet.clear();
         openSet.Add(startNode);
-        Node currentNode;
 
         while(openSet.Count>0)
         {

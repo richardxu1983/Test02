@@ -15,6 +15,8 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         XMLLoader.Instance.load();
         GTime.Instance.init();
         unitPool.Instance.init();
+        GSceneMap.Instance.CreateMap();
+        PathFind.Instance.init();
     }
 
     public void ToggleDebug()

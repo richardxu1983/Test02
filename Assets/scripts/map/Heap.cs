@@ -7,10 +7,18 @@ public class Heap<T> where T : IHeapItem<T>
 
     T[] items;
     int currentItemCount;
+    int length;
 
     public Heap(int maxHeapSize)
     {
         items = new T[maxHeapSize];
+        length = maxHeapSize;
+    }
+
+    public void clear()
+    {
+        Array.Clear(items, 0, length);
+        currentItemCount = 0;
     }
 
     public void Add(T item)

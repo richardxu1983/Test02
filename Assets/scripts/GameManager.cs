@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour {
     void Start () {
 
         GlobalControl.Instance.GameInit();
-        GSceneMap.Instance.CreateMap();
 
         Application.targetFrameRate = 60;
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
