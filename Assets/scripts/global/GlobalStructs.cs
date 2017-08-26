@@ -35,7 +35,16 @@ public class GridID
 
     public static bool operator ==(GridID lhs, GridID rhs)
     {
-        if(lhs.x== rhs.x&& lhs.y == rhs.y)
+        if ((object)lhs == null && (object)rhs == null)
+        {
+            return true;
+        }
+        if ((object)lhs == null || (object)rhs == null)
+        {
+            return false;
+        }
+
+        if (lhs.x== rhs.x&& lhs.y == rhs.y)
         {
             return true;
         }

@@ -127,9 +127,36 @@ public class camera : MonoBehaviour {
                 DrawLine(leftTop_1, leftTop_2);
                 DrawLine(leftTop_2, leftTop_3);
                 GL.End();
+
+                /*
+                GL.Begin(GL.LINES);
+                GL.Color(Color.white);
+                if (unitPool.Instance.getSelectHuman().ai().path.Count>0)
+                {
+                    DrawLineNew(unitPool.Instance.getSelectHuman().pos(), unitPool.Instance.getSelectHuman().ai().path[unitPool.Instance.getSelectHuman().ai().pathIndex].worldPosition);
+                    if (unitPool.Instance.getSelectHuman().ai().path.Count - unitPool.Instance.getSelectHuman().ai().pathIndex >= 2)
+                    {
+                        for (int i = unitPool.Instance.getSelectHuman().ai().pathIndex; i < unitPool.Instance.getSelectHuman().ai().path.Count-1; i++)
+                        {
+                            DrawLineNew(unitPool.Instance.getSelectHuman().ai().path[i].worldPosition, unitPool.Instance.getSelectHuman().ai().path[i+1].worldPosition);
+                        }
+                    }
+                }
+                GL.End();
+                */
                 GL.PopMatrix();
             }
         }
+    }
+
+    void DrawLineNew(Vector3 v1, Vector3 v2)
+    {
+        Vector3 v3 = new Vector3(v1.x,v1.z,3);
+        Vector3 v4 = new Vector3(v2.x, v2.z, 3);
+
+        //绘制线段  
+        GL.Vertex(v3);
+        GL.Vertex(v4);
     }
 
     void DrawLine(Vector3 v1, Vector3 v2)

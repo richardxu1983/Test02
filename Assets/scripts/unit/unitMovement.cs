@@ -83,45 +83,48 @@ public class unitMovement : MonoBehaviour {
 
     private void Move()
     {
-
-        Vector3 movement = GSceneMap.Instance.gridToWorldPosition( m_manager.ai().TargetPos) - transform.position;
-        //Debug.Log("tp : " + GSceneMap.Instance.gridToWorldPosition(m_manager.ai().TargetPos)+" , pos : " + transform.position);
-        //movement.y = 0;
-        if (Mathf.Abs(movement.x) >= 0.01f|| Mathf.Abs(movement.z) >= 0.01f)
+        GridID g = m_manager.ai().nextGrid();
+        if(g!=null)
         {
-            movement.Normalize();
-            //Debug.Log("Normalize : " + movement);
-
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z))
+            Vector3 movement = GSceneMap.Instance.gridToWorldPosition(m_manager.ai().nextGrid()) - transform.position;
+            //Debug.Log("tp : " + GSceneMap.Instance.gridToWorldPosition(m_manager.ai().TargetPos)+" , pos : " + transform.position);
+            //movement.y = 0;
+            if (Mathf.Abs(movement.x) >= 0.01f || Mathf.Abs(movement.z) >= 0.01f)
             {
-                if (movement.x > 0)
+                movement.Normalize();
+                //Debug.Log("Normalize : " + movement);
+
+                if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z))
                 {
-                    playerFace = faceTo.right;
+                    if (movement.x > 0)
+                    {
+                        playerFace = faceTo.right;
+                    }
+                    else
+                    {
+                        playerFace = faceTo.left;
+                    }
                 }
                 else
                 {
-                    playerFace = faceTo.left;
+                    if (movement.z > 0)
+                    {
+                        playerFace = faceTo.up;
+                    }
+                    else
+                    {
+                        playerFace = faceTo.down;
+                    }
                 }
+
+                m_movement = movement * m_manager.runSpeed() * Time.deltaTime;
+                //transform.position = transform.position + (new Vector3(0.01f,0.01f,0));
+                transform.Translate(m_movement);
+                //transform.position = Vector3.MoveTowards(transform.position, m_manager.ai().TargetPos, m_manager.runSpeed() * Time.deltaTime);
             }
             else
             {
-                if (movement.z > 0)
-                {
-                    playerFace = faceTo.up;
-                }
-                else
-                {
-                    playerFace = faceTo.down;
-                }
             }
-
-            m_movement = movement * m_manager.runSpeed()*Time.deltaTime;
-            //transform.position = transform.position + (new Vector3(0.01f,0.01f,0));
-            transform.Translate(m_movement);
-            //transform.position = Vector3.MoveTowards(transform.position, m_manager.ai().TargetPos, m_manager.runSpeed() * Time.deltaTime);
-        }
-        else
-        {
         }
         //transform.position = transform.position + (new Vector3(.01f, 0f, .01f));
     }

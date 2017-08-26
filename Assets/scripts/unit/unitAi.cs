@@ -15,6 +15,7 @@ public class unitAi {
     public UnitAiReason reason = UnitAiReason.none;
     private unitManager m_manager;
     public List<Node> path;
+    public int pathIndex;
 
     public UnitOp op
     {
@@ -44,12 +45,71 @@ public class unitAi {
     {
         //Debug.Log("TargetPos : " + m_manager.ai().TargetPos.x + " , " + m_manager.ai().TargetPos.y);
         //Debug.Log("grid : " + m_manager.grid().x + " , " + m_manager.grid().y);
-        return m_manager.ai().TargetPos == m_manager.grid() ? true : false;
+
+        if(path.Count>0)
+        {
+            if(pathIndex>= path.Count)
+            {
+                return true;
+            }
+            else
+            {
+                if (path[pathIndex].gridId == m_manager.grid())
+                {
+                    pathIndex++;
+                    if (pathIndex >= path.Count)
+                    {
+                        path.Clear();
+                        pathIndex = 0;
+                        return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    void wayPointCheck()
+    {
+        if (path.Count > 0)
+        {
+            if (path[pathIndex].gridId == m_manager.grid())
+            {
+                pathIndex++;
+                if (pathIndex >= path.Count)
+                {
+                    path.Clear();
+                    pathIndex = 0;
+                }
+            }
+        }
+    }
+
+    public GridID nextGrid()
+    {
+        if (pathIndex >= path.Count)
+        {
+            return null;
+        }
+        else
+        {
+            return path[pathIndex].gridId;
+        }
     }
 
     public void init(unitManager m)
     {
         m_manager = m;
+        pathIndex = 0;
+        path = new List<Node>();
     }
 
     public void setReason(UnitAiReason v)
@@ -59,7 +119,9 @@ public class unitAi {
 
     public void loop()
     {
-        if(m_tick>=m_tickMax)
+        wayPointCheck();
+ 
+        if (m_tick>=m_tickMax)
         {
             Do();
             m_tick = 0;
@@ -106,10 +168,12 @@ public class unitAi {
         {
             wanderPos = m_manager.grid();
             TargetPos = wanderPos + getWanderPos();
+            moveTo(TargetPos, false);
         }
         else
         {
             TargetPos = m_manager.grid() + getWanderPos();
+            moveTo(TargetPos, false);
         }
         timeLeft = 0;
     }
@@ -133,6 +197,10 @@ public class unitAi {
         ai = UnitAi.moveTo;
         op = UnitOp.moving;
         TargetPos = v;
+
+        path.Clear();
+        PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(m_manager.grid()), GSceneMap.Instance.nodeFromGrid(TargetPos), ref path);
+        pathIndex = 0;
 
         if (isCmd)
         {
@@ -180,10 +248,12 @@ public class unitAi {
                 if (wanderByPoint)
                 {
                     TargetPos = wanderPos + getWanderPos();
+                    moveTo(TargetPos, false);
                 }
                 else
                 {
                     TargetPos = m_manager.grid() + getWanderPos();
+                    moveTo(TargetPos, false);
                 }
             }
         }

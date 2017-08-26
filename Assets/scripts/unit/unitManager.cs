@@ -142,11 +142,6 @@ public class unitManager {
         m_data.setInt(UnitIntAttr.skinColor, v);
     }
 
-    public void setTargetGrid(GridID g)
-    {
-        m_ai.TargetPos = g;
-    }
-
     public void setRunSpeed(float v)
     {
         m_data.setF(UnitFloatAttr.run_speed, v);

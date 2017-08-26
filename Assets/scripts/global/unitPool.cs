@@ -40,7 +40,7 @@ public class unitPool : UnitySingleton<unitPool>
         int index = tryCreate();
         if (index >= 0)
         {
-            units.get(index).CreateHuman(index, 2);
+            units.get(index).CreateHuman(index, 4);
             units.get(index).spawnAt(100,100);
             units.get(index).ai().wander(true);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathFind : UnitySingleton<PathFind>
 {
-    void FindPath(Node startNode, Node targetNode, ref List<Node> path)
+    public void FindPath(Node startNode, Node targetNode, ref List<Node> path)
     {
         Heap<Node> openSet = new Heap<Node>(GSceneMap.Instance.MaxSize);
         HashSet<Node> closedSet = new HashSet<Node>();
