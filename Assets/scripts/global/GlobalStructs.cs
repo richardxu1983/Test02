@@ -15,10 +15,19 @@ public struct ST_AnimalConfig
 }
 
 
-public struct ST_GSurface
+public struct ST_GSURS
 {
     public int begin;
     public int end;
+}
+
+public struct ST_GSurface
+{
+    public int id;
+    public int type;
+    public int typeId;
+    public string name;
+    public bool canPlant;
 }
 
 public class GridID

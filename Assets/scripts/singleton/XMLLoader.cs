@@ -6,9 +6,9 @@ using System.Xml;
 public class XMLLoader : UnitySingleton<XMLLoader>
 {
     public ST_AnimalConfig[]    animalConfig;
-    public string[] GsurIndex;
+    public ST_GSurface[] GsurIndex;
     public int[] GSHelper;
-    public ST_GSurface[] GSurSearch;
+    public ST_GSURS[] GSurSearch;
 
     private int MaxAnimalConfig;
     private int MaxGSurConfig;
@@ -21,8 +21,6 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     {
         //XmlDocument doc = new XmlDocument();
         //doc.Load(Application.dataPath + "/Resources/xml/" + file + ".xml");
-        
-
         string data = Resources.Load("xml/"+ file).ToString();
         XmlDocument doc = new XmlDocument();
         doc.LoadXml(data);
@@ -32,18 +30,9 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public void init()
     {
         animalConfig = new ST_AnimalConfig[Globals.MAX_ANIMAL_CONFIG_NUM];
-        GsurIndex = new string[Globals.MAX_GSUR_NUM];
-        GSHelper = new int[Globals.MAX_GSUR_NUM];
-        GSurSearch = new ST_GSurface[Globals.MAX_GSUR_NUM];
-
-        for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
-        {
-            GSurSearch[i].begin = -1;
-            GSurSearch[i].end = -1;
-            GSHelper[i]= 0;
-        }
+        surfaceInit();
         MaxAnimalConfig = 0;
-        MaxGSurConfig = 0;
+        
     }
 
     public void load()
@@ -51,6 +40,19 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         loadAnimalConfig();
         loadSkincolorConfig();
         loadGSurConfig();
+    }
+
+    public void surfaceInit()
+    {
+        GsurIndex = new ST_GSurface[Globals.MAX_GSUR_NUM];
+        GSHelper = new int[Globals.MAX_GSUR_NUM];
+        GSurSearch = new ST_GSURS[Globals.MAX_GSUR_NUM];
+        for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
+        {
+            GSurSearch[i].begin = -1;
+            GSurSearch[i].end = -1;
+            GSHelper[i] = 0;
+        }
     }
 
     public void loadGSurConfig()
@@ -62,16 +64,19 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         foreach (XmlElement node in xmlNodeList)
         {
             //Debug.Log(node.GetAttribute("name"));
-            GsurIndex[MaxGSurConfig] = GetNodeStr(node, "name");
+            GsurIndex[GetNodeInt(node, "id")].id = GetNodeInt(node, "id");
+            GsurIndex[GetNodeInt(node, "id")].name = GetNodeStr(node, "name");
+            GsurIndex[GetNodeInt(node, "id")].type = GetNodeInt(node, "type");
+            GsurIndex[GetNodeInt(node, "id")].typeId = GetNodeInt(node, "typeId");
+            GsurIndex[GetNodeInt(node, "id")].canPlant = GetNodeBool(node, "canPlant");
             GSHelper[GetNodeInt(node, "type")]++;
-            MaxGSurConfig++;
         }
 
         for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
         {
-            if (GsurIndex[i]!=null)
+            if (GsurIndex[i].name != null)
             {
-                Debug.Log(i + " : " + GsurIndex[i]);
+                Debug.Log(i + " : " + GsurIndex[i].name);
             }
             if (GSHelper[i] > 0)
             {
@@ -132,6 +137,12 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public int GetNodeInt(XmlElement node,string v)
     {
         return int.Parse(node.GetAttribute(v));
+    }
+
+    public bool GetNodeBool(XmlElement node, string v)
+    {
+        int a = int.Parse(node.GetAttribute(v));
+        return a == 1 ? true : false;
     }
 
     public string GetNodeStr(XmlElement node, string v)

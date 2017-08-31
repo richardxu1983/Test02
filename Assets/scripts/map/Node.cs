@@ -11,6 +11,8 @@ public class Node : IHeapItem<Node>
     public int gCost;
     public int hCost;
     public Node parent;
+    public int terrainIndex;
+    public int surfaceId;
     int heapIndex;
 
     public Node(bool _block,Vector3 _worldPosition, GridID _gridId)

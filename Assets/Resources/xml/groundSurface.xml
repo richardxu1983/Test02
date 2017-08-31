@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <objects>
-  <config type="0" typeId="0" name="GS0-0"/>
-  <config type="0" typeId="1" name="GS0-1"/>
-  <config type="49" typeId="0" name="GS99-0"/>
+  <config id="0" type="0" typeId="0" name="GS0-0" canPlant="1"/>
+  <config id="1" type="0" typeId="1" name="GS0-1" canPlant="1"/>
+  <config id="2" type="49" typeId="0" name="GS99-0" canPlant="1"/>
 </objects>
