@@ -36,6 +36,7 @@ public static class Globals
 
     //----------pool numbers-------//
     public static int MAX_UNIT_NUM = 500;
+    public static int MAX_GSUR_NUM = 50;
 
     //------------------------------------//
     public static int wander_walk_dis = 0;
@@ -51,5 +52,6 @@ public static class Files
 {
     //----------config files--------//
     public static string ANIMAL_CONFIG = "animal";
+    public static string GSUR_CONFIG = "groundSurface";
     public static string SKIN_COLOR_CONFIG = "skinColor";
 }

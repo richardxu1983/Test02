@@ -14,6 +14,13 @@ public struct ST_AnimalConfig
     public float b;
 }
 
+
+public struct ST_GSurface
+{
+    public int begin;
+    public int end;
+}
+
 public class GridID
 {
     public int x;

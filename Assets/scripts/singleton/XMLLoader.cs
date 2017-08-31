@@ -5,8 +5,13 @@ using System.Xml;
 
 public class XMLLoader : UnitySingleton<XMLLoader>
 {
-    public ST_AnimalConfig[] animalConfig;
+    public ST_AnimalConfig[]    animalConfig;
+    public string[] GsurIndex;
+    public int[] GSHelper;
+    public ST_GSurface[] GSurSearch;
+
     private int MaxAnimalConfig;
+    private int MaxGSurConfig;
 
     /// <summary>  
     /// 加载xml文档  
@@ -27,13 +32,62 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public void init()
     {
         animalConfig = new ST_AnimalConfig[Globals.MAX_ANIMAL_CONFIG_NUM];
+        GsurIndex = new string[Globals.MAX_GSUR_NUM];
+        GSHelper = new int[Globals.MAX_GSUR_NUM];
+        GSurSearch = new ST_GSurface[Globals.MAX_GSUR_NUM];
+
+        for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
+        {
+            GSurSearch[i].begin = -1;
+            GSurSearch[i].end = -1;
+            GSHelper[i]= 0;
+        }
         MaxAnimalConfig = 0;
+        MaxGSurConfig = 0;
     }
 
     public void load()
     {
         loadAnimalConfig();
         loadSkincolorConfig();
+        loadGSurConfig();
+    }
+
+    public void loadGSurConfig()
+    {
+        XmlDocument xmlDoc = ReadAndLoadXml(Files.GSUR_CONFIG);
+        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+        int ibegin = 0;
+
+        foreach (XmlElement node in xmlNodeList)
+        {
+            //Debug.Log(node.GetAttribute("name"));
+            GsurIndex[MaxGSurConfig] = GetNodeStr(node, "name");
+            GSHelper[GetNodeInt(node, "type")]++;
+            MaxGSurConfig++;
+        }
+
+        for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
+        {
+            if (GsurIndex[i]!=null)
+            {
+                Debug.Log(i + " : " + GsurIndex[i]);
+            }
+            if (GSHelper[i] > 0)
+            {
+                GSurSearch[i].begin = ibegin;
+                GSurSearch[i].end = ibegin + GSHelper[i] - 1;
+                ibegin = GSurSearch[i].end + 1;
+            }
+        }
+
+        for(int i=0;i< Globals.MAX_GSUR_NUM; i++)
+        {
+            if(GSurSearch[i].begin>=0)
+            {
+                Debug.Log(i + " : " + GSurSearch[i].begin + " : " + GSurSearch[i].end);
+            }
+        }
     }
 
     public void loadAnimalConfig()
@@ -54,6 +108,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             animalConfig[i].g = GetNodeFl(node, "r");
             animalConfig[i].b = GetNodeFl(node, "r");
             MaxAnimalConfig++;
+            i++;
         }
     }
 
