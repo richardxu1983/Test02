@@ -38,6 +38,10 @@ public static class Globals
     public static int MAX_UNIT_NUM = 500;
     public static int MAX_GSUR_NUM = 50;
 
+
+    //----------map---------------------//
+    public static int BASIC_MAP_SUR = 0;
+
     //------------------------------------//
     public static int wander_walk_dis = 0;
     public static int wander_walk_ran = 6;

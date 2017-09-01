@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class GSceneMap : UnitySingleton<GSceneMap>
 {
+    int gridNum = 200;
     int gridSizeX, gridSizeY;
     float mapWidth, mapLength;
     float gridSize = 3.0f;
 
     GameObject terrain;
     TerrainData _terraindata;
+    SplatPrototype[] terrainTexture;
     Terrain t;
 
     public Vector2 gridWorldSize;
@@ -25,22 +27,41 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateTerrain()
     {
+        int sur;
+  
         terrain = new GameObject();
         _terraindata = new TerrainData();
         //_terraindata.heightmapResolution = 100;
-        //_terraindata.alphamapResolution = 100;
+        _terraindata.alphamapResolution = 200;
         //_terraindata.baseMapResolution = 64;
         //_terraindata.SetDetailResolution(32, 32);
         _terraindata.size = new Vector3(gridWorldSize.x, 1, gridWorldSize.y);
-
-        SplatPrototype[] terrainTexture = new SplatPrototype[2];
-        terrainTexture[0] = new SplatPrototype();
-        terrainTexture[0].texture = (Texture2D)Resources.Load("GroudTextures/Mud01");
-        terrainTexture[0].tileSize = new Vector2(gridSize, gridSize);
-        terrainTexture[1] = new SplatPrototype();
-        terrainTexture[1].texture = (Texture2D)Resources.Load("GroudTextures/grass01");
-        terrainTexture[1].tileSize = new Vector2(gridSize, gridSize);
+        terrainTexture = new SplatPrototype[XMLLoader.Instance.MaxGSurConfig];
+        for(int i=0;i< XMLLoader.Instance.MaxGSurConfig;i++)
+        {
+            terrainTexture[i] = new SplatPrototype();
+            terrainTexture[i].texture = (Texture2D)Resources.Load("GroudTextures/"+ XMLLoader.Instance.GsurIndex[i].name);
+            terrainTexture[i].tileSize = new Vector2(gridSize, gridSize);
+        }
         _terraindata.splatPrototypes = terrainTexture;
+
+        float[,,] map = new float[_terraindata.alphamapWidth, _terraindata.alphamapHeight, XMLLoader.Instance.MaxGSurConfig];
+        for (var y = 0; y < _terraindata.alphamapHeight; y++)
+        {
+            for (var x = 0; x < _terraindata.alphamapWidth; x++)
+            {
+                sur = grid[x, y].terrainIndex;
+                map[x, y, sur] = 1;
+                for(int j=0;j< XMLLoader.Instance.MaxGSurConfig;j++)
+                {
+                    if(j!=sur)
+                    {
+                        map[x, y, j] = 0;
+                    }
+                }
+            }
+        }
+        _terraindata.SetAlphamaps(0, 0, map);
 
         terrain = Terrain.CreateTerrainGameObject(_terraindata);
         terrain.transform.position = new Vector3(0 - mapWidth / 2, 0, 0 - mapLength / 2);
@@ -51,8 +72,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateData()
     {
-        gridSizeX = 200;
-        gridSizeY = 200;
+        gridSizeX = gridNum;
+        gridSizeY = gridNum;
         mapWidth = gridSizeX * gridSize;
         mapLength = gridSizeY * gridSize;
         gridWorldSize = new Vector2(mapWidth, mapLength);
@@ -63,7 +84,6 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         int gridX = Mathf.RoundToInt((worldPosition.x - worldBottomLeft.x - gridSize / 2) / gridSize);
         int gridY = Mathf.RoundToInt((worldPosition.z - worldBottomLeft.z - gridSize / 2) / gridSize);
-        //Debug.Log(gridX + " , "+ gridY);
         return grid[gridX, gridY];
     }
 
@@ -88,8 +108,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         grid = new Node[gridSizeX, gridSizeY];
         worldBottomLeft = new Vector3(0,0,0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
-        //Debug.Log("worldBottomLeft : "+ worldBottomLeft);
         Vector3 worldPoint;
+        int sur;
 
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -98,11 +118,9 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 worldPoint = worldBottomLeft + Vector3.right * (x * gridSize + gridSize/2) + Vector3.forward * (y * gridSize + gridSize / 2);
                 bool block = Globals.rd.Next(0, 10) > 7 ? true : false;
                 grid[x, y] = new Node(block, worldPoint, new GridID(x,y));
-                if(block)
-                {
-                    GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    obj1.transform.position = worldPoint;
-                }
+                sur = Globals.rd.Next(XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].begin, XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].end + 1);
+                grid[x, y].terrainIndex = sur;
+                grid[x, y].surfaceId = XMLLoader.Instance.GsurIndex[sur].id;
             }
         }
     }

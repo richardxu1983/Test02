@@ -11,7 +11,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public ST_GSURS[] GSurSearch;
 
     private int MaxAnimalConfig;
-    private int MaxGSurConfig;
+    public int MaxGSurConfig;
 
     /// <summary>  
     /// 加载xml文档  
@@ -53,6 +53,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             GSurSearch[i].end = -1;
             GSHelper[i] = 0;
         }
+        MaxGSurConfig = 0;
     }
 
     public void loadGSurConfig()
@@ -70,6 +71,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             GsurIndex[GetNodeInt(node, "id")].typeId = GetNodeInt(node, "typeId");
             GsurIndex[GetNodeInt(node, "id")].canPlant = GetNodeBool(node, "canPlant");
             GSHelper[GetNodeInt(node, "type")]++;
+            MaxGSurConfig++;
         }
 
         for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
