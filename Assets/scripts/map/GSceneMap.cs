@@ -134,6 +134,11 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 {
                     grid[x, y].grassIndex = grassPool.Instance.tryCreate(x, y);
                 }
+
+                if(block)
+                {
+                    grid[x, y].grassIndex = treePool.Instance.tryCreate(x, y);
+                }
             }
         }
     }

@@ -30,9 +30,6 @@ public class greassManager
 public class grassPool : UnitySingleton<grassPool>
 {
     public nList<greassManager> grass;
-    private float _seedX, _seedZ;
-    private float _relief = 15f;
-    float xSample, zSample;
 
     public void init()
     {
