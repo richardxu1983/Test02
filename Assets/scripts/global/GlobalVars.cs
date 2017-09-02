@@ -20,8 +20,8 @@ public static class Globals
     public static int INIT_YEAR = 1000;          //初始的小时
 
     //----------camera vars--------//
-    public static float MAX_CAMERA = 50.0f;
-    public static float MIN_CAMERA = 20.0f;
+    public static float MAX_CAMERA = 40.0f;
+    public static float MIN_CAMERA = 16.0f;
     public static float CAMERA_STEP = 1.1f;
     public static float NAME_SHOW_SIZE = 35.0f;
 

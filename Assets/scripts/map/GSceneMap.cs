@@ -121,23 +121,22 @@ public class GSceneMap : UnitySingleton<GSceneMap>
             for (int y = 0; y < gridSizeY; y++)
             {
                 worldPoint = worldBottomLeft + Vector3.right * (x * gridSize + gridSize/2) + Vector3.forward * (y * gridSize + gridSize / 2);
-                bool block = Globals.rd.Next(0, 10) > 7 ? true : false;
-                grid[x, y] = new Node(block, worldPoint, new GridID(x,y));
+                
+                grid[x, y] = new Node(false, worldPoint, new GridID(x,y));
                 sur = Globals.rd.Next(XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].begin, XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].end + 1);
                 grid[x, y].terrainIndex = sur;
                 grid[x, y].surfaceId = XMLLoader.Instance.GsurIndex[sur].id;
-
                 xSample = (x + _seedX) / _relief;
                 zSample = (y + _seedZ) / _relief;
                 h = (int)(Mathf.PerlinNoise(xSample, zSample) * 20);
                 if (h > 10)
                 {
-                    grid[x, y].grassIndex = grassPool.Instance.tryCreate(x, y);
+                    grassPool.Instance.tryCreate(grid[x, y]);
                 }
-
-                if(block)
+                bool tree = Globals.rd.Next(0, 10) > 8 ? true : false;
+                if (tree)
                 {
-                    grid[x, y].grassIndex = treePool.Instance.tryCreate(x, y);
+                    treePool.Instance.tryCreate(grid[x, y]);
                 }
             }
         }

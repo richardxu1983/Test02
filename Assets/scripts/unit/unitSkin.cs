@@ -9,6 +9,7 @@ public class unitSkin : MonoBehaviour {
     public SpriteRenderer bodyRenderer;
     public SpriteRenderer headRenderer;
     public SpriteRenderer hairRenderer;
+    //public SpriteRenderer shadowRenderer;
     private BoxCollider m_collider;
     private unitMovement m_umovement;
     private GameObject mainImg;
@@ -35,9 +36,10 @@ public class unitSkin : MonoBehaviour {
         bodyRenderer = transform.Find("img/body").GetComponent<SpriteRenderer>();
         hairRenderer = transform.Find("img/hair").GetComponent<SpriteRenderer>();
         headRenderer = transform.Find("img/head").GetComponent<SpriteRenderer>();
+        //shadowRenderer = transform.Find("img/shadow").GetComponent<SpriteRenderer>();
         mainImg = transform.Find("img").gameObject;
         m_collider = GetComponent<BoxCollider>();
-
+        //shadowRenderer.sprite = SpManager.Instance.LoadSprite("shadow");
         bodyRenderer.color = m_manager.skinColor();
         if (hasHead)
         {
@@ -196,6 +198,7 @@ public class unitSkin : MonoBehaviour {
 
         int so = Mathf.RoundToInt(transform.position.z * -100);
         bodyRenderer.sortingOrder = so;
+        //shadowRenderer.sortingOrder = so-1;
         if (hasHead)
         {
             headRenderer.sortingOrder = so+1;

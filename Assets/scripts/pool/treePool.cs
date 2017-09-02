@@ -20,10 +20,13 @@ public class treeManager
     public void spawn()
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(grid);
+        v.z += 0.7f;
         m_Instance = Object.Instantiate(Resources.Load("Prefab/" + prefabname), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         renderer = m_Instance.transform.Find("img").GetComponent<SpriteRenderer>();
         renderer.sprite = SpManager.Instance.LoadSprite(spritename);
         m_Instance.transform.parent = GameObject.Find("trees").transform;
+        int so = Mathf.RoundToInt(m_Instance.transform.position.z * -100);
+        renderer.sortingOrder = so;
     }
 }
 
@@ -37,10 +40,13 @@ public class treePool : UnitySingleton<treePool>
         tree = new nList<treeManager>(40000);
     }
 
-    public int tryCreate(int x, int y)
+    public void tryCreate(Node n)
     {
-        treeManager v = new treeManager(x, y);
-        return tree.add(v);
+        int i;
+        treeManager v = new treeManager(n.gridId.x, n.gridId.y);
+        i = tree.add(v);
+        n.treeIndex = i;
+        n.block = true;
     }
 
     public void spawnAll()

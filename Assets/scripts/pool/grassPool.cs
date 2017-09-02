@@ -36,10 +36,12 @@ public class grassPool : UnitySingleton<grassPool>
         grass = new nList<greassManager>(40000);
     }
 
-    public int tryCreate(int x,int y)
+    public void tryCreate(Node n)
     {
-        greassManager v = new greassManager(x,y);
-        return grass.add(v);
+        int i;
+        greassManager v = new greassManager(n.gridId.x, n.gridId.y);
+        i = grass.add(v);
+        n.grassIndex = i;
     }
 
     public void spawnAll()
