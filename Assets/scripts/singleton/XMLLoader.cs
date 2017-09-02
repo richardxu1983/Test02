@@ -76,23 +76,11 @@ public class XMLLoader : UnitySingleton<XMLLoader>
 
         for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
         {
-            if (GsurIndex[i].name != null)
-            {
-                Debug.Log(i + " : " + GsurIndex[i].name);
-            }
             if (GSHelper[i] > 0)
             {
                 GSurSearch[i].begin = ibegin;
                 GSurSearch[i].end = ibegin + GSHelper[i] - 1;
                 ibegin = GSurSearch[i].end + 1;
-            }
-        }
-
-        for(int i=0;i< Globals.MAX_GSUR_NUM; i++)
-        {
-            if(GSurSearch[i].begin>=0)
-            {
-                Debug.Log(i + " : " + GSurSearch[i].begin + " : " + GSurSearch[i].end);
             }
         }
     }

@@ -14,9 +14,11 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         XMLLoader.Instance.init();
         XMLLoader.Instance.load();
         GTime.Instance.init();
+        grassPool.Instance.init();
         unitPool.Instance.init();
         GSceneMap.Instance.CreateMap();
         PathFind.Instance.init();
+        grassPool.Instance.spawnAll();
     }
 
     public void ToggleDebug()

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class GSceneMap : UnitySingleton<GSceneMap>
 {
-    int gridNum = 200;
+    public int gridNum = 200;
     int gridSizeX, gridSizeY;
     float mapWidth, mapLength;
-    float gridSize = 3.0f;
+    float gridSize = 2.2f;
 
     GameObject terrain;
     TerrainData _terraindata;
@@ -18,6 +18,10 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     public Vector2 gridWorldSize;
     public Node[,] grid;
     Vector3 worldBottomLeft;
+
+    private float _seedX, _seedZ;
+    private float _relief = 15f;
+    float xSample, zSample;
 
     public void CreateMap()
     {
@@ -110,6 +114,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         worldBottomLeft = new Vector3(0,0,0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         Vector3 worldPoint;
         int sur;
+        int h;
 
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -121,6 +126,14 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 sur = Globals.rd.Next(XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].begin, XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].end + 1);
                 grid[x, y].terrainIndex = sur;
                 grid[x, y].surfaceId = XMLLoader.Instance.GsurIndex[sur].id;
+
+                xSample = (x + _seedX) / _relief;
+                zSample = (y + _seedZ) / _relief;
+                h = (int)(Mathf.PerlinNoise(xSample, zSample) * 20);
+                if (h > 10)
+                {
+                    grid[x, y].grassIndex = grassPool.Instance.tryCreate(x, y);
+                }
             }
         }
     }

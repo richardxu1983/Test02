@@ -13,6 +13,8 @@ public class Node : IHeapItem<Node>
     public Node parent;
     public int terrainIndex;
     public int surfaceId;
+    public int grassIndex = -1;
+    public int treeIndex = -1;
     int heapIndex;
 
     public Node(bool _block,Vector3 _worldPosition, GridID _gridId)

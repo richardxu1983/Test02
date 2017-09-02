@@ -36,7 +36,7 @@ public static class Globals
 
     //----------pool numbers-------//
     public static int MAX_UNIT_NUM = 500;
-    public static int MAX_GSUR_NUM = 50;
+    public static int MAX_GSUR_NUM = 16;
 
 
     //----------map---------------------//
