@@ -22,6 +22,9 @@ public class camera : MonoBehaviour {
     private Vector3 rightBottom_3 = new Vector3();
     private float length = 0.5f;
 
+    private Vector3 PreMouseMPos;
+    private Vector3 PreMouseLPos;
+
     // Use this for initialization
     void Start () {
         if (Camera.main.orthographicSize >= Globals.NAME_SHOW_SIZE)
@@ -207,6 +210,27 @@ public class camera : MonoBehaviour {
             {
                 GlobalControl.Instance.showUnitName = true;
             }
+        }
+        //鼠标中键按下，上下左右移动相机  
+        if (Input.GetMouseButton(2))
+        {
+
+            if (PreMouseMPos.x <= 0)
+            {
+                PreMouseMPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+            }
+            else
+            {
+                Vector3 CurMouseMPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+                Vector3 offset = CurMouseMPos - PreMouseMPos;
+                offset = -offset * 0.1f;//0.1这个数字的大小可以调节速度  
+                transform.Translate(offset);
+                PreMouseMPos = CurMouseMPos;
+            }
+        }
+        else
+        {
+            PreMouseMPos = new Vector3(0.0f, 0.0f, 0.0f);
         }
     }
 }

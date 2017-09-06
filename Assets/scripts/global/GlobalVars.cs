@@ -10,9 +10,9 @@ public static class Globals
 
     //---------game time vars----------//
     public static int GAME_LOOP_INTERVAL = 250;
-    public static int TIME_IN_TICK = 4;     //多少游戏分钟是游戏1小时
-    public static int MIN_IN_TICK = 5;     //多少游戏分钟是游戏1小时
-    public static int HOUR_IN_MINUTE = 60;     //多少游戏分钟是游戏1小时
+    public static int TIME_IN_TICK = 1;     //多少游戏分钟是游戏1小时
+    public static int MIN_IN_TICK = 4;     //多少游戏分钟是游戏1小时
+    public static int HOUR_IN_MINUTE = 30;     //多少游戏分钟是游戏1小时
     public static int MONTH_IN_DAY = 15;      //一个月多少天
     public static int DAY_IN_HOUR = 24;      //一天24小时
     public static int YEAR_IN_MONTH = 12;    //一年12个月

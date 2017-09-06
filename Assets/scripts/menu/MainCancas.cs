@@ -9,6 +9,7 @@ public class MainCancas : MonoBehaviour {
 
     public GameManager manager;
     private Text txtSelectInfo;
+    private Text txtTimeInfo;
     private GameObject debugPanel;
     private GameObject btnShowDebug;
 
@@ -47,6 +48,7 @@ public class MainCancas : MonoBehaviour {
         debugPanel = GameObject.Find("Canvas/debugPanel");
         btnShowDebug = GameObject.Find("Canvas/btnShowDbg");
         txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
+        txtTimeInfo = GameObject.Find("Canvas/timeInfo/txtInfo").GetComponent<Text>();
         onClickHideDebug();
     }
 
@@ -97,6 +99,7 @@ public class MainCancas : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        txtTimeInfo.text = GTime.Instance.TimeString();
         if (unitPool.Instance.currentSelHuman >= 0)
         {
             txtSelectInfo.text = unitPool.Instance.getSelectHuman().name()+"\nx : " + Math.Round(unitPool.Instance.getSelectHuman().m_Instance.transform.position.x,2)

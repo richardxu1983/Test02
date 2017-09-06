@@ -14,7 +14,7 @@ public class greassManager
     {
         grid = new GridID(x,y);
         prefabname = "grass";
-        spritename = "grass";
+        spritename = "grass_"+Globals.rd.Next(1,4);
     }
 
     public void spawn()

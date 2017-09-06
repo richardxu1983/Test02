@@ -133,7 +133,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 {
                     grassPool.Instance.tryCreate(grid[x, y]);
                 }
-                bool tree = Globals.rd.Next(0, 10) > 8 ? true : false;
+                bool tree = Globals.rd.Next(0, 100) > 88 ? true : false;
                 if (tree)
                 {
                     treePool.Instance.tryCreate(grid[x, y]);

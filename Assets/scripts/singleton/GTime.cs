@@ -136,7 +136,7 @@ public class GTime : UnitySingleton<GTime>
 
     public string TimeString()
     {
-        return m_hour.ToString("d2") + ":" + m_minute.ToString("d2") + "\n" + m_month + " month - " + m_day + " , " + m_year;
+        return m_hour.ToString() + " h , " + m_day + " day , " + m_month + " month , " + m_year + "\n";
     }
 
     //
