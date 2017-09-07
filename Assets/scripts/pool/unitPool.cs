@@ -116,7 +116,7 @@ public class unitPool : UnitySingleton<unitPool>
         //Debug.Log(GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x+" , "+ GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x);
         if (currentSelHuman >= 0)
         {
-            units.get(currentSelHuman).ai().moveTo(GSceneMap.Instance.nodeFromWorldPoint(v).gridId, true);
+            units.get(currentSelHuman).ai().TryToMoveToVector3(v, true);
         }
     }
 

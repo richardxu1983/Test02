@@ -98,14 +98,12 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     public Vector3 gridToWorldPosition(int x, int y)
     {
-        Vector3 pos = new Vector3(worldBottomLeft.x + x * gridSize + gridSize / 2, 1, worldBottomLeft.z + y * gridSize + gridSize / 2);
-        return pos;
+        return grid[x,y].worldPosition;
     }
 
     public Vector3 gridToWorldPosition(GridID id)
     {
-        Vector3 pos = new Vector3(worldBottomLeft.x + id.x * gridSize + gridSize / 2, 1, worldBottomLeft.z + id.y * gridSize + gridSize / 2);
-        return pos;
+        return grid[id.x, id.y].worldPosition;
     }
 
     void CreateGrid()

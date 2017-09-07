@@ -86,13 +86,11 @@ public class unitMovement : MonoBehaviour {
         GridID g = m_manager.ai().nextGrid();
         if(g!=null)
         {
-            Vector3 movement = GSceneMap.Instance.gridToWorldPosition(m_manager.ai().nextGrid()) - transform.position;
-            //Debug.Log("tp : " + GSceneMap.Instance.gridToWorldPosition(m_manager.ai().TargetPos)+" , pos : " + transform.position);
-            //movement.y = 0;
-            if (Mathf.Abs(movement.x) >= 0.01f || Mathf.Abs(movement.z) >= 0.01f)
+            Vector3 movement = GSceneMap.Instance.nodeFromGrid(g).worldPosition - transform.position;
+
+            if (Mathf.Abs(movement.x) >= 0.03f || Mathf.Abs(movement.z) >= 0.03f)
             {
                 movement.Normalize();
-                //Debug.Log("Normalize : " + movement);
 
                 if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z))
                 {
@@ -100,7 +98,7 @@ public class unitMovement : MonoBehaviour {
                     {
                         playerFace = faceTo.right;
                     }
-                    else
+                    else if(movement.x < 0)
                     {
                         playerFace = faceTo.left;
                     }
@@ -111,16 +109,37 @@ public class unitMovement : MonoBehaviour {
                     {
                         playerFace = faceTo.up;
                     }
-                    else
+                    else if(movement.z < 0)
                     {
                         playerFace = faceTo.down;
                     }
                 }
-
+                
                 m_movement = movement * m_manager.runSpeed() * Time.deltaTime;
-                //transform.position = transform.position + (new Vector3(0.01f,0.01f,0));
                 transform.Translate(m_movement);
-                //transform.position = Vector3.MoveTowards(transform.position, m_manager.ai().TargetPos, m_manager.runSpeed() * Time.deltaTime);
+                /*
+                if( Mathf.Abs( g.x-m_manager.grid().x) > Mathf.Abs(g.y - m_manager.grid().y))
+                {
+                    if(g.x> m_manager.grid().x)
+                    {
+                        playerFace = faceTo.right;
+                    }
+                    else if(g.x < m_manager.grid().x)
+                    {
+                        playerFace = faceTo.left;
+                    }
+                }
+                else
+                {
+                    if (g.y > m_manager.grid().y)
+                    {
+                        playerFace = faceTo.up;
+                    }
+                    else if(g.y < m_manager.grid().y)
+                    {
+                        playerFace = faceTo.down;
+                    }
+                }*/
             }
             else
             {

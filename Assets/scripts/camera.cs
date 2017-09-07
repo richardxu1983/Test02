@@ -44,7 +44,7 @@ public class camera : MonoBehaviour {
             if(unitPool.Instance.getSelectHuman().ToDelete!=2)
             {
                 //pos = manager.getSelectPos();
-                pos = unitPool.Instance.getSelectHuman().m_skin.bodyRenderer.bounds.center;
+                pos = unitPool.Instance.getSelectHuman().m_skin.bodyRenderer.bounds.center - transform.position;
                 ext = unitPool.Instance.getSelectHuman().m_skin.bodyRenderer.bounds.extents * 1.2f;
                 if (unitPool.Instance.getSelectHuman().m_skin.hasHead)
                 {

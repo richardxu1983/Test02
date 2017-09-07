@@ -56,14 +56,21 @@ public class unitAi {
             {
                 if (path[pathIndex].gridId == m_manager.grid())
                 {
-                    pathIndex++;
-                    if (pathIndex >= path.Count)
+                    if(Mathf.Abs( m_manager.pos().x - path[pathIndex].worldPosition.x)>=.1f || Mathf.Abs(m_manager.pos().z - path[pathIndex].worldPosition.z) >= .1f)
                     {
-                        path.Clear();
-                        pathIndex = 0;
-                        return true;
+                        return false;
                     }
-                    return false;
+                    else
+                    {
+                        pathIndex++;
+                        if (pathIndex >= path.Count)
+                        {
+                            path.Clear();
+                            pathIndex = 0;
+                            return true;
+                        }
+                        return false;
+                    }
                 }
                 else
                 {
@@ -187,6 +194,15 @@ public class unitAi {
         int y = Mathf.RoundToInt(dis * Mathf.Sin(an));
         //Debug.Log("Mathf.Cos(an) : " + Mathf.Cos(an) + " , Mathf.Sin(an) : " + Mathf.Sin(an) + " , dis="+ dis);
         return new GridID(x, y);
+    }
+
+    public void TryToMoveToVector3(Vector3 pos, bool isCmd)
+    {
+        Node n = GSceneMap.Instance.nodeFromWorldPoint(pos);
+        if(!n.block)
+        {
+            moveTo(n.gridId, isCmd);
+        }
     }
 
     public void moveTo(GridID v, bool isCmd)
