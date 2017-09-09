@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 public class GSceneMap : UnitySingleton<GSceneMap>
@@ -106,6 +107,16 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         return grid[id.x, id.y].worldPosition;
     }
 
+    public int Dis(GridID id1, GridID id2)
+    {
+        return (int)(Math.Round(Math.Sqrt((id1.x - id2.x) * (id1.x - id2.x) + (id1.y - id2.y) * (id1.y - id2.y))));
+    }
+
+    public int Dis(Node n1, Node n2)
+    {
+        return (int)(Math.Round(Math.Sqrt((n1.gridId.x - n2.gridId.x) * (n1.gridId.x - n2.gridId.x) + (n1.gridId.y - n2.gridId.y) * (n1.gridId.y - n2.gridId.y))));
+    }
+
     void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
@@ -129,12 +140,12 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 h = (int)(Mathf.PerlinNoise(xSample, zSample) * 20);
                 if (h > 10)
                 {
-                    grassPool.Instance.tryCreate(grid[x, y]);
+                    grid[x, y].growGrass();
                 }
-                bool tree = Globals.rd.Next(0, 100) > 88 ? true : false;
+                bool tree = Globals.rd.Next(0, 100) > 95 ? true : false;
                 if (tree)
                 {
-                    treePool.Instance.tryCreate(grid[x, y]);
+                    grid[x, y].growTree();
                 }
             }
         }

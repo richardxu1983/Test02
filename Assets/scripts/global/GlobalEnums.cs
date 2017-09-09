@@ -10,28 +10,6 @@ public enum faceTo
     none,
 };
 
-public enum UnitIntAttr
-{
-    uid,
-    typeId,
-    hp,
-    hpMax,
-    skinColor,
-    headSkin,
-    bodySkin,
-    cloth,
-    fed,
-    hungry_tick,
-    grid_x,
-    grid_y,
-}
-
-public enum UnitFloatAttr
-{
-    run_speed,
-    walk_speed,
-}
-
 public enum UnitOp
 {
     idle,

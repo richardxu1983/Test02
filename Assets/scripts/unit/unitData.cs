@@ -5,6 +5,28 @@ using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
+public enum UnitIntAttr
+{
+    uid,
+    typeId,
+    hp,
+    hpMax,
+    skinColor,
+    headSkin,
+    bodySkin,
+    cloth,
+    fed,
+    hungry_tick,
+    grid_x,
+    grid_y,
+}
+
+public enum UnitFloatAttr
+{
+    run_speed,
+    walk_speed,
+}
+
 [Serializable]
 public class unitData
 {
@@ -38,7 +60,6 @@ public class unitData
     public int      getInt(UnitIntAttr k)          { return m_intattr[(int)k]; }
     public void     setF(UnitFloatAttr k, float v)   { m_fattr[(int)k] = v; }
     public float    getF(UnitFloatAttr k)            { return m_fattr[(int)k]; }
-
 
     public void loop()
     {

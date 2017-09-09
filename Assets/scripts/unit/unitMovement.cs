@@ -117,34 +117,7 @@ public class unitMovement : MonoBehaviour {
                 
                 m_movement = movement * m_manager.runSpeed() * Time.deltaTime;
                 transform.Translate(m_movement);
-                /*
-                if( Mathf.Abs( g.x-m_manager.grid().x) > Mathf.Abs(g.y - m_manager.grid().y))
-                {
-                    if(g.x> m_manager.grid().x)
-                    {
-                        playerFace = faceTo.right;
-                    }
-                    else if(g.x < m_manager.grid().x)
-                    {
-                        playerFace = faceTo.left;
-                    }
-                }
-                else
-                {
-                    if (g.y > m_manager.grid().y)
-                    {
-                        playerFace = faceTo.up;
-                    }
-                    else if(g.y < m_manager.grid().y)
-                    {
-                        playerFace = faceTo.down;
-                    }
-                }*/
-            }
-            else
-            {
             }
         }
-        //transform.position = transform.position + (new Vector3(.01f, 0f, .01f));
     }
 }

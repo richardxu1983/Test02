@@ -15,6 +15,8 @@ public class Node : IHeapItem<Node>
     public int surfaceId;
     public int grassIndex = -1;
     public int treeIndex = -1;
+    public grass m_grass;
+    public tree m_tree;
     int heapIndex;
 
     public Node(bool _block,Vector3 _worldPosition, GridID _gridId)
@@ -22,6 +24,32 @@ public class Node : IHeapItem<Node>
         block = _block;
         worldPosition = _worldPosition;
         gridId = _gridId;
+    }
+
+    public void deleteGrass()
+    {
+        m_grass.delete();
+        m_grass = default(grass);
+    }
+
+    public void deleteTree()
+    {
+        m_tree.delete();
+        m_tree = default(tree);
+        block = false;
+    }
+
+    public void growGrass()
+    {
+        m_grass = new grass(gridId.x, gridId.y);
+        m_grass.spawn();
+    }
+
+    public void growTree()
+    {
+        m_tree = new tree(gridId.x, gridId.y);
+        m_tree.spawn();
+        block = true;
     }
 
     public int fCost

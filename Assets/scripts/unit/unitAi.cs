@@ -43,9 +43,6 @@ public class unitAi {
 
     public bool arriveTPos()
     {
-        //Debug.Log("TargetPos : " + m_manager.ai().TargetPos.x + " , " + m_manager.ai().TargetPos.y);
-        //Debug.Log("grid : " + m_manager.grid().x + " , " + m_manager.grid().y);
-
         if(path.Count>0)
         {
             if(pathIndex>= path.Count)
