@@ -51,7 +51,7 @@ public class unitBase : entity
     private float[] fAttr;
     public GridID   targetGrid;
     public entity   target;
-    public Vector3  pos;
+    public Vector3 m_pos;
     public Color    skinColor;
     public bool     bDebugInfo;
     public UnitAiBase       ai;
@@ -81,6 +81,16 @@ public class unitBase : entity
         m_movement.init(this);
         m_skin.init(this);
         m_unitUI.init(this);
+    }
+
+    public Vector3 pos
+    {
+        get { return m_pos; }
+        set
+        {
+            m_pos = value;
+            grid = GSceneMap.Instance.nodeFromWorldPoint(m_pos).gridId;
+        }
     }
 
     public void loop()
@@ -250,9 +260,6 @@ public class UnitAiBase
                 doMoveTo();
                 break;
 
-            case AI.wander:
-                break;
-
             default:
                 break;
         }
@@ -319,8 +326,10 @@ public class UnitAiBase
             }
             else
             {
+                //Debug.Log("x:"+path[pathIndex].gridId.x+","+ "y:" + path[pathIndex].gridId.y+ " |  x:" + baseUnit.grid.x + "," + "y:" + baseUnit.grid.y);
                 if (path[pathIndex].gridId == baseUnit.grid)
                 {
+                    //Debug.Log(baseUnit.pos + " : " + path[pathIndex].worldPosition);
                     if (Mathf.Abs(baseUnit.pos.x - path[pathIndex].worldPosition.x) >= .1f || Mathf.Abs(baseUnit.pos.z - path[pathIndex].worldPosition.z) >= .1f)
                     {
                         return false;

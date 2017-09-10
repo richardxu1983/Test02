@@ -131,22 +131,22 @@ public class camera : MonoBehaviour {
                 DrawLine(leftTop_2, leftTop_3);
                 GL.End();
 
-                /*
+                
                 GL.Begin(GL.LINES);
                 GL.Color(Color.white);
-                if (unitPool.Instance.getSelectHuman().ai().path.Count>0)
+                if (unitPool.Instance.getSelectHuman().ai.path.Count>0)
                 {
-                    DrawLineNew(unitPool.Instance.getSelectHuman().pos(), unitPool.Instance.getSelectHuman().ai().path[unitPool.Instance.getSelectHuman().ai().pathIndex].worldPosition);
-                    if (unitPool.Instance.getSelectHuman().ai().path.Count - unitPool.Instance.getSelectHuman().ai().pathIndex >= 2)
+                    DrawLineNew(unitPool.Instance.getSelectHuman().pos, unitPool.Instance.getSelectHuman().ai.path[unitPool.Instance.getSelectHuman().ai.pathIndex].worldPosition);
+                    if (unitPool.Instance.getSelectHuman().ai.path.Count - unitPool.Instance.getSelectHuman().ai.pathIndex >= 2)
                     {
-                        for (int i = unitPool.Instance.getSelectHuman().ai().pathIndex; i < unitPool.Instance.getSelectHuman().ai().path.Count-1; i++)
+                        for (int i = unitPool.Instance.getSelectHuman().ai.pathIndex; i < unitPool.Instance.getSelectHuman().ai.path.Count-1; i++)
                         {
-                            DrawLineNew(unitPool.Instance.getSelectHuman().ai().path[i].worldPosition, unitPool.Instance.getSelectHuman().ai().path[i+1].worldPosition);
+                            DrawLineNew(unitPool.Instance.getSelectHuman().ai.path[i].worldPosition, unitPool.Instance.getSelectHuman().ai.path[i+1].worldPosition);
                         }
                     }
                 }
                 GL.End();
-                */
+                
                 GL.PopMatrix();
             }
         }

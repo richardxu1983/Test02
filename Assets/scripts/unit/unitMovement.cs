@@ -87,7 +87,7 @@ public class unitMovement : MonoBehaviour {
         if(g!=null)
         {
             Vector3 movement = GSceneMap.Instance.nodeFromGrid(g).worldPosition - transform.position;
-
+            //Debug.Log(GSceneMap.Instance.nodeFromGrid(g).worldPosition + " :" + transform.position+" : "+movement);
             if (Mathf.Abs(movement.x) >= 0.03f || Mathf.Abs(movement.z) >= 0.03f)
             {
                 movement.Normalize();
