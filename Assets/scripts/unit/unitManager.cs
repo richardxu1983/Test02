@@ -38,9 +38,6 @@ public class unitManager {
         m_movement = m_Instance.GetComponent<unitMovement>();
         m_skin = m_Instance.GetComponent<unitSkin>();
         m_unitUI = m_Instance.GetComponent<unitUI>();
-        m_movement.init(this);
-        m_skin.init(this);
-        m_unitUI.init(this);
     }
 
     public void CreateHuman(int uid, int speed)

@@ -54,15 +54,38 @@ public class unitBase : entity
     public Vector3  pos;
     public Color    skinColor;
     public bool     bDebugInfo;
+    public UnitAiBase       ai;
+    public GameObject       m_Instance;
+    public unitMovement     m_movement;
+    public unitUI           m_unitUI;
+    public unitSkin         m_skin;
 
     public unitBase(int _type,int _tid):base(_type, _tid)
     {
         iAttr = new int[64];
         fAttr = new float[16];
+        ai = new UnitAiBase();
+        ai.init(this);
+        targetGrid = new GridID(0,0);
+    }
+
+    public void spawn(int x, int y)
+    {
+        Vector3 v = GSceneMap.Instance.gridToWorldPosition(new GridID(x, y));
+        grid = new GridID(x, y);
+        m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
+        m_Instance.transform.parent = GameObject.Find("units").transform;
+        m_movement = m_Instance.GetComponent<unitMovement>();
+        m_skin = m_Instance.GetComponent<unitSkin>();
+        m_unitUI = m_Instance.GetComponent<unitUI>();
+        m_movement.init(this);
+        m_skin.init(this);
+        m_unitUI.init(this);
     }
 
     public void loop()
     {
+        ai.loop();
     }
 
     public int hp() { return iGet(UIA.hp); }
@@ -168,6 +191,12 @@ public class UnitAiBase
     public int pathIndex;
     public unitBase baseUnit;
 
+    public UnitAiBase()
+    {
+        pathIndex = 0;
+        path = new List<Node>();
+    }
+
     public void loop()
     {
         wayPointCheck();
@@ -182,8 +211,11 @@ public class UnitAiBase
             tick++;
         }
     }
-    
 
+    public void init(unitBase m)
+    {
+        baseUnit = m;
+    }
 
     void wayPointCheck()
     {
@@ -215,6 +247,7 @@ public class UnitAiBase
                 break;
 
             case AI.moveTo:
+                doMoveTo();
                 break;
 
             case AI.wander:
@@ -225,7 +258,58 @@ public class UnitAiBase
         }
     }
 
-    public bool arriveTPos()
+    public void moveTo(GridID v, bool isCmd)
+    {
+        if (baseUnit.dead)
+            return;
+
+        ai = AI.moveTo;
+        op = OP.moving;
+        baseUnit.targetGrid = v;
+
+        path.Clear();
+        PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(baseUnit.targetGrid), ref path);
+        pathIndex = 0;
+
+        if (isCmd)
+        {
+            reason = AIR.cmd;
+            tick = m_tickMax;
+        }
+    }
+
+    public void TryToMoveToVector3(Vector3 pos, bool isCmd)
+    {
+        Node n = GSceneMap.Instance.nodeFromWorldPoint(pos);
+        if (!n.block)
+        {
+            moveTo(n.gridId, isCmd);
+        }
+    }
+
+    public GridID nextGrid()
+    {
+        if (pathIndex >= path.Count)
+        {
+            return null;
+        }
+        else
+        {
+            return path[pathIndex].gridId;
+        }
+    }
+
+    public void doMoveTo()
+    {
+        if (IsArrive())
+        {
+            ai = AI.idle;
+            op = OP.idle;
+            reason = AIR.none;
+        }
+    }
+
+    public bool IsArrive()
     {
         if (path.Count > 0)
         {

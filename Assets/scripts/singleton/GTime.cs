@@ -6,7 +6,7 @@ public class GTime : UnitySingleton<GTime>
 {
     private int m_minInTick;             //多少个逻辑帧过游戏里的1分钟
     private int m_hourInMinuts = 60;     //多少游戏分钟是游戏1小时
-    private int m_initHour = 3;          //初始的小时
+    //private int m_initHour = 3;          //初始的小时
     private int m_monthInDays = 15;      //一个月多少天
     private int m_dayInHours = 24;      //一天24小时
     private int m_yearInMonths = 12;    //一年12个月

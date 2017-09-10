@@ -7,11 +7,11 @@ public class unitPool : UnitySingleton<unitPool>
 {
     //public List<unitManager> units;
     public int currentSelHuman = -1;
-    public nList<unitManager> units;
+    public nList<unitBase> units;
 
     public void init()
     {
-        units = new nList<unitManager>(Globals.MAX_UNIT_NUM);
+        units = new nList<unitBase>(Globals.MAX_UNIT_NUM);
     }
 
     public void loop()
@@ -21,43 +21,41 @@ public class unitPool : UnitySingleton<unitPool>
             if(units.get(i)!=null)
             {
                 units.get(i).loop();
-                if (units.get(i).ToDelete == 2)
+                if (units.get(i).toDelete == 2)
                 {
-                    units.removeAt(units.get(i).id());
+                    units.removeAt(units.get(i).id);
                 }
             }
         }
     }
 
-    public int tryCreate()
-    {
-        unitManager v = new unitManager();
-        return units.add(v);
-    }
-
     public void CreateRandomHuman()
     {
-        int index = tryCreate();
+        human v = new human(0);
+        int index = units.add(v);
+
         if (index >= 0)
         {
-            units.get(index).CreateHuman(index, 4);
-            units.get(index).spawnAt(100,100);
-            units.get(index).ai().wander(true);
+            ((human)units.get(index)).create(index);
+            ((human)units.get(index)).spawn(100, 100);
+            //((animal)units.get(index)).ai.wander(true);
         }
     }
 
     public void CreateRandomAnimal()
     {
-        int index = tryCreate();
+        animal v = new animal(0);
+        int index = units.add(v);
+
         if (index >= 0)
         {
-            units.get(index).CreateAnimalById(index, 0);
-            units.get(index).spawnAt(100, 100);
-            units.get(index).ai().wander(true);
+            ((animal)units.get(index)).create(index);
+            ((animal)units.get(index)).spawn(100, 100);
+            //((animal)units.get(index)).ai.wander(true);
         }
     }
 
-    public unitManager getSelectHuman()
+    public unitBase getSelectHuman()
     {
         if (currentSelHuman >= 0)
         {
@@ -116,7 +114,7 @@ public class unitPool : UnitySingleton<unitPool>
         //Debug.Log(GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x+" , "+ GSceneMap.Instance.nodeFromWorldPoint(v).gridId.x);
         if (currentSelHuman >= 0)
         {
-            units.get(currentSelHuman).ai().TryToMoveToVector3(v, true);
+            units.get(currentSelHuman).ai.TryToMoveToVector3(v, true);
         }
     }
 
@@ -130,7 +128,7 @@ public class unitPool : UnitySingleton<unitPool>
             if (hit.collider.gameObject.tag == "unit")
             {
                 freeSelect();
-                currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id();
+                currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id;
                 units.get(currentSelHuman).bDebugInfo = true;
             }
             else
@@ -153,9 +151,9 @@ public class unitPool : UnitySingleton<unitPool>
         {
             if (units.get(i) != null)
             {
-                if (units.get(i).ToDelete == 0)
+                if (units.get(i).toDelete == 0)
                 {
-                    units.get(i).ToDelete = 1;
+                    units.get(i).toDelete = 1;
                 }
             }
         }

@@ -9,12 +9,12 @@ public class unitMovement : MonoBehaviour {
 
     [SerializeField] int fps;
 
-    private unitManager m_manager = new unitManager();
+    private unitBase m_manager = new unitBase(1,1);
     private faceTo playerFace;//0:down,1:up,2:left,3:right
     private faceTo playerFaceLast;//0:down,1:up,2:left,3:right
     private Vector3 m_movement;
 
-    public void init(unitManager v)
+    public void init(unitBase v)
     {
         m_manager = v;
     }
@@ -24,7 +24,7 @@ public class unitMovement : MonoBehaviour {
 
     }
 
-    public unitManager manager()
+    public unitBase manager()
     {
         return m_manager;
     }
@@ -60,16 +60,16 @@ public class unitMovement : MonoBehaviour {
     void Update()
     {
 
-        if (m_manager.ai().op == UnitOp.moving)
+        if (m_manager.ai.op == OP.moving)
         {
             Move();
         }
-        m_manager.setPos(transform.position);
+        m_manager.pos = transform.position;
     }
 
     void FixedUpdate()
     {
-        if (m_manager.ToDelete == 1)
+        if (m_manager.toDelete == 1)
         {
             Destroy(m_manager.m_Instance, Globals.UNIT_DELETE_TIME);
         }
@@ -78,12 +78,12 @@ public class unitMovement : MonoBehaviour {
     void OnDestroy()
     {
         unitPool.Instance.freeSelect();
-        m_manager.ToDelete = 2;
+        m_manager.toDelete = 2;
     }
 
     private void Move()
     {
-        GridID g = m_manager.ai().nextGrid();
+        GridID g = m_manager.ai.nextGrid();
         if(g!=null)
         {
             Vector3 movement = GSceneMap.Instance.nodeFromGrid(g).worldPosition - transform.position;
@@ -115,7 +115,7 @@ public class unitMovement : MonoBehaviour {
                     }
                 }
                 
-                m_movement = movement * m_manager.runSpeed() * Time.deltaTime;
+                m_movement = movement * m_manager.runSpeed * Time.deltaTime;
                 transform.Translate(m_movement);
             }
         }

@@ -20,7 +20,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     public Node[,] grid;
     Vector3 worldBottomLeft;
 
-    private float _seedX, _seedZ;
+    private float _seedX = 0.0f, _seedZ = 0.0f;
     private float _relief = 15f;
     float xSample, zSample;
 

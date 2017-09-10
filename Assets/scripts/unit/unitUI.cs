@@ -12,10 +12,10 @@ public class unitUI : MonoBehaviour {
     public Image hpFill;
     private GameObject bPanel;
     public Text textInfo;
-    private unitManager m_manager = new unitManager();
+    private unitBase m_manager = new unitBase(1,1);
     private SpriteRenderer bodyRenderer;
 
-    public void init(unitManager v)
+    public void init(unitBase v)
     {
         m_manager = v;
     }
@@ -26,7 +26,7 @@ public class unitUI : MonoBehaviour {
         bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
         bPanel = transform.Find("Canvas/bottomPanel").gameObject;
         hpBarObj = transform.Find("Canvas/hpBar").gameObject;
-        txtUnitName.text = m_manager.name();
+        txtUnitName.text = m_manager.name;
         bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
         setNamePos();
     }
@@ -39,12 +39,12 @@ public class unitUI : MonoBehaviour {
 
     void refresHpBar()
     {
-        if (!m_manager.isDead())
+        if (!m_manager.dead)
         {
             float hp = m_manager.hp();
-            float hpMax = m_manager.hpMax();
+            float hpMax = m_manager.hpMax;
 
-            if (m_manager.hp() < m_manager.hpMax())
+            if (m_manager.hp() < m_manager.hpMax)
             {
                 float rate = hp / hpMax;
                 if (rate>Globals.HP_YELLOW)
@@ -60,7 +60,7 @@ public class unitUI : MonoBehaviour {
                     hpFill.color = Color.red;
                 }
                 hpBarObj.SetActive(true);
-                hpBar.maxValue = m_manager.hpMax();
+                hpBar.maxValue = m_manager.hpMax;
                 hpBar.value = m_manager.hp();
             }
             else
@@ -85,7 +85,7 @@ public class unitUI : MonoBehaviour {
                 {
                     textInfo.enabled = true;
                 }
-                textInfo.text = "ai : " + m_manager.ai().ai + "\nop : " + m_manager.ai().op + "\nr : " + m_manager.ai().reason;
+                textInfo.text = "ai : " + m_manager.ai.ai + "\nop : " + m_manager.ai.op + "\nr : " + m_manager.ai.reason;
             }
             else
             {

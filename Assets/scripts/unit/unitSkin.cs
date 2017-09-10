@@ -13,19 +13,19 @@ public class unitSkin : MonoBehaviour {
     private BoxCollider m_collider;
     private unitMovement m_umovement;
     private GameObject mainImg;
-    private unitManager m_manager = new unitManager();
+    private unitBase m_manager = new unitBase(1,1);
     public bool hasHead = true;
     private Vector3 bottomPos;
     private Vector3 headPos;
     private float imgHeight = 0;
 
-    public void init(unitManager v)
+    public void init(unitBase v)
     {
         m_manager = v;
-        if(m_manager.headSkin()<0)
+        if(m_manager.headSkin<0)
         {
             hasHead = false;
-            headSkinIdNow = m_manager.headSkin();
+            headSkinIdNow = m_manager.headSkin;
         }
     }
 
@@ -40,10 +40,10 @@ public class unitSkin : MonoBehaviour {
         mainImg = transform.Find("img").gameObject;
         m_collider = GetComponent<BoxCollider>();
         //shadowRenderer.sprite = SpManager.Instance.LoadSprite("shadow");
-        bodyRenderer.color = m_manager.skinColor();
+        bodyRenderer.color = m_manager.skinColor;
         if (hasHead)
         {
-            headRenderer.color = m_manager.skinColor();
+            headRenderer.color = m_manager.skinColor;
         }
         else
         {
@@ -129,41 +129,41 @@ public class unitSkin : MonoBehaviour {
 
     private void faceDown()
     {
-        setBodySprite(m_manager.bodySkin()+"_body_front");
+        setBodySprite(m_manager.bodySkin+"_body_front");
         if(hasHead)
         {
-            setheadSprite(m_manager.headSkin()+"_head_front");
-            sethairSprite(m_manager.headSkin() + "_hair_front");
+            setheadSprite(m_manager.headSkin+"_head_front");
+            sethairSprite(m_manager.headSkin + "_hair_front");
         }
     }
 
     private void faceUp()
     {
-        setBodySprite(m_manager.bodySkin() + "_body_back");
+        setBodySprite(m_manager.bodySkin + "_body_back");
         if (hasHead)
         {
-            setheadSprite(m_manager.headSkin() + "_head_back");
-            sethairSprite(m_manager.headSkin() + "_hair_back");
+            setheadSprite(m_manager.headSkin + "_head_back");
+            sethairSprite(m_manager.headSkin + "_hair_back");
         }
     }
 
     private void faceLeft()
     {
-        setBodySprite(m_manager.bodySkin() + "_body_left");
+        setBodySprite(m_manager.bodySkin + "_body_left");
         if (hasHead)
         {
-            setheadSprite(m_manager.headSkin() + "_head_left");
-            sethairSprite(m_manager.headSkin() + "_hair_left");
+            setheadSprite(m_manager.headSkin + "_head_left");
+            sethairSprite(m_manager.headSkin + "_hair_left");
         }
     }
 
     private void faceRight()
     {
-        setBodySprite(m_manager.bodySkin() + "_body_right");
+        setBodySprite(m_manager.bodySkin + "_body_right");
         if (hasHead)
         {
-            setheadSprite(m_manager.headSkin() + "_head_right");
-            sethairSprite(m_manager.headSkin() + "_hair_right");
+            setheadSprite(m_manager.headSkin + "_head_right");
+            sethairSprite(m_manager.headSkin + "_hair_right");
         }
     }
 
@@ -187,11 +187,11 @@ public class unitSkin : MonoBehaviour {
 
     public void updateSkin()
     {
-        if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin() != bodySkinIdNow || m_manager.headSkin() != headSkinIdNow)
+        if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin != bodySkinIdNow || m_manager.headSkin != headSkinIdNow)
         {
             PlayAnim();
-            headSkinIdNow = m_manager.headSkin();
-            bodySkinIdNow = m_manager.bodySkin();
+            headSkinIdNow = m_manager.headSkin;
+            bodySkinIdNow = m_manager.bodySkin;
             m_umovement.setLastFace(m_umovement.getFaceTo());
             setCollider();
         }
@@ -209,7 +209,7 @@ public class unitSkin : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if(m_manager.isDead()==false)
+        if(m_manager.dead==false)
         {
             updateSkin();
         }

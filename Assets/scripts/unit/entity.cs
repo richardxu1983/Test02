@@ -17,6 +17,7 @@ public class entity {
     public int typeId { get; set; }
     public string name = "name";
     public int toDelete = 0;
+    
 
     public entity(int _type, int _tid)
     {
