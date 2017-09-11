@@ -200,6 +200,7 @@ public class UnitAiBase
     public List<Node> path;
     public int pathIndex;
     public unitBase baseUnit;
+    public unitBase targetUnit;
 
     public UnitAiBase()
     {
@@ -285,6 +286,47 @@ public class UnitAiBase
         }
     }
 
+    public void TryMoveToTarget(unitBase t, bool isCmd)
+    {
+        if (baseUnit.dead)
+            return;
+
+        if (baseUnit.disTo(t) <= 1)
+            return;
+
+        targetUnit = t;
+        baseUnit.targetGrid = t.targetGrid;
+        ai = AI.moveTo;
+        op = OP.moving;
+        path.Clear();
+        PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(t.targetGrid), ref path);
+        pathIndex = 0;
+
+        if (isCmd)
+        {
+            reason = AIR.cmd;
+            tick = m_tickMax;
+        }
+    }
+
+    public void moveToTarget()
+    {
+        if (baseUnit.dead || baseUnit.disTo(targetUnit) <= 1)
+        {
+            ai = AI.idle;
+            op = OP.idle;
+            reason = AIR.none;
+            targetUnit = default(unitBase);
+        }
+
+        if(baseUnit.targetGrid!= targetUnit.targetGrid)
+        {
+            path.Clear();
+            PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(targetUnit.targetGrid), ref path);
+            pathIndex = 0;
+        }
+    }
+
     public void TryToMoveToVector3(Vector3 pos, bool isCmd)
     {
         Node n = GSceneMap.Instance.nodeFromWorldPoint(pos);
@@ -308,15 +350,22 @@ public class UnitAiBase
 
     public void doMoveTo()
     {
-        if (IsArrive())
+        if(targetUnit!=null)
         {
-            ai = AI.idle;
-            op = OP.idle;
-            reason = AIR.none;
+            moveToTarget();
+        }
+        else
+        {
+            if (MoveToPos())
+            {
+                ai = AI.idle;
+                op = OP.idle;
+                reason = AIR.none;
+            }
         }
     }
 
-    public bool IsArrive()
+    public bool MoveToPos()
     {
         if (path.Count > 0)
         {
