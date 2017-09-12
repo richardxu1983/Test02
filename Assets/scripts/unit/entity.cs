@@ -17,7 +17,17 @@ public class entity {
     public int typeId { get; set; }
     public string name = "name";
     public int toDelete = 0;
-    
+    public Vector3 m_pos;
+
+    public Vector3 pos
+    {
+        get { return m_pos; }
+        set
+        {
+            m_pos = value;
+            grid = GSceneMap.Instance.nodeFromWorldPoint(m_pos).gridId;
+        }
+    }
 
     public entity(int _type, int _tid)
     {
@@ -42,6 +52,11 @@ public class entity {
     {
         return GSceneMap.Instance.Dis(grid, v.grid);
     }
+
+    public float v3Dis(entity v)
+    {
+        return (pos-v.pos).sqrMagnitude;
+    }
 }
 
 public class plant : entity
@@ -60,6 +75,7 @@ public class plant : entity
     public void spawn()
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(grid);
+        pos = v;
         m_Instance = Object.Instantiate(Resources.Load("Prefab/" + prefabname), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         renderer = m_Instance.transform.Find("img").GetComponent<SpriteRenderer>();
         renderer.sprite = SpManager.Instance.LoadSprite(spritename);

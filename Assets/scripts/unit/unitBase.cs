@@ -51,7 +51,7 @@ public class unitBase : entity
     private float[] fAttr;
     public GridID   targetGrid;
     public entity   target;
-    public Vector3 m_pos;
+    
     public Color    skinColor;
     public bool     bDebugInfo;
     public UnitAiBase       ai;
@@ -72,6 +72,7 @@ public class unitBase : entity
     public void spawn(int x, int y)
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(new GridID(x, y));
+        pos = v;
         grid = new GridID(x, y);
         m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         m_Instance.transform.parent = GameObject.Find("units").transform;
@@ -81,16 +82,6 @@ public class unitBase : entity
         m_movement.init(this);
         m_skin.init(this);
         m_unitUI.init(this);
-    }
-
-    public Vector3 pos
-    {
-        get { return m_pos; }
-        set
-        {
-            m_pos = value;
-            grid = GSceneMap.Instance.nodeFromWorldPoint(m_pos).gridId;
-        }
     }
 
     public void loop()
@@ -292,7 +283,7 @@ public class UnitAiBase
         if (baseUnit.dead)
             return;
 
-        if (baseUnit.disTo(t) <= 1)
+        if (baseUnit.v3Dis(t) <= 3)
             return;
 
         targetUnit = t;
@@ -312,7 +303,7 @@ public class UnitAiBase
 
     public void moveToTarget()
     {
-        if (baseUnit.dead || baseUnit.disTo(targetUnit) <= 1)
+        if (baseUnit.dead || baseUnit.v3Dis(targetUnit) <= 3)
         {
             ai = AI.idle;
             op = OP.idle;
