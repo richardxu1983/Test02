@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
         //
         if (Input.GetMouseButtonDown(1))
         {
-            unitPool.Instance.MoveSelectToWorldPos(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            unitPool.Instance.onRightClick();
         }
 
         if(Input.GetMouseButtonDown(0))

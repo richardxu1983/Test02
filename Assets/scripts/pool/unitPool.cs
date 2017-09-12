@@ -145,6 +145,35 @@ public class unitPool : UnitySingleton<unitPool>
         }
     }
 
+    public void onRightClick()
+    {
+        if (currentSelHuman >= 0)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject.tag == "unit")
+                {
+                    int i = hit.collider.gameObject.GetComponent<unitMovement>().manager().id;
+                    units.get(currentSelHuman).ai.TryMoveToTarget(units.get(i), true);
+                }
+                else
+                {
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                    {
+                        MoveSelectToWorldPos(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                    }
+                }
+            }
+            else
+            {
+                MoveSelectToWorldPos(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+        }
+    }
+
     public void ClearAll()
     {
         for (int i = 0; i < units.index; i++)

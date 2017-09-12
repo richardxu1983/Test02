@@ -200,7 +200,7 @@ public class UnitAiBase
     public List<Node> path;
     public int pathIndex;
     public unitBase baseUnit;
-    public unitBase targetUnit;
+    public entity targetUnit;
 
     public UnitAiBase()
     {
@@ -274,6 +274,7 @@ public class UnitAiBase
         ai = AI.moveTo;
         op = OP.moving;
         baseUnit.targetGrid = v;
+        targetUnit = default(unitBase);
 
         path.Clear();
         PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(baseUnit.targetGrid), ref path);
@@ -286,7 +287,7 @@ public class UnitAiBase
         }
     }
 
-    public void TryMoveToTarget(unitBase t, bool isCmd)
+    public void TryMoveToTarget(entity t, bool isCmd)
     {
         if (baseUnit.dead)
             return;
@@ -295,11 +296,11 @@ public class UnitAiBase
             return;
 
         targetUnit = t;
-        baseUnit.targetGrid = t.targetGrid;
+        baseUnit.targetGrid = t.grid;
         ai = AI.moveTo;
         op = OP.moving;
         path.Clear();
-        PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(t.targetGrid), ref path);
+        PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(t.grid), ref path);
         pathIndex = 0;
 
         if (isCmd)
@@ -316,13 +317,14 @@ public class UnitAiBase
             ai = AI.idle;
             op = OP.idle;
             reason = AIR.none;
-            targetUnit = default(unitBase);
+            targetUnit = default(entity);
+            path.Clear();
         }
 
-        if(baseUnit.targetGrid!= targetUnit.targetGrid)
+        if(baseUnit.targetGrid!= targetUnit.grid)
         {
             path.Clear();
-            PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(targetUnit.targetGrid), ref path);
+            PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(targetUnit.grid), ref path);
             pathIndex = 0;
         }
     }
