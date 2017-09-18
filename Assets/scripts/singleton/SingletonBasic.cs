@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class UnitySingleton<T> : MonoBehaviour
         where T : Component
 {
@@ -22,6 +24,11 @@ public class UnitySingleton<T> : MonoBehaviour
                 }
             }
             return _instance;
+        }
+
+        set
+        {
+            _instance = value;
         }
     }
     public virtual void Awake()

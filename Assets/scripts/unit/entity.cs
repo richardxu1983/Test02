@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /*
 type :
@@ -10,6 +11,7 @@ type :
     4:人
 */
 
+[Serializable]
 public class entity {
 
     public GridID grid { get; set; }
@@ -59,14 +61,20 @@ public class entity {
     }
 }
 
+[Serializable]
 public class plant : entity
 {
-    public GameObject m_Instance;
-    public SpriteRenderer renderer;
     public string prefabname;
     public string spritename;
     public string parentname;
+
+
+    [NonSerialized]
     public plantMo mo;
+    [NonSerialized]
+    public GameObject m_Instance;
+    [NonSerialized]
+    public SpriteRenderer renderer;
 
     public plant(int x, int y,int _type,int _tid):base(x,y,_type,_tid)
     {
@@ -76,7 +84,7 @@ public class plant : entity
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(grid);
         pos = v;
-        m_Instance = Object.Instantiate(Resources.Load("Prefab/" + prefabname), v, new Quaternion(0, 0, 0, 0)) as GameObject;
+        m_Instance = UnityEngine.Object.Instantiate(Resources.Load("Prefab/" + prefabname), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         renderer = m_Instance.transform.Find("img").GetComponent<SpriteRenderer>();
         renderer.sprite = SpManager.Instance.LoadSprite(spritename);
         m_Instance.transform.parent = GameObject.Find(parentname).transform;
@@ -91,6 +99,7 @@ public class plant : entity
     }
 }
 
+[Serializable]
 public class grass: plant
 {
     public grass(int x, int y) : base(x, y, 1, 1)
@@ -101,6 +110,7 @@ public class grass: plant
     }
 }
 
+[Serializable]
 public class tree : plant
 {
     public tree(int x, int y) : base(x, y, 2, 1)

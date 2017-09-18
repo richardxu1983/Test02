@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public struct ST_AnimalConfig
 {
@@ -30,6 +31,7 @@ public struct ST_GSurface
     public bool canPlant;
 }
 
+[Serializable]
 public class GridID
 {
     public int x;

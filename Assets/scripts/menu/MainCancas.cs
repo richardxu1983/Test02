@@ -45,6 +45,11 @@ public class MainCancas : MonoBehaviour {
             onClickShowDebug();
         });
 
+        btnRegister("Canvas/debugPanel/btnSaveGame", delegate ()
+        {
+            onClickSaveGame();
+        });
+
         debugPanel = GameObject.Find("Canvas/debugPanel");
         btnShowDebug = GameObject.Find("Canvas/btnShowDbg");
         txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
@@ -60,6 +65,11 @@ public class MainCancas : MonoBehaviour {
         //Debug.Log(btn2);
         //添加点击侦听
         btn2.onClick.AddListener(action);
+    }
+
+    void onClickSaveGame()
+    {
+        GlobalControl.Instance.saveToFile();
     }
 
     void onClickQuitGame()

@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
+[Serializable]
 public class GSceneMap : UnitySingleton<GSceneMap>
 {
     public int gridNum = 200;
     int gridSizeX, gridSizeY;
     float mapWidth, mapLength;
     float gridSize = 2.2f;
-
-    GameObject terrain;
-    TerrainData _terraindata;
-    SplatPrototype[] terrainTexture;
-    Terrain t;
-
     public Vector2 gridWorldSize;
     public Node[,] grid;
     Vector3 worldBottomLeft;
-
     private float _seedX = 0.0f, _seedZ = 0.0f;
     private float _relief = 15f;
     float xSample, zSample;
+
+    [NonSerialized]
+    GameObject terrain;
+    [NonSerialized]
+    TerrainData _terraindata;
+    [NonSerialized]
+    SplatPrototype[] terrainTexture;
+    [NonSerialized]
+    Terrain t;
 
     public void CreateMap()
     {
@@ -30,7 +32,18 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         CreateTerrain();
     }
 
-    void CreateTerrain()
+    public void CreateMap(int _w)
+    {
+        gridNum = _w;
+        gridSizeX = gridNum;
+        gridSizeY = gridNum;
+        mapWidth = gridSizeX * gridSize;
+        mapLength = gridSizeY * gridSize;
+        gridWorldSize = new Vector2(mapWidth, mapLength);
+        grid = new Node[gridSizeX, gridSizeY];
+    }
+
+    public void CreateTerrain()
     {
         int sur;
   
@@ -77,11 +90,13 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateData()
     {
+        Debug.Log("CreateData");
         gridSizeX = gridNum;
         gridSizeY = gridNum;
         mapWidth = gridSizeX * gridSize;
         mapLength = gridSizeY * gridSize;
         gridWorldSize = new Vector2(mapWidth, mapLength);
+        grid = new Node[gridSizeX, gridSizeY];
         CreateGrid();
     }
 
@@ -119,7 +134,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateGrid()
     {
-        grid = new Node[gridSizeX, gridSizeY];
+        Debug.Log("CreateGrid");
+        
         worldBottomLeft = new Vector3(0,0,0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         Vector3 worldPoint;
         int sur;
@@ -146,6 +162,44 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 if (tree)
                 {
                     grid[x, y].growTree();
+                }
+            }
+        }
+    }
+
+    public void spawnAll()
+    {
+        Debug.Log("spawnAll");
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                if(grid[x, y].m_grass!=null)
+                {
+                    grid[x, y].m_grass.spawn();
+                }
+                if (grid[x, y].m_tree != null)
+                {
+                    grid[x, y].m_tree.spawn();
+                }
+            }
+        }
+    }
+
+    public void Clear()
+    {
+        Debug.Log("Clear");
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                if (grid[x, y].m_grass != null)
+                {
+                    grid[x, y].deleteGrass();
+                }
+                if (grid[x, y].m_tree != null)
+                {
+                    grid[x, y].deleteTree();
                 }
             }
         }

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        GlobalControl.Instance.GameInit();
+        GlobalControl.Instance.onEnterScene();
 
         Application.targetFrameRate = 60;
         t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
     public void OnDestroy()
     {
         t.Enabled = false;
+
+        GlobalControl.Instance.onLeaveScene();
     }
 
     public void OnApplicationPause(bool pause)

@@ -92,7 +92,7 @@ public class unitMovement : MonoBehaviour {
             {
                 movement.Normalize();
 
-                if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z))
+                if (Mathf.Abs(movement.x) > Mathf.Abs(movement.z)*1.1)
                 {
                     if (movement.x > 0)
                     {

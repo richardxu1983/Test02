@@ -136,12 +136,12 @@ public class camera : MonoBehaviour {
                 GL.Color(Color.white);
                 if (unitPool.Instance.getSelectHuman().ai.path.Count>0)
                 {
-                    DrawLineNew(unitPool.Instance.getSelectHuman().pos, unitPool.Instance.getSelectHuman().ai.path[unitPool.Instance.getSelectHuman().ai.pathIndex].worldPosition);
+                    DrawLineNew(unitPool.Instance.getSelectHuman().pos - transform.position, unitPool.Instance.getSelectHuman().ai.path[unitPool.Instance.getSelectHuman().ai.pathIndex].worldPosition -transform.position);
                     if (unitPool.Instance.getSelectHuman().ai.path.Count - unitPool.Instance.getSelectHuman().ai.pathIndex >= 2)
                     {
                         for (int i = unitPool.Instance.getSelectHuman().ai.pathIndex; i < unitPool.Instance.getSelectHuman().ai.path.Count-1; i++)
                         {
-                            DrawLineNew(unitPool.Instance.getSelectHuman().ai.path[i].worldPosition, unitPool.Instance.getSelectHuman().ai.path[i+1].worldPosition);
+                            DrawLineNew(unitPool.Instance.getSelectHuman().ai.path[i].worldPosition - transform.position, unitPool.Instance.getSelectHuman().ai.path[i+1].worldPosition - transform.position);
                         }
                     }
                 }

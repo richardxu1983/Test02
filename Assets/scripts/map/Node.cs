@@ -1,29 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+
+[Serializable]
 public class Node : IHeapItem<Node>
 {
 
     public bool block;
-    public Vector3 worldPosition;
     public GridID gridId;
     public int gCost;
     public int hCost;
     public Node parent;
     public int terrainIndex;
     public int surfaceId;
-    public int grassIndex = -1;
-    public int treeIndex = -1;
     public grass m_grass;
     public tree m_tree;
     int heapIndex;
+    public Vector3 worldPosition;
 
     public Node(bool _block,Vector3 _worldPosition, GridID _gridId)
     {
         block = _block;
         worldPosition = _worldPosition;
         gridId = _gridId;
+        m_grass = default(grass);
+        m_tree = default(tree);
     }
 
     public void deleteGrass()

@@ -17,12 +17,27 @@ public class MenuCanvas : MonoBehaviour {
         btn.onClick.AddListener(delegate () {
             onClickEnterGame(btnObj);
         });
+
+        btnObj = GameObject.Find("Canvas/btnLoadGame");
+        btn = btnObj.GetComponent<Button>();
+        btn.onClick.AddListener(delegate () {
+            onClickLoadGame(btnObj);
+        });
+
+        GlobalControl.Instance.GameInit();
     }
 
     void onClickEnterGame(GameObject obj)
     {
-        Debug.Log("click: " + obj.name);
+        //Debug.Log("click: " + obj.name);
         //Application.LoadLevel("Scene_2");
+        GlobalControl.Instance.newGame = true;
+        SceneManager.LoadScene("main");
+    }
+
+    void onClickLoadGame(GameObject obj)
+    {
+        GlobalControl.Instance.newGame = false;
         SceneManager.LoadScene("main");
     }
 
