@@ -4,6 +4,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using PlatForm.Utilities;
+using System.IO;
 
 public class MainCancas : MonoBehaviour {
 
@@ -50,6 +52,11 @@ public class MainCancas : MonoBehaviour {
             onClickSaveGame();
         });
 
+        btnRegister("Canvas/debugPanel/btnTest", delegate ()
+        {
+            onClickTest();
+        });
+
         debugPanel = GameObject.Find("Canvas/debugPanel");
         btnShowDebug = GameObject.Find("Canvas/btnShowDbg");
         txtSelectInfo = GameObject.Find("Canvas/infoPanel/selectInfo").GetComponent<Text>();
@@ -85,6 +92,22 @@ public class MainCancas : MonoBehaviour {
     void onClickCreateAnimal()
     {
         unitPool.Instance.CreateRandomAnimal();
+    }
+
+    void onClickTest()
+    {
+        Debug.Log("test");
+
+        int a = 5;
+        SerializeHelper.SaveToFile<int>(a, Application.persistentDataPath + "/saveData.dat", FileMode.Create);
+        int b = SerializeHelper.loadFromFile<int>(Application.persistentDataPath + "/saveData.dat");
+        Debug.Log("b="+b);
+
+        Node n = new Node(false, new Vector3(2, 2, 2), new GridID(2, 2));
+        SerializeHelper.SaveToFile<Node>(n, Application.persistentDataPath + "/saveData.dat", FileMode.Create);
+        Node m = SerializeHelper.loadFromFile<Node>(Application.persistentDataPath + "/saveData.dat");
+
+        Debug.Log("m.worldPosition.x=" + m.worldPosition.x);
     }
 
     void onClickHideDebug()
