@@ -35,8 +35,21 @@ namespace PlatForm.Utilities
 
     public class SerializeHelper
     {
+        static FileStream fs;
+        static BinaryFormatter formatter = new BinaryFormatter();
+        static SurrogateSelector ss = new SurrogateSelector();
+
         public SerializeHelper()
-        { }
+        {
+
+        }
+
+        public static void init()
+        {
+            Assets.Editor.Vector3SerializationSurrogate v3Surrogate = new Assets.Editor.Vector3SerializationSurrogate();
+            ss.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), v3Surrogate);
+            formatter.SurrogateSelector = ss;
+        }
 
         #region XML序列化
         /// <summary>
@@ -223,6 +236,54 @@ namespace PlatForm.Utilities
             return t;
         }
 
+        public static void SaveStart(string path)
+        {
+            fs = new FileStream(path, FileMode.Create);
+        }
+
+        public static void Save<T>(T item)
+        {
+            try
+            {
+                formatter.Serialize(fs, item);
+            }
+            catch (SerializationException e)
+            {
+                Debug.Log("Failed to serialize. Reason: " + e.Message);
+                fs.Close();
+                throw;
+            }
+        }
+
+        public static void SaveEnd()
+        {
+            fs.Close();
+        }
+
+
+        public static void LoadStart(string path)
+        {
+            fs = new FileStream(path, FileMode.Open);
+        }
+
+        public static T Load<T>()
+        {
+            try
+            {
+                return (T)formatter.Deserialize(fs);
+            }
+            catch (SerializationException e)
+            {
+                Debug.Log("Failed to serialize. Reason: " + e.Message);
+                fs.Close();
+                throw;
+            }
+        }
+
+        public static void LoadEnd()
+        {
+            fs.Close();
+        }
 
         /// <summary>
         /// 将对象序列化为二进制字节

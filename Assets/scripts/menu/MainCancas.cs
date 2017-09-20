@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using PlatForm.Utilities;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class MainCancas : MonoBehaviour {
 
@@ -97,17 +99,27 @@ public class MainCancas : MonoBehaviour {
     void onClickTest()
     {
         Debug.Log("test");
+        string path = Application.persistentDataPath + "/saveData.dat";
 
         int a = 5;
-        SerializeHelper.SaveToFile<int>(a, Application.persistentDataPath + "/saveData.dat", FileMode.Create);
-        int b = SerializeHelper.loadFromFile<int>(Application.persistentDataPath + "/saveData.dat");
-        Debug.Log("b="+b);
-
+        int b = 6;
+        Node m;
+        int c, d;
         Node n = new Node(false, new Vector3(2, 2, 2), new GridID(2, 2));
-        SerializeHelper.SaveToFile<Node>(n, Application.persistentDataPath + "/saveData.dat", FileMode.Create);
-        Node m = SerializeHelper.loadFromFile<Node>(Application.persistentDataPath + "/saveData.dat");
+        
+        SerializeHelper.SaveStart(path);
+        SerializeHelper.Save<int>(a);
+        SerializeHelper.Save<int>(b);
+        SerializeHelper.Save<Node>(n);
+        SerializeHelper.SaveEnd();
 
-        Debug.Log("m.worldPosition.x=" + m.worldPosition.x);
+        SerializeHelper.LoadStart(path);
+        c = SerializeHelper.Load<int>();
+        d = SerializeHelper.Load<int>();
+        m = SerializeHelper.Load<Node>();
+        SerializeHelper.LoadEnd();
+
+        Debug.Log("c=" + c + " , d=" + d + " , m.worldPosition.x=" + m.worldPosition.x);
     }
 
     void onClickHideDebug()

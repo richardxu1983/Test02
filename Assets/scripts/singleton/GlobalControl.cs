@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using PlatForm.Utilities;
 
 public class GlobalControl : UnitySingleton<GlobalControl>
 {
@@ -19,6 +20,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         XMLLoader.Instance.init();
         XMLLoader.Instance.load();
         unitPool.Instance.init();
+        SerializeHelper.init();
     }
 
     public void onEnterScene()
@@ -53,27 +55,6 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         //time
         GTime.Instance.init();
         GSceneMap.Instance.CreateMap(200);
-
-        FileStream fs = new FileStream(Application.persistentDataPath + "/saveData.dat", FileMode.Open);
-        try
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            // Deserialize the hashtable from the file and 
-            // assign the reference to the local variable.
-            //map
-            GSceneMap.Instance.gridNum = (int)formatter.Deserialize(fs);
-        }
-        catch (SerializationException e)
-        {
-            Debug.Log("Failed to deserialize. Reason: " + e.Message);
-            throw;
-        }
-        finally
-        {
-            fs.Close();
-        }
-
         GSceneMap.Instance.CreateTerrain();
         GSceneMap.Instance.spawnAll();
         PathFind.Instance.init();
@@ -82,30 +63,6 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     public void saveToFile()
     {
         Debug.Log("开始存档");
-
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(Application.persistentDataPath + "/saveData.dat", FileMode.Create);
-
-        SurrogateSelector ss = new SurrogateSelector();
-        Assets.Editor.Vector3SerializationSurrogate v3Surrogate = new Assets.Editor.Vector3SerializationSurrogate();
-        ss.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), v3Surrogate);
-        formatter.SurrogateSelector = ss;
-
-        try
-        {
-            formatter.Serialize(stream, GSceneMap.Instance.gridNum);
-        }
-        catch (SerializationException e)
-        {
-            Debug.Log("Failed to serialize. Reason: " + e.Message);
-            throw;
-        }
-        finally
-        {
-            stream.Close();
-        }
-
-        Debug.Log("存档结束");
     }
 
     public void ToggleDebug()
