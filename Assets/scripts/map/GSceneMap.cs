@@ -32,9 +32,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         CreateTerrain();
     }
 
-    public void CreateMap(int _w)
+    public void LoadMap()
     {
-        gridNum = _w;
         gridSizeX = gridNum;
         gridSizeY = gridNum;
         mapWidth = gridSizeX * gridSize;

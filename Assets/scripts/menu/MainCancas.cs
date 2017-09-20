@@ -99,6 +99,8 @@ public class MainCancas : MonoBehaviour {
     void onClickTest()
     {
         Debug.Log("test");
+
+        /*
         string path = Application.persistentDataPath + "/saveData.dat";
 
         int a = 5;
@@ -120,6 +122,7 @@ public class MainCancas : MonoBehaviour {
         SerializeHelper.LoadEnd();
 
         Debug.Log("c=" + c + " , d=" + d + " , m.worldPosition.x=" + m.worldPosition.x);
+        */
     }
 
     void onClickHideDebug()

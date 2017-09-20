@@ -83,7 +83,9 @@ public class plant : entity
     public void spawn()
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(grid);
-        pos = v;
+        //Debug.Log(grid.x+" , "+ grid.y);
+        //Debug.Log(v);
+        m_pos = v;
         m_Instance = UnityEngine.Object.Instantiate(Resources.Load("Prefab/" + prefabname), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         renderer = m_Instance.transform.Find("img").GetComponent<SpriteRenderer>();
         renderer.sprite = SpManager.Instance.LoadSprite(spritename);
