@@ -10,7 +10,7 @@ public class MenuCanvas : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //获取按钮游戏对象
-        GameObject btnObj = GameObject.Find("Canvas/btnEnterGame");
+        GameObject btnObj = GameObject.Find("Canvas/Panel/btnEnterGame");
         //获取按钮脚本组件
         Button btn = btnObj.GetComponent<Button>();
         //添加点击侦听
@@ -18,7 +18,7 @@ public class MenuCanvas : MonoBehaviour {
             onClickEnterGame(btnObj);
         });
 
-        btnObj = GameObject.Find("Canvas/btnLoadGame");
+        btnObj = GameObject.Find("Canvas/Panel/btnLoadGame");
         btn = btnObj.GetComponent<Button>();
         btn.onClick.AddListener(delegate () {
             onClickLoadGame(btnObj);
@@ -32,13 +32,13 @@ public class MenuCanvas : MonoBehaviour {
         //Debug.Log("click: " + obj.name);
         //Application.LoadLevel("Scene_2");
         GlobalControl.Instance.newGame = true;
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene(Globals.lodingSceneName);
     }
 
     void onClickLoadGame(GameObject obj)
     {
         GlobalControl.Instance.newGame = false;
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene(Globals.lodingSceneName);
     }
 
     // Update is called once per frame

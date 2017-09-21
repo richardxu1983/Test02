@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class Globals
 {
+
+    public static string lodingSceneName = "loading";
+
     //----------max config numbers--------//
     public static int MAX_ANIMAL_CONFIG_NUM = 100;
     public static int MAX_SKINCOLOR_CONFIG_NUM = 100;

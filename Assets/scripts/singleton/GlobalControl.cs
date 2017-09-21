@@ -13,6 +13,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     public bool newGame = true;
     public bool binit = false;
     public string loadFile;
+    
 
     public void GameInit()
     {
