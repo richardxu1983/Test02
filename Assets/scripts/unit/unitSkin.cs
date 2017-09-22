@@ -52,6 +52,7 @@ public class unitSkin : MonoBehaviour {
         }
         m_umovement = GetComponent<unitMovement>();
         Update();
+        m_manager.m_setFinish = true;
     }
 
     public Vector3 getBottomPos(float v)

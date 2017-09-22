@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using System;
+
+[Serializable]
 public class unitPool : UnitySingleton<unitPool>
 {
     //public List<unitManager> units;
-    public int currentSelHuman = -1;
     public nList<unitBase> units;
+
+    [NonSerialized]
+    public int currentSelHuman = -1;
 
     public void init()
     {
@@ -184,6 +189,17 @@ public class unitPool : UnitySingleton<unitPool>
                 {
                     units.get(i).toDelete = 1;
                 }
+            }
+        }
+    }
+
+    public void spawnAll()
+    {
+        for (int i = 0; i < units.index; i++)
+        {
+            if (units.get(i) != null)
+            {
+                units.get(i).spawn();
             }
         }
     }

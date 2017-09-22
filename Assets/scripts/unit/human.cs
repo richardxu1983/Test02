@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class human : unitBase
 {
     public human(int _tid):base(4, _tid)
@@ -15,9 +17,9 @@ public class human : unitBase
         typeId = 1;
         int _headSkin = 1000;
         int _bodySkin = 1000;
-        int _skinColorId = Globals.rd.Next(utils.Instance.maxColors);
+        skinColorId = Globals.rd.Next(utils.Instance.maxColors);
         headSkin = _headSkin;
-        skinColor = utils.Instance.getSkinColor(_skinColorId);
+        skinColor = utils.Instance.getSkinColor(skinColorId);
         bodySkin = _bodySkin;
         name = "human";
         runSpeed = 4;

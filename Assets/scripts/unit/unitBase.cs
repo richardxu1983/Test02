@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 public enum UIA
 {
     uid,
     hp,
     hpMax,
-    skinColor,
+    skinColorId,
     headSkin,
     bodySkin,
 }
@@ -19,6 +19,7 @@ public enum UFA
     walk_speed,
 }
 
+[Serializable]
 public enum OP
 {
     idle,
@@ -27,6 +28,7 @@ public enum OP
     die,
 }
 
+[Serializable]
 public enum AI
 {
     idle,
@@ -35,6 +37,7 @@ public enum AI
     die,
 }
 
+[Serializable]
 public enum AIR
 {
     none,
@@ -43,6 +46,7 @@ public enum AIR
     wander_idle,
 }
 
+[Serializable]
 public class unitBase : entity
 {
 
@@ -51,14 +55,24 @@ public class unitBase : entity
     private float[] fAttr;
     public GridID   targetGrid;
     public entity   target;
-    
-    public Color    skinColor;
-    public bool     bDebugInfo;
-    public UnitAiBase       ai;
+    public UnitAiBase ai;
+    public faceTo playerFace = faceTo.down;//0:down,1:up,2:left,3:right
+    public faceTo playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
+
+    [NonSerialized]
+    public Color            skinColor;
+    [NonSerialized]
+    public bool             bDebugInfo;
+    [NonSerialized]
     public GameObject       m_Instance;
+    [NonSerialized]
     public unitMovement     m_movement;
+    [NonSerialized]
     public unitUI           m_unitUI;
+    [NonSerialized]
     public unitSkin         m_skin;
+    [NonSerialized]
+    public bool m_setFinish = false;
 
     public unitBase(int _type,int _tid):base(_type, _tid)
     {
@@ -72,9 +86,9 @@ public class unitBase : entity
     public void spawn(int x, int y)
     {
         Vector3 v = GSceneMap.Instance.gridToWorldPosition(new GridID(x, y));
-        pos = v;
         grid = new GridID(x, y);
-        m_Instance = Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
+        m_pos = v;
+        m_Instance = UnityEngine.Object.Instantiate(Resources.Load("Prefab/unit"), v, new Quaternion(0, 0, 0, 0)) as GameObject;
         m_Instance.transform.parent = GameObject.Find("units").transform;
         m_movement = m_Instance.GetComponent<unitMovement>();
         m_skin = m_Instance.GetComponent<unitSkin>();
@@ -82,6 +96,20 @@ public class unitBase : entity
         m_movement.init(this);
         m_skin.init(this);
         m_unitUI.init(this);
+    }
+
+    public void spawn()
+    {
+        skinColor = utils.Instance.getSkinColor(skinColorId);
+        m_Instance = UnityEngine.Object.Instantiate(Resources.Load("Prefab/unit"), m_pos, new Quaternion(0, 0, 0, 0)) as GameObject;
+        m_Instance.transform.parent = GameObject.Find("units").transform;
+        m_movement = m_Instance.GetComponent<unitMovement>();
+        m_skin = m_Instance.GetComponent<unitSkin>();
+        m_unitUI = m_Instance.GetComponent<unitUI>();
+        m_movement.init(this);
+        m_skin.init(this);
+        m_unitUI.init(this);
+        ai.init(this);
     }
 
     public void loop()
@@ -133,6 +161,12 @@ public class unitBase : entity
         get { return iGet(UIA.headSkin); }
     }
 
+    public int skinColorId
+    {
+        set { iSet(UIA.skinColorId, value); }
+        get { return iGet(UIA.skinColorId); }
+    }
+
     public int iGet(UIA v)
     {
         return iAttr[(int)v];
@@ -180,23 +214,31 @@ public class unitBase : entity
     }
 }
 
+[Serializable]
 public class UnitAiBase
 {
-    public OP op = OP.idle;
-    public AI ai = AI.idle;
     public int tick;
     public int m_tickMax;
     public int timeLeft;
+
+    [NonSerialized]
+    public OP op = OP.idle;
+    [NonSerialized]
+    public AI ai = AI.idle;
+    [NonSerialized]
     public AIR reason = AIR.none;
-    public List<Node> path;
-    public int pathIndex;
-    public unitBase baseUnit;
+    [NonSerialized]
     public entity targetUnit;
+    [NonSerialized]
+    public List<Node> path;
+    [NonSerialized]
+    public int pathIndex;
+    [NonSerialized]
+    public unitBase baseUnit;
 
     public UnitAiBase()
     {
-        pathIndex = 0;
-        path = new List<Node>();
+
     }
 
     public void loop()
@@ -216,6 +258,8 @@ public class UnitAiBase
 
     public void init(unitBase m)
     {
+        pathIndex = 0;
+        path = new List<Node>();
         baseUnit = m;
     }
 

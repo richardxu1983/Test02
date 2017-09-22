@@ -10,8 +10,6 @@ public class unitMovement : MonoBehaviour {
     [SerializeField] int fps;
 
     private unitBase m_manager = new unitBase(1,1);
-    private faceTo playerFace;//0:down,1:up,2:left,3:right
-    private faceTo playerFaceLast;//0:down,1:up,2:left,3:right
     private Vector3 m_movement;
 
     public void init(unitBase v)
@@ -31,17 +29,17 @@ public class unitMovement : MonoBehaviour {
 
     public faceTo getFaceTo()
     {
-        return playerFace;
+        return m_manager.playerFace;
     }
 
     public faceTo getLastFaceTo()
     {
-        return playerFaceLast;
+        return m_manager.playerFaceLast;
     }
 
     public void setLastFace(faceTo f)
     {
-        playerFaceLast = f;
+        m_manager.playerFaceLast = f;
     }
 
     private void OnEnable()
@@ -52,8 +50,6 @@ public class unitMovement : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        playerFace = faceTo.down;
-        playerFaceLast = faceTo.none;
     }
 
     // Update is called once per frame
@@ -96,22 +92,22 @@ public class unitMovement : MonoBehaviour {
                 {
                     if (movement.x > 0)
                     {
-                        playerFace = faceTo.right;
+                        m_manager.playerFace = faceTo.right;
                     }
                     else if(movement.x < 0)
                     {
-                        playerFace = faceTo.left;
+                        m_manager.playerFace = faceTo.left;
                     }
                 }
                 else
                 {
                     if (movement.z > 0)
                     {
-                        playerFace = faceTo.up;
+                        m_manager.playerFace = faceTo.up;
                     }
                     else if(movement.z < 0)
                     {
-                        playerFace = faceTo.down;
+                        m_manager.playerFace = faceTo.down;
                     }
                 }
                 

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class nList<T>
 {
     public T[] array;
@@ -9,7 +11,6 @@ public class nList<T>
     public int count;
     public int index = 0;
     public int MaxNum = 0;
-
 
     public nList(int v)
     {

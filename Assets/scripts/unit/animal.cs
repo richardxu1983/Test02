@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class animal : unitBase
 {
 
@@ -14,7 +16,7 @@ public class animal : unitBase
     {
         id = uid;
         headSkin = XMLLoader.Instance.animalConfig[typeId].headId;
-        skinColor = utils.Instance.getSkinColor(iGet(UIA.skinColor));
+        skinColor = utils.Instance.getSkinColor(skinColorId);
         bodySkin = XMLLoader.Instance.animalConfig[typeId].bodyId;
         name = XMLLoader.Instance.animalConfig[typeId].name;
         runSpeed = XMLLoader.Instance.animalConfig[typeId].speed;
