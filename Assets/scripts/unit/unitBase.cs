@@ -220,18 +220,11 @@ public class UnitAiBase
     public int tick;
     public int m_tickMax;
     public int timeLeft;
-
-    [NonSerialized]
     public OP op = OP.idle;
-    [NonSerialized]
     public AI ai = AI.idle;
-    [NonSerialized]
     public AIR reason = AIR.none;
-    [NonSerialized]
     public entity targetUnit;
-    [NonSerialized]
     public List<Node> path;
-    [NonSerialized]
     public int pathIndex;
     [NonSerialized]
     public unitBase baseUnit;
@@ -258,8 +251,6 @@ public class UnitAiBase
 
     public void init(unitBase m)
     {
-        pathIndex = 0;
-        path = new List<Node>();
         baseUnit = m;
     }
 

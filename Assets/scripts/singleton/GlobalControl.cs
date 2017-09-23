@@ -12,6 +12,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     public bool showUnitName = true;
     public bool newGame = true;
     public bool binit = false;
+    public bool bLogicPause = true;
     public string loadFile;
     
 
@@ -31,7 +32,8 @@ public class GlobalControl : UnitySingleton<GlobalControl>
 
     public void onEnterScene()
     {
-        if(newGame)
+        bLogicPause = true;
+        if (newGame)
         {
             newGameInit();
         }
@@ -53,6 +55,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         GTime.Instance.init();
         GSceneMap.Instance.CreateMap();
         PathFind.Instance.init();
+        bLogicPause = false;
     }
 
     public void loadGame()
@@ -73,6 +76,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         GSceneMap.Instance.spawnAll();
         unitPool.Instance.spawnAll();
         PathFind.Instance.init();
+        bLogicPause = false;
     }
 
     public void saveToFile()

@@ -55,12 +55,14 @@ public class unitMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
-        if (m_manager.ai.op == OP.moving)
+        if (!GlobalControl.Instance.bLogicPause)
         {
-            Move();
+            if (m_manager.ai.op == OP.moving)
+            {
+                Move();
+            }
+            m_manager.pos = transform.position;
         }
-        m_manager.pos = transform.position;
     }
 
     void FixedUpdate()

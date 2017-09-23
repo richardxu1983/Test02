@@ -40,6 +40,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         mapLength = gridSizeY * gridSize;
         gridWorldSize = new Vector2(mapWidth, mapLength);
         grid = new Node[gridSizeX, gridSizeY];
+        worldBottomLeft = new Vector3(0, 0, 0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
     }
 
     public void CreateTerrain()
@@ -96,6 +97,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         mapLength = gridSizeY * gridSize;
         gridWorldSize = new Vector2(mapWidth, mapLength);
         grid = new Node[gridSizeX, gridSizeY];
+        worldBottomLeft = new Vector3(0, 0, 0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         CreateGrid();
     }
 
@@ -103,6 +105,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         int gridX = Mathf.RoundToInt((worldPosition.x - worldBottomLeft.x - gridSize / 2) / gridSize);
         int gridY = Mathf.RoundToInt((worldPosition.z - worldBottomLeft.z - gridSize / 2) / gridSize);
+        Debug.Log(worldPosition);
+        Debug.Log(gridX + " , "+gridY);
         return grid[gridX, gridY];
     }
 
@@ -135,7 +139,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         Debug.Log("CreateGrid");
         
-        worldBottomLeft = new Vector3(0,0,0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        
         Vector3 worldPoint;
         int sur;
         int h;

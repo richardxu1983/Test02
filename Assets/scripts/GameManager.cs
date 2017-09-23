@@ -41,8 +41,11 @@ public class GameManager : MonoBehaviour {
 
     public void theout(object source, System.Timers.ElapsedEventArgs e)
     {
-        GTime.Instance.tick();
-        unitPool.Instance.loop();
+        if(!GlobalControl.Instance.bLogicPause)
+        {
+            GTime.Instance.tick();
+            unitPool.Instance.loop();
+        }
     }
 
     // Update is called once per frame
