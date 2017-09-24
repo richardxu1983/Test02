@@ -28,6 +28,7 @@ public class entity {
         {
             m_pos = value;
             grid = GSceneMap.Instance.nodeFromWorldPoint(m_pos).gridId;
+            //Debug.Log(grid.x + " , " + grid.y);
         }
     }
 

@@ -231,11 +231,13 @@ public class UnitAiBase
 
     public UnitAiBase()
     {
-
+        pathIndex = 0;
+        path = new List<Node>();
     }
 
     public void loop()
     {
+        //Debug.Log("loop");
         wayPointCheck();
 
         if (tick >= m_tickMax)
@@ -338,6 +340,7 @@ public class UnitAiBase
 
     public void moveToTarget()
     {
+        //Debug.Log("moveToTarget");
         if (baseUnit.dead || baseUnit.v3Dis(targetUnit) <= 3)
         {
             ai = AI.idle;
@@ -378,7 +381,8 @@ public class UnitAiBase
 
     public void doMoveTo()
     {
-        if(targetUnit!=null)
+        //Debug.Log("doMoveTo");
+        if (targetUnit!=null)
         {
             moveToTarget();
         }
@@ -395,6 +399,7 @@ public class UnitAiBase
 
     public bool MoveToPos()
     {
+        //Debug.Log("MoveToPos : path.Count="+ path.Count);
         if (path.Count > 0)
         {
             if (pathIndex >= path.Count)

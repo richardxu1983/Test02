@@ -41,10 +41,11 @@ public class GameManager : MonoBehaviour {
 
     public void theout(object source, System.Timers.ElapsedEventArgs e)
     {
-        if(!GlobalControl.Instance.bLogicPause)
+        if(GlobalControl.Instance.bLogicPause==false)
         {
             GTime.Instance.tick();
             unitPool.Instance.loop();
+            
         }
     }
 

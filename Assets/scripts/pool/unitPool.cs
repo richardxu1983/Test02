@@ -21,6 +21,7 @@ public class unitPool : UnitySingleton<unitPool>
 
     public void loop()
     {
+        //Debug.Log("unit pool loop");
         for(int i=0;i< units.index;i++)
         {
             if(units.get(i)!=null)

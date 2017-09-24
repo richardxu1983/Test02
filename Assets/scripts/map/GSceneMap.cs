@@ -105,8 +105,8 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     {
         int gridX = Mathf.RoundToInt((worldPosition.x - worldBottomLeft.x - gridSize / 2) / gridSize);
         int gridY = Mathf.RoundToInt((worldPosition.z - worldBottomLeft.z - gridSize / 2) / gridSize);
-        Debug.Log(worldPosition);
-        Debug.Log(gridX + " , "+gridY);
+        //Debug.Log(worldPosition);
+        //Debug.Log(gridX + " , "+gridY);
         return grid[gridX, gridY];
     }
 

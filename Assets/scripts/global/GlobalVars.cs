@@ -14,13 +14,13 @@ public static class Globals
     //---------game time vars----------//
     public static int GAME_LOOP_INTERVAL = 250;
     public static int TIME_IN_TICK = 1;     //多少游戏分钟是游戏1小时
-    public static int MIN_IN_TICK = 4;     //多少游戏分钟是游戏1小时
-    public static int HOUR_IN_MINUTE = 30;     //多少游戏分钟是游戏1小时
-    public static int MONTH_IN_DAY = 15;      //一个月多少天
-    public static int DAY_IN_HOUR = 24;      //一天24小时
-    public static int YEAR_IN_MONTH = 12;    //一年12个月
+    public static int MIN_IN_TICK = 1;     //多少tick是1分钟
+    public static int HOUR_IN_MINUTE = 10;     //多少游戏分钟是游戏1小时
+    public static int MONTH_IN_DAY = 5;      //一个月多少天
+    public static int DAY_IN_HOUR = 3;      //一天几小时
+    public static int YEAR_IN_MONTH = 12;    //一年几个月
     public static int INIT_HOUR = 3;          //初始的小时
-    public static int INIT_YEAR = 1000;          //初始的小时
+    public static int INIT_YEAR = 3990;          //初始的年
 
     //----------camera vars--------//
     public static float MAX_CAMERA = 40.0f;

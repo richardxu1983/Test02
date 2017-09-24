@@ -70,6 +70,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         GSceneMap.Instance.LoadMap();
         GSceneMap.Instance.grid = SerializeHelper.Load<Node[,]>();
         unitPool.Instance.units = SerializeHelper.Load<nList<unitBase>>();
+        GTime.Instance = SerializeHelper.Load<GTime>();
         SerializeHelper.LoadEnd();
         Debug.Log("读取结束");
         GSceneMap.Instance.CreateTerrain();
@@ -88,6 +89,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         SerializeHelper.Save<int>(GSceneMap.Instance.gridNum);
         SerializeHelper.Save<Node[,]>(GSceneMap.Instance.grid);
         SerializeHelper.Save<nList<unitBase>>(unitPool.Instance.units);
+        SerializeHelper.Save<GTime>(GTime.Instance);
         SerializeHelper.SaveEnd();
         Debug.Log("存档结束");
     }
