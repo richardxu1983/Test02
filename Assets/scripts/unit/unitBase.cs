@@ -11,6 +11,11 @@ public enum UIA
     skinColorId,
     headSkin,
     bodySkin,
+    mood,
+    moodMax,
+    full,
+    fullMax,
+    fullDec,
 }
 
 public enum UFA
@@ -50,14 +55,21 @@ public enum AIR
 public class unitBase : entity
 {
 
-    private bool    m_isDead = false;
-    private int[]   iAttr;
-    private float[] fAttr;
-    public GridID   targetGrid;
-    public entity   target;
-    public UnitAiBase ai;
-    public faceTo playerFace = faceTo.down;//0:down,1:up,2:left,3:right
-    public faceTo playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
+    private int[]           iAttr;              //int 属性
+    private float[]         fAttr;              //float 属性
+    private bool            m_isDead = false;   //是否死亡
+    private int             tick = 0;
+    private int             tickMax = 4;
+    private int[]           buffExist;
+
+    public GridID           targetGrid;
+    public entity           target;
+    public UnitAiBase       ai;
+    public faceTo           playerFace = faceTo.down;//0:down,1:up,2:left,3:right
+    public faceTo           playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
+
+    private Dictionary<int, Condition> buff;       //buff
+    private Dictionary<int, Condition> debuff;     //debuff
 
     [NonSerialized]
     public Color            skinColor;
@@ -76,11 +88,15 @@ public class unitBase : entity
 
     public unitBase(int _type,int _tid):base(_type, _tid)
     {
-        iAttr = new int[64];
-        fAttr = new float[16];
-        ai = new UnitAiBase();
+        iAttr   = new int[64];
+        fAttr   = new float[16];
+        ai      = new UnitAiBase();
+        buff    = new Dictionary<int, Condition>();
+        debuff  = new Dictionary<int, Condition>();
+        buffExist = new int[64];
+        targetGrid = new GridID(0, 0);
+
         ai.init(this);
-        targetGrid = new GridID(0,0);
     }
 
     public void spawn(int x, int y)
@@ -114,7 +130,43 @@ public class unitBase : entity
 
     public void loop()
     {
+        tick++;
+        if(tick>=tickMax)
+        {
+            tick = 0;
+            AttrLoop();
+        }
         ai.loop();
+    }
+
+    void AttrLoop()
+    {
+        int v = iGet(UIA.full);
+        if (v>0)
+        {
+            v-= iGet(UIA.fullDec);
+            v = v < 0 ? 0 : v;
+            iSet(UIA.full, v);
+        }
+
+        SelfLoop();
+    }
+
+    public virtual void SelfLoop()
+    {
+    }
+
+    public void AddBuff(int id)
+    {
+        if(buffExist[id]==0)
+        {
+            buffExist[id] = 1;
+        }
+    }
+
+    public void DeleteBuff(int id)
+    {
+        buffExist[id] = 0;
     }
 
     public int hp() { return iGet(UIA.hp); }

@@ -12,9 +12,6 @@ public class LoadingTool : MonoBehaviour {
     //异步对象
     AsyncOperation async;
 
-    //读取场景的进度，它的取值范围在0 - 1 之间。
-    int progress = 0;
-
     void Start()
     {
         //在这里开启一个异步任务，

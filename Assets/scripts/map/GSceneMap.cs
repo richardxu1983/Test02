@@ -137,9 +137,6 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateGrid()
     {
-        Debug.Log("CreateGrid");
-        
-        
         Vector3 worldPoint;
         int sur;
         int h;

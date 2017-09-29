@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <config id="0" name="饥饿"     cover="-1" buff="0" mood="-30"  duration="-1" deleteAttr="full" deleteValue="40" deleteTime="0"  trigTime ="-1"  trigCondi ="-1" trigAction ="0"/>
+  <config id="1" name="极度饥饿"  cover="0"  buff="0" mood="-60"  duration="-1" deleteAttr="full" deleteValue="20" deleteTime="0"  trigTime ="20"  trigCondi ="2"  trigAction ="0"/>
+  <config id="2" name="营养不良"  cover="-1"  buff="0" mood="-20"  duration="-1" deleteAttr="full" deleteValue="20" deleteTime="20" trigTime ="60"  trigCondi ="-1" trigAction ="1"/>
+</objects>

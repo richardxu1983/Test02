@@ -22,6 +22,7 @@ public class GTime : Singleton<GTime>
     private int m_daysInYear;
     private int m_totalDaysInYear;
     private int m_cur_tick;
+    private int m_GTick;
 
     public delegate void NotifyMin();
     public event NotifyMin MinNotifier;
@@ -42,6 +43,7 @@ public class GTime : Singleton<GTime>
         m_day = 1;
         m_month = 1;
         m_cur_tick = 0;
+        m_GTick = 0;
         m_year = Globals.INIT_YEAR;
         m_totalDaysInYear = m_monthInDays * m_yearInMonths;
         m_MinutsInDay = m_dayInHours * m_hourInMinuts;
@@ -99,10 +101,17 @@ public class GTime : Singleton<GTime>
         return m_MinuteNowInDay;
     }
 
+    //
+    public int GTick
+    {
+        get { return m_GTick; }
+    }
+
     //Step Tick Time
     public void StepTickTime()
     {
         m_tick++;
+        m_GTick++;
         if (m_tick >= m_minInTick)
         {
             m_tick = 0;
@@ -118,11 +127,11 @@ public class GTime : Singleton<GTime>
                     m_day++;
                     if (m_day >= m_monthInDays)
                     {
-                        m_day = 0;
+                        m_day = 1;
                         m_month++;
                         if (m_month >= m_yearInMonths)
                         {
-                            m_month = 0;
+                            m_month = 1;
                             m_year++;
                         }
                     }
