@@ -135,6 +135,7 @@ public class unitBase : entity
         {
             tick = 0;
             AttrLoop();
+            BuffLoop();
         }
         ai.loop();
     }
@@ -152,21 +153,61 @@ public class unitBase : entity
         SelfLoop();
     }
 
+    void BuffLoop()
+    {
+
+    }
+
     public virtual void SelfLoop()
     {
     }
 
-    public void AddBuff(int id)
+    public void TryAddBuff(int id)
     {
         if(buffExist[id]==0)
         {
+            int cover = XMLLoader.Instance.GCondition[id].cover;
+
+            if(cover>-1)
+            {
+                TryDeleteBuff(cover);
+            }
+
+            if (XMLLoader.Instance.GCondition[id].buff)
+            {
+                AddBuff(id);
+            }
+            else
+            {
+                AddDeBuff(id);
+            }
             buffExist[id] = 1;
         }
     }
 
-    public void DeleteBuff(int id)
+    public void AddBuff(int id)
+    {
+        Condition c = new Condition(id);
+        buff.Add(id, c);
+    }
+
+    public void AddDeBuff(int id)
+    {
+        Condition c = new Condition(id);
+        debuff.Add(id, c);
+    }
+
+    public void TryDeleteBuff(int id)
     {
         buffExist[id] = 0;
+        if (XMLLoader.Instance.GCondition[id].buff)
+        {
+            buff.Remove(id);
+        }
+        else
+        {
+            debuff.Remove(id);
+        }
     }
 
     public int hp() { return iGet(UIA.hp); }

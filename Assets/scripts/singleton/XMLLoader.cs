@@ -5,10 +5,11 @@ using System.Xml;
 
 public class XMLLoader : UnitySingleton<XMLLoader>
 {
-    public ST_AnimalConfig[]    animalConfig;
-    public ST_GSurface[] GsurIndex;
-    public int[] GSHelper;
-    public ST_GSURS[] GSurSearch;
+    public ST_AnimalConfig[]    animalConfig;   //动物表
+    public ST_GSurface[]        GsurIndex;      //地面表
+    public int[]                GSHelper;
+    public ST_GSURS[]           GSurSearch;
+    public ST_Condition[]       GCondition;     //buff表
 
     private int MaxAnimalConfig;
     public int MaxGSurConfig;
@@ -44,9 +45,12 @@ public class XMLLoader : UnitySingleton<XMLLoader>
 
     public void surfaceInit()
     {
-        GsurIndex = new ST_GSurface[Globals.MAX_GSUR_NUM];
-        GSHelper = new int[Globals.MAX_GSUR_NUM];
-        GSurSearch = new ST_GSURS[Globals.MAX_GSUR_NUM];
+        GsurIndex   = new ST_GSurface[Globals.MAX_GSUR_NUM];
+        GSHelper    = new int[Globals.MAX_GSUR_NUM];
+        GSurSearch  = new ST_GSURS[Globals.MAX_GSUR_NUM];
+        GCondition  = new ST_Condition[128];
+
+
         for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
         {
             GSurSearch[i].begin = -1;
@@ -103,6 +107,40 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             animalConfig[i].g = GetNodeFl(node, "r");
             animalConfig[i].b = GetNodeFl(node, "r");
             MaxAnimalConfig++;
+            i++;
+        }
+    }
+
+    public void loadCondition()
+    {
+        XmlDocument xmlDoc = ReadAndLoadXml(Files.CONDITION_CONFIG);
+        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+        int i = 0;
+
+        foreach (XmlElement node in xmlNodeList)
+        {
+            //Debug.Log(node.GetAttribute("name"));
+            GCondition[i].id = GetNodeInt(node, "id");
+            GCondition[i].cover = GetNodeInt(node, "cover");
+            GCondition[i].mood = GetNodeInt(node, "mood");
+            GCondition[i].deleteTime = GetNodeInt(node, "deleteTime");
+            GCondition[i].deleteValue = GetNodeInt(node, "deleteValue");
+            GCondition[i].duration = GetNodeInt(node, "duration");
+            GCondition[i].trigAction = GetNodeInt(node, "trigAction");
+            GCondition[i].trigCondi = GetNodeInt(node, "trigCondi");
+            GCondition[i].trigTime = GetNodeInt(node, "trigTime");
+            GCondition[i].name = GetNodeStr(node, "id");
+            GCondition[i].buff = GetNodeBool(node, "buff");
+
+            switch (GetNodeStr(node, "deleteAttr"))
+            {
+                case "full":
+                    GCondition[i].deleteAttr = UIA.full;
+                    break;
+                default:
+                    GCondition[i].deleteAttr = UIA.full;
+                    break;
+            }
             i++;
         }
     }

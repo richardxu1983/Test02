@@ -59,6 +59,7 @@ public static class Files
 {
     //----------config files--------//
     public static string ANIMAL_CONFIG = "animal";
+    public static string CONDITION_CONFIG = "condition";
     public static string GSUR_CONFIG = "groundSurface";
     public static string SKIN_COLOR_CONFIG = "skinColor";
 }

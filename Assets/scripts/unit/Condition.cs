@@ -15,5 +15,6 @@ public class Condition
     public Condition(int _id)
     {
         id = _id;
+        startTime = GTime.Instance.GTick;
     }
 }

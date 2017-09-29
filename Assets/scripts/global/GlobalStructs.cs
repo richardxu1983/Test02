@@ -15,6 +15,21 @@ public struct ST_AnimalConfig
     public float b;
 }
 
+public struct ST_Condition
+{
+    public int id;
+    public string name;
+    public int cover;
+    public bool buff;
+    public int mood;
+    public int duration;
+    public UIA deleteAttr;
+    public int deleteValue;
+    public int deleteTime;
+    public int trigTime;
+    public int trigCondi;
+    public int trigAction;
+}
 
 public struct ST_GSURS
 {
