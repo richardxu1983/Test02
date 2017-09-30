@@ -97,6 +97,13 @@ public class unitPool : UnitySingleton<unitPool>
         }
     }
 
+    public void onSingleSelectUnit(RaycastHit hit)
+    {
+        freeSelect();
+        currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id;
+        units.get(currentSelHuman).bDebugInfo = true;
+    }
+
     public void freeSelect()
     {
         if (currentSelHuman >= 0)
@@ -133,9 +140,7 @@ public class unitPool : UnitySingleton<unitPool>
         {
             if (hit.collider.gameObject.tag == "unit")
             {
-                freeSelect();
-                currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id;
-                units.get(currentSelHuman).bDebugInfo = true;
+                onSingleSelectUnit(hit);
             }
             else
             {

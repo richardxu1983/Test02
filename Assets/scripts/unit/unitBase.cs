@@ -55,44 +55,44 @@ public enum AIR
 public class unitBase : entity
 {
 
-    private int[]           iAttr;              //int 属性
-    private float[]         fAttr;              //float 属性
-    private bool            m_isDead = false;   //是否死亡
-    private int             tick = 0;
-    private int             tickMax = 4;
-    private int[]           buffExist;
+    private int[] iAttr;              //int 属性
+    private float[] fAttr;              //float 属性
+    private bool m_isDead = false;   //是否死亡
+    private int tick = 0;
+    private int tickMax = 4;
+    private int[] buffExist;
 
-    public GridID           targetGrid;
-    public entity           target;
-    public UnitAiBase       ai;
-    public faceTo           playerFace = faceTo.down;//0:down,1:up,2:left,3:right
-    public faceTo           playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
+    public GridID targetGrid;
+    public entity target;
+    public UnitAiBase ai;
+    public faceTo playerFace = faceTo.down;//0:down,1:up,2:left,3:right
+    public faceTo playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
 
     private Dictionary<int, Condition> buff;       //buff
     private Dictionary<int, Condition> debuff;     //debuff
 
     [NonSerialized]
-    public Color            skinColor;
+    public Color skinColor;
     [NonSerialized]
-    public bool             bDebugInfo;
+    public bool bDebugInfo;
     [NonSerialized]
-    public GameObject       m_Instance;
+    public GameObject m_Instance;
     [NonSerialized]
-    public unitMovement     m_movement;
+    public unitMovement m_movement;
     [NonSerialized]
-    public unitUI           m_unitUI;
+    public unitUI m_unitUI;
     [NonSerialized]
-    public unitSkin         m_skin;
+    public unitSkin m_skin;
     [NonSerialized]
     public bool m_setFinish = false;
 
-    public unitBase(int _type,int _tid):base(_type, _tid)
+    public unitBase(int _type, int _tid) : base(_type, _tid)
     {
-        iAttr   = new int[64];
-        fAttr   = new float[16];
-        ai      = new UnitAiBase();
-        buff    = new Dictionary<int, Condition>();
-        debuff  = new Dictionary<int, Condition>();
+        iAttr = new int[64];
+        fAttr = new float[16];
+        ai = new UnitAiBase();
+        buff = new Dictionary<int, Condition>();
+        debuff = new Dictionary<int, Condition>();
         buffExist = new int[64];
         targetGrid = new GridID(0, 0);
 
@@ -131,7 +131,7 @@ public class unitBase : entity
     public void loop()
     {
         tick++;
-        if(tick>=tickMax)
+        if (tick >= tickMax)
         {
             tick = 0;
             AttrLoop();
@@ -143,11 +143,20 @@ public class unitBase : entity
     void AttrLoop()
     {
         int v = iGet(UIA.full);
-        if (v>0)
+        if (v > 0)
         {
-            v-= iGet(UIA.fullDec);
+            v -= iGet(UIA.fullDec);
             v = v < 0 ? 0 : v;
             iSet(UIA.full, v);
+
+            if (v < 40 && v >= 20)
+            {
+                TryAddBuff(0);
+            }
+            else if (v < 20)
+            {
+                TryAddBuff(1);
+            }
         }
 
         SelfLoop();
@@ -155,7 +164,48 @@ public class unitBase : entity
 
     void BuffLoop()
     {
+        foreach (KeyValuePair<int, Condition> v in buff)
+        {
+            buffCheck(v.Value);
+        }
+    }
 
+    public void buffCheck(Condition c)
+    {
+        int t = GTime.Instance.GTick;
+        //持续时间
+        int dura = XMLLoader.Instance.GCondition[c.id].duration;
+        if (dura > 0)
+        {
+            if (t - c.startTime >= dura)
+            {
+                TryDeleteBuff(c.id);
+            }
+        }
+
+        int trigTime = XMLLoader.Instance.GCondition[c.id].trigTime;
+        if (trigTime > 0)
+        {
+            if (t - c.startTime >= trigTime)
+            {
+                int trigCondi = XMLLoader.Instance.GCondition[c.id].trigCondi;
+                int trigAction = XMLLoader.Instance.GCondition[c.id].trigAction;
+                if (trigCondi > -1)
+                {
+                    TryAddBuff(trigCondi);
+                }
+                switch (trigAction)
+                {
+                    case 1:
+                        {
+                            hp = iGet(UIA.hpMax) * -1;
+                            break;
+                        }
+                }
+            }
+        }
+
+        c.loop();
     }
 
     public virtual void SelfLoop()
@@ -164,11 +214,11 @@ public class unitBase : entity
 
     public void TryAddBuff(int id)
     {
-        if(buffExist[id]==0)
+        if (buffExist[id] == 0)
         {
             int cover = XMLLoader.Instance.GCondition[id].cover;
 
-            if(cover>-1)
+            if (cover > -1)
             {
                 TryDeleteBuff(cover);
             }
@@ -187,14 +237,16 @@ public class unitBase : entity
 
     public void AddBuff(int id)
     {
-        Condition c = new Condition(id);
+        Condition c = new Condition(id, this);
         buff.Add(id, c);
+        AttrCheck();
     }
 
     public void AddDeBuff(int id)
     {
-        Condition c = new Condition(id);
+        Condition c = new Condition(id, this);
         debuff.Add(id, c);
+        AttrCheck();
     }
 
     public void TryDeleteBuff(int id)
@@ -203,14 +255,51 @@ public class unitBase : entity
         if (XMLLoader.Instance.GCondition[id].buff)
         {
             buff.Remove(id);
+            AttrCheck();
         }
         else
         {
             debuff.Remove(id);
+            AttrCheck();
         }
     }
 
-    public int hp() { return iGet(UIA.hp); }
+    public void AttrCheck()
+    {
+        int m = mood;
+
+        foreach (KeyValuePair<int, Condition> v in buff)
+        {
+            //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
+            m += XMLLoader.Instance.GCondition[v.Value.id].mood;
+        }
+
+        foreach (KeyValuePair<int, Condition> v in debuff)
+        {
+            //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
+            m += XMLLoader.Instance.GCondition[v.Value.id].mood;
+        }
+
+        mood = m;
+    }
+
+    //public int hp() { return iGet(UIA.hp); }
+
+    public int hp
+    {
+        get { return iGet(UIA.hp); }
+        set
+        {
+            int h = value;
+            h = h < 0 ? 0 : h;
+            h = h > iGet(UIA.hpMax) ? iGet(UIA.hpMax) : h;
+            iSet(UIA.hp, h);
+            if (h <= 0 && dead == false)
+            {
+                die();
+            }
+        }
+    }
 
     public void die()
     {
@@ -228,6 +317,18 @@ public class unitBase : entity
     {
         set { iSet(UIA.uid, value); }
         get { return iGet(UIA.uid); }
+    }
+
+    public int mood
+    {
+        get { return iGet(UIA.mood); }
+        set
+        {
+            int m = value;
+            m = m < 0 ? 0 : m;
+            m = m > 100 ? 100 : m;
+            iSet(UIA.mood, m);
+        }
     }
 
     public int hpMax
@@ -282,17 +383,11 @@ public class unitBase : entity
 
     public void hpAdd(int v)
     {
-        int hp = this.hp();
-        if (hp > 0)
+        int h = this.hp;
+        if (h > 0)
         {
-            hp += v;
-            hp = hp < 0 ? 0 : hp;
-            hp = hp > hpMax ? hpMax : hp;
-            iSet(UIA.hp, hp);
-        }
-        if (hp <= 0 && dead == false)
-        {
-            die();
+            h += v;
+            hp = h;
         }
     }
 

@@ -22,7 +22,9 @@ public class human : unitBase
         name        = "human";
         runSpeed    = 4;
         hpMax       = 100;
-        iSet(UIA.hp, 100);
+        mood        = 80;
+        hp          = 100;
+ 
         iSet(UIA.full, 70);
         iSet(UIA.fullMax, 100);
         iSet(UIA.fullDec, 1);

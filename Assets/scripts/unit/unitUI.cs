@@ -44,10 +44,10 @@ public class unitUI : MonoBehaviour {
     {
         if (!m_manager.dead)
         {
-            float hp = m_manager.hp();
+            float hp = m_manager.hp;
             float hpMax = m_manager.hpMax;
 
-            if (m_manager.hp() < m_manager.hpMax)
+            if (m_manager.hp < m_manager.hpMax)
             {
                 float rate = hp / hpMax;
                 if (rate>Globals.HP_YELLOW)
@@ -64,7 +64,7 @@ public class unitUI : MonoBehaviour {
                 }
                 hpBarObj.SetActive(true);
                 hpBar.maxValue = m_manager.hpMax;
-                hpBar.value = m_manager.hp();
+                hpBar.value = m_manager.hp;
             }
             else
             {
