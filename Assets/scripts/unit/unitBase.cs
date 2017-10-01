@@ -13,9 +13,12 @@ public enum UIA
     bodySkin,
     mood,
     moodMax,
+    moodLevel,
     full,
     fullMax,
     fullDec,
+    hungry,
+    exHungry,
 }
 
 public enum UFA
@@ -68,8 +71,8 @@ public class unitBase : entity
     public faceTo playerFace = faceTo.down;//0:down,1:up,2:left,3:right
     public faceTo playerFaceLast = faceTo.down;//0:down,1:up,2:left,3:right
 
-    private Dictionary<int, Condition> buff;       //buff
-    private Dictionary<int, Condition> debuff;     //debuff
+    public Dictionary<int, Condition> buff;       //buff
+    public Dictionary<int, Condition> debuff;     //debuff
 
     [NonSerialized]
     public Color skinColor;
@@ -88,14 +91,15 @@ public class unitBase : entity
 
     public unitBase(int _type, int _tid) : base(_type, _tid)
     {
-        iAttr = new int[64];
+        iAttr = new int[128];
         fAttr = new float[16];
         ai = new UnitAiBase();
         buff = new Dictionary<int, Condition>();
         debuff = new Dictionary<int, Condition>();
         buffExist = new int[64];
         targetGrid = new GridID(0, 0);
-
+        iSet(UIA.hungry, Globals.HUNGRY_INT);
+        iSet(UIA.exHungry, Globals.EXHUNGRY_INT);
         ai.init(this);
     }
 
@@ -149,11 +153,11 @@ public class unitBase : entity
             v = v < 0 ? 0 : v;
             iSet(UIA.full, v);
 
-            if (v < 40 && v >= 20)
+            if (v < iGet(UIA.hungry) && v >= iGet(UIA.exHungry))
             {
                 TryAddBuff(0);
             }
-            else if (v < 20)
+            else if (v < iGet(UIA.exHungry))
             {
                 TryAddBuff(1);
             }
@@ -165,6 +169,10 @@ public class unitBase : entity
     void BuffLoop()
     {
         foreach (KeyValuePair<int, Condition> v in buff)
+        {
+            buffCheck(v.Value);
+        }
+        foreach (KeyValuePair<int, Condition> v in debuff)
         {
             buffCheck(v.Value);
         }
@@ -184,16 +192,27 @@ public class unitBase : entity
         }
 
         int trigTime = XMLLoader.Instance.GCondition[c.id].trigTime;
+        //Debug.Log("trigTime=" + trigTime);
         if (trigTime > 0)
         {
+            //Debug.Log("t=" + t+ " , c.startTime="+ c.startTime);
             if (t - c.startTime >= trigTime)
             {
                 int trigCondi = XMLLoader.Instance.GCondition[c.id].trigCondi;
-                int trigAction = XMLLoader.Instance.GCondition[c.id].trigAction;
                 if (trigCondi > -1)
                 {
                     TryAddBuff(trigCondi);
                 }
+            }
+        }
+
+        int actionTime = XMLLoader.Instance.GCondition[c.id].actionTime;
+        if (actionTime > 0)
+        {
+            if (t - c.startTime >= actionTime)
+            {
+                int trigAction = XMLLoader.Instance.GCondition[c.id].trigAction;
+                //Debug.Log("trigAction=" + trigAction);
                 switch (trigAction)
                 {
                     case 1:
@@ -204,7 +223,6 @@ public class unitBase : entity
                 }
             }
         }
-
         c.loop();
     }
 
@@ -214,6 +232,7 @@ public class unitBase : entity
 
     public void TryAddBuff(int id)
     {
+        //Debug.Log("尝试添加buff:" + id);
         if (buffExist[id] == 0)
         {
             int cover = XMLLoader.Instance.GCondition[id].cover;
@@ -239,6 +258,7 @@ public class unitBase : entity
     {
         Condition c = new Condition(id, this);
         buff.Add(id, c);
+        //Debug.Log("buff:" + id+"添加成功");
         AttrCheck();
     }
 
@@ -246,6 +266,7 @@ public class unitBase : entity
     {
         Condition c = new Condition(id, this);
         debuff.Add(id, c);
+        //Debug.Log("buff:" + id + "添加成功");
         AttrCheck();
     }
 
@@ -266,7 +287,7 @@ public class unitBase : entity
 
     public void AttrCheck()
     {
-        int m = mood;
+        int m = Globals.MOOD_BASE;
 
         foreach (KeyValuePair<int, Condition> v in buff)
         {
@@ -276,7 +297,6 @@ public class unitBase : entity
 
         foreach (KeyValuePair<int, Condition> v in debuff)
         {
-            //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
             m += XMLLoader.Instance.GCondition[v.Value.id].mood;
         }
 
@@ -327,6 +347,28 @@ public class unitBase : entity
             int m = value;
             m = m < 0 ? 0 : m;
             m = m > 100 ? 100 : m;
+            //Debug.Log(m);
+            if(m<Globals.MOOD_LEVEL_1)
+            {
+                iSet(UIA.moodLevel, 1);
+            }
+            else if(m <= Globals.MOOD_LEVEL_2 && m > Globals.MOOD_LEVEL_1)
+            {
+                iSet(UIA.moodLevel, 2);
+            }
+            else if (m <= Globals.MOOD_LEVEL_3 && m > Globals.MOOD_LEVEL_2)
+            {
+                iSet(UIA.moodLevel, 3);
+            }
+            else if (m <= Globals.MOOD_LEVEL_4 && m > Globals.MOOD_LEVEL_3)
+            {
+                iSet(UIA.moodLevel, 4);
+            }
+            else if(m > Globals.MOOD_LEVEL_4)
+            {
+                iSet(UIA.moodLevel, 5);
+            }
+            //Debug.Log("moodLevel="+iGet(UIA.moodLevel));
             iSet(UIA.mood, m);
         }
     }

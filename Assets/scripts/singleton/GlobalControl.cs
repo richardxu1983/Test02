@@ -55,6 +55,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         GTime.Instance.init();
         GSceneMap.Instance.CreateMap();
         PathFind.Instance.init();
+        GameSceneUI.Instance.init();
         bLogicPause = false;
     }
 
@@ -77,6 +78,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         GSceneMap.Instance.spawnAll();
         unitPool.Instance.spawnAll();
         PathFind.Instance.init();
+        GameSceneUI.Instance.init();
         bLogicPause = false;
     }
 

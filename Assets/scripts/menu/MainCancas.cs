@@ -11,7 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class MainCancas : MonoBehaviour {
 
-    public GameManager manager;
+    //public GameManager manager;
     private Text txtSelectInfo;
     private Text txtTimeInfo;
     private GameObject debugPanel;

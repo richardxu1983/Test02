@@ -13,7 +13,7 @@ public static class Globals
 
     //---------game time vars----------//
     public static int GAME_LOOP_INTERVAL = 250;
-    public static int TIME_IN_TICK = 1;     //多少游戏分钟是游戏1小时
+    public static int TIME_IN_TICK = 4;     //多少游戏分钟是游戏1小时
     public static int MIN_IN_TICK = 1;     //多少tick是1分钟
     public static int HOUR_IN_MINUTE = 10;     //多少游戏分钟是游戏1小时
     public static int MONTH_IN_DAY = 5;      //一个月多少天
@@ -41,7 +41,6 @@ public static class Globals
     public static int MAX_UNIT_NUM = 500;
     public static int MAX_GSUR_NUM = 16;
 
-
     //----------map---------------------//
     public static int BASIC_MAP_SUR = 0;
 
@@ -53,6 +52,14 @@ public static class Globals
     public static int humanType = 1000;
     public static int animalType = 2000;
     public static System.Random rd = new System.Random();
+    public static int HUNGRY_INT = 60;
+    public static int EXHUNGRY_INT = 10;
+    public static int MOOD_BASE = 60;
+    public static int MOOD_LEVEL_1 = 11;
+    public static int MOOD_LEVEL_2 = 30;
+    public static int MOOD_LEVEL_3 = 60;
+    public static int MOOD_LEVEL_4 = 85;
+    public static int MOOD_LEVEL_5 = 100;
 }
 
 public static class Files

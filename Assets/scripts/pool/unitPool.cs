@@ -102,6 +102,7 @@ public class unitPool : UnitySingleton<unitPool>
         freeSelect();
         currentSelHuman = hit.collider.gameObject.GetComponent<unitMovement>().manager().id;
         units.get(currentSelHuman).bDebugInfo = true;
+        GameSceneUI.Instance.unitPanel.SetActive(true);
     }
 
     public void freeSelect()
@@ -111,6 +112,7 @@ public class unitPool : UnitySingleton<unitPool>
             units.get(currentSelHuman).onFreeSelect();
         }
         currentSelHuman = -1;
+        GameSceneUI.Instance.unitPanel.SetActive(false);
     }
 
     public void debug_AtkSelectUnit()

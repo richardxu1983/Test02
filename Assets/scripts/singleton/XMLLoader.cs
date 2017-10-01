@@ -41,6 +41,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         loadAnimalConfig();
         loadSkincolorConfig();
         loadGSurConfig();
+        loadCondition();
     }
 
     public void surfaceInit()
@@ -129,9 +130,10 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             GCondition[i].trigAction = GetNodeInt(node, "trigAction");
             GCondition[i].trigCondi = GetNodeInt(node, "trigCondi");
             GCondition[i].trigTime = GetNodeInt(node, "trigTime");
-            GCondition[i].name = GetNodeStr(node, "id");
+            GCondition[i].name = GetNodeStr(node, "name");
             GCondition[i].buff = GetNodeBool(node, "buff");
-
+            GCondition[i].actionTime = GetNodeInt(node, "actionTime");
+            
             switch (GetNodeStr(node, "deleteAttr"))
             {
                 case "full":

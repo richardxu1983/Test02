@@ -29,6 +29,7 @@ public struct ST_Condition
     public int trigTime;
     public int trigCondi;
     public int trigAction;
+    public int actionTime;
 }
 
 public struct ST_GSURS

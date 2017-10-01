@@ -22,7 +22,7 @@ public class human : unitBase
         name        = "human";
         runSpeed    = 4;
         hpMax       = 100;
-        mood        = 80;
+        mood        = Globals.MOOD_BASE;
         hp          = 100;
  
         iSet(UIA.full, 70);

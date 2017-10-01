@@ -21,7 +21,7 @@ public class animal : unitBase
         name        = XMLLoader.Instance.animalConfig[typeId].name;
         runSpeed    = XMLLoader.Instance.animalConfig[typeId].speed;
         hpMax       = 100;
-        mood        = 80;
+        mood        = Globals.MOOD_BASE;
         hp          = 100;
 
         iSet(UIA.full, 70);
