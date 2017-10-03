@@ -20,6 +20,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     {
         if(!binit)
         {
+            conditionData.Instance.init();
             SpManager.Instance.init();
             utils.Instance.init();
             XMLLoader.Instance.init();

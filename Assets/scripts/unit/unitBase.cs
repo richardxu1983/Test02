@@ -100,7 +100,7 @@ public class unitBase : entity
 
     public unitBase(int _type, int _tid) : base(_type, _tid)
     {
-        iAttr = new int[128];
+        iAttr = new int[256];
         fAttr = new float[16];
         ai = new UnitAiBase();
         buff = new Dictionary<int, Condition>();
@@ -248,7 +248,7 @@ public class unitBase : entity
     {
         int t = GTime.Instance.GTick;
         //持续时间
-        int dura = XMLLoader.Instance.GCondition[c.id].duration;
+        int dura = conditionData.Instance.get(c.id).duration;
         if (dura > 0)
         {
             if (t - c.startTime >= dura)
@@ -257,14 +257,14 @@ public class unitBase : entity
             }
         }
 
-        int trigTime = XMLLoader.Instance.GCondition[c.id].trigTime;
+        int trigTime = conditionData.Instance.get(c.id).trigTime;
         //Debug.Log("trigTime=" + trigTime);
         if (trigTime > 0)
         {
             //Debug.Log("t=" + t+ " , c.startTime="+ c.startTime);
             if (t - c.startTime >= trigTime)
             {
-                int trigCondi = XMLLoader.Instance.GCondition[c.id].trigCondi;
+                int trigCondi = conditionData.Instance.get(c.id).trigCondi;
                 if (trigCondi > -1)
                 {
                     TryAddBuff(trigCondi);
@@ -272,12 +272,12 @@ public class unitBase : entity
             }
         }
 
-        int actionTime = XMLLoader.Instance.GCondition[c.id].actionTime;
+        int actionTime = conditionData.Instance.get(c.id).actionTime;
         if (actionTime > 0)
         {
             if (t - c.startTime >= actionTime)
             {
-                int trigAction = XMLLoader.Instance.GCondition[c.id].trigAction;
+                int trigAction = conditionData.Instance.get(c.id).trigAction;
                 //Debug.Log("trigAction=" + trigAction);
                 switch (trigAction)
                 {
@@ -290,6 +290,7 @@ public class unitBase : entity
             }
         }
         c.loop();
+        AttrCheck();
     }
 
     public virtual void SelfLoop()
@@ -301,21 +302,27 @@ public class unitBase : entity
         //Debug.Log("尝试添加buff:" + id);
         if (buffExist[id] == 0)
         {
-            int cover = XMLLoader.Instance.GCondition[id].cover;
+            int cover = conditionData.Instance.get(id).cover;
 
-            if (cover > -1)
-            {
-                TryDeleteBuff(cover);
-            }
-
-            if (XMLLoader.Instance.GCondition[id].buff)
+            if (conditionData.Instance.get(id).buff)
             {
                 AddBuff(id);
+                if (cover > -1)
+                {
+                    buff[id].onCover(cover);
+                    TryDeleteBuff(cover);
+                }
             }
             else
             {
                 AddDeBuff(id);
+                if (cover > -1)
+                {
+                    debuff[id].onCover(cover);
+                    TryDeleteBuff(cover);
+                }
             }
+
             buffExist[id] = 1;
         }
     }
@@ -339,7 +346,7 @@ public class unitBase : entity
     public void TryDeleteBuff(int id)
     {
         buffExist[id] = 0;
-        if (XMLLoader.Instance.GCondition[id].buff)
+        if (conditionData.Instance.get(id).buff)
         {
             buff.Remove(id);
             AttrCheck();
@@ -357,16 +364,22 @@ public class unitBase : entity
 
         foreach (KeyValuePair<int, Condition> v in buff)
         {
-            //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
-            m += XMLLoader.Instance.GCondition[v.Value.id].mood;
+            m += processCondAttr(v.Value);
         }
-
         foreach (KeyValuePair<int, Condition> v in debuff)
         {
-            m += XMLLoader.Instance.GCondition[v.Value.id].mood;
+            m += processCondAttr(v.Value);
         }
-
         mood = m;
+    }
+
+    int processCondAttr(Condition c)
+    {
+        int m = 0;
+        m += conditionData.Instance.get(c.id).mood;
+        m += c.coverMood;
+        m += c.intvalData;
+        return m;
     }
 
     //public int hp() { return iGet(UIA.hp); }

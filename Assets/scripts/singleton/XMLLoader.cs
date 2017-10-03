@@ -9,7 +9,6 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public ST_GSurface[]        GsurIndex;      //地面表
     public int[]                GSHelper;
     public ST_GSURS[]           GSurSearch;
-    public ST_Condition[]       GCondition;     //buff表
 
     private int MaxAnimalConfig;
     public int MaxGSurConfig;
@@ -50,8 +49,6 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         GsurIndex   = new ST_GSurface[Globals.MAX_GSUR_NUM];
         GSHelper    = new int[Globals.MAX_GSUR_NUM];
         GSurSearch  = new ST_GSURS[Globals.MAX_GSUR_NUM];
-        GCondition  = new ST_Condition[128];
-
 
         for (int i = 0; i < Globals.MAX_GSUR_NUM; i++)
         {
@@ -121,29 +118,37 @@ public class XMLLoader : UnitySingleton<XMLLoader>
 
         foreach (XmlElement node in xmlNodeList)
         {
-            //Debug.Log(node.GetAttribute("name"));
-            GCondition[i].id = GetNodeInt(node, "id");
-            GCondition[i].cover = GetNodeInt(node, "cover");
-            GCondition[i].mood = GetNodeInt(node, "mood");
-            GCondition[i].deleteTime = GetNodeInt(node, "deleteTime");
-            GCondition[i].deleteValue = GetNodeInt(node, "deleteValue");
-            GCondition[i].duration = GetNodeInt(node, "duration");
-            GCondition[i].trigAction = GetNodeInt(node, "trigAction");
-            GCondition[i].trigCondi = GetNodeInt(node, "trigCondi");
-            GCondition[i].trigTime = GetNodeInt(node, "trigTime");
-            GCondition[i].name = GetNodeStr(node, "name");
-            GCondition[i].buff = GetNodeBool(node, "buff");
-            GCondition[i].actionTime = GetNodeInt(node, "actionTime");
-            
-            switch (GetNodeStr(node, "deleteAttr"))
+            conditionData.Instance.condi[i].id = GetNodeInt(node, "id");
+            conditionData.Instance.condi[i].name = GetNodeStr(node, "name");
+            conditionData.Instance.condi[i].cover = GetNodeInt(node, "cover");
+            conditionData.Instance.condi[i].buff = GetNodeBool(node, "buff");
+            conditionData.Instance.condi[i].mood = GetNodeInt(node, "mood");
+            conditionData.Instance.condi[i].duration = GetNodeInt(node, "duration");
+
+
+            switch (childNodeStr(node, 0, "attr"))
             {
                 case "full":
-                    GCondition[i].deleteAttr = UIA.full;
+                    conditionData.Instance.condi[i].deleteAttr = UIA.full;
+                    break;
+                case "energy":
+                    conditionData.Instance.condi[i].deleteAttr = UIA.energy;
                     break;
                 default:
-                    GCondition[i].deleteAttr = UIA.full;
+                    conditionData.Instance.condi[i].deleteAttr = UIA.full;
                     break;
             }
+
+            conditionData.Instance.condi[i].deleteTime = childNodeInt(node, 0, "value");
+            conditionData.Instance.condi[i].deleteValue = childNodeInt(node, 0, "time");
+            conditionData.Instance.condi[i].trigCondi = childNodeInt(node, 1, "cond");
+            conditionData.Instance.condi[i].trigTime = childNodeInt(node, 1, "time");
+            conditionData.Instance.condi[i].actionTime = childNodeInt(node, 2, "time");
+            conditionData.Instance.condi[i].trigAction = childNodeInt(node, 2, "act");
+            conditionData.Instance.condi[i].intvalTime = childNodeInt(node, 3, "time");
+            conditionData.Instance.condi[i].intvalMood = childNodeInt(node, 3, "mood");
+            conditionData.Instance.condi[i].intvalMaxMood = childNodeInt(node, 3, "maxMood");
+
             i++;
         }
     }
@@ -206,9 +211,20 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     {
         return node.GetAttribute(v);
     }
+
     public float GetNodeFl(XmlElement node, string v)
     {
         return float.Parse(node.GetAttribute(v));
+    }
+
+    public int childNodeInt(XmlElement node,int v,string attr)
+    {
+        return int.Parse(node.ChildNodes.Item(v).Attributes[attr].InnerText);
+    }
+
+    public string childNodeStr(XmlElement node, int v, string attr)
+    {
+        return node.ChildNodes.Item(v).Attributes[attr].InnerText;
     }
 }
 

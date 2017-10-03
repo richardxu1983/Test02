@@ -131,15 +131,15 @@ public class unitInfo : MonoBehaviour {
         foreach (KeyValuePair<int, Condition> v in unit.buff)
         {
             //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
-            s += "<color=green>" + XMLLoader.Instance.GCondition[v.Value.id].name + "</color>\n";
-            k += "<color=green>+" + XMLLoader.Instance.GCondition[v.Value.id].mood + "</color>\n";
+            s += "<color=green>" + conditionData.Instance.get(v.Value.id).name + "</color>\n";
+            k += "<color=green>+" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
         }
 
         foreach (KeyValuePair<int, Condition> v in unit.debuff)
         {
             //Debug.Log("v.Value.id=" + v.Value.id);
-            s += "<color=red>" + XMLLoader.Instance.GCondition[v.Value.id].name + "</color>\n";
-            k += "<color=red>" + XMLLoader.Instance.GCondition[v.Value.id].mood + "</color>\n";
+            s += "<color=red>" + conditionData.Instance.get(v.Value.id).name + "</color>\n";
+            k += "<color=red>" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
         }
         txtCondition.text = s;
         txtCondtionValue.text = k;

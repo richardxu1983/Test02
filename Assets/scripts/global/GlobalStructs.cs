@@ -30,6 +30,9 @@ public struct ST_Condition
     public int trigCondi;
     public int trigAction;
     public int actionTime;
+    public int intvalTime;
+    public int intvalMood;
+    public int intvalMaxMood;
 }
 
 public struct ST_GSURS
