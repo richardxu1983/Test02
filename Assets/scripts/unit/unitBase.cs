@@ -17,8 +17,17 @@ public enum UIA
     full,
     fullMax,
     fullDec,
+    fullDecSec,
+    fullTick,
     hungry,
     exHungry,
+    energy,
+    energyDec,
+    energyDecSec,
+    energyMax,
+    energyTick,
+    tired,
+    exhausted,
 }
 
 public enum UFA
@@ -98,8 +107,10 @@ public class unitBase : entity
         debuff = new Dictionary<int, Condition>();
         buffExist = new int[64];
         targetGrid = new GridID(0, 0);
-        iSet(UIA.hungry, Globals.HUNGRY_INT);
-        iSet(UIA.exHungry, Globals.EXHUNGRY_INT);
+        iSet(UIA.hungry, unitDefault.Instance.hungry);
+        iSet(UIA.exHungry, unitDefault.Instance.exHungey);
+        iSet(UIA.tired, unitDefault.Instance.tired);
+        iSet(UIA.exhausted, unitDefault.Instance.exhausted);
         ai.init(this);
     }
 
@@ -137,6 +148,7 @@ public class unitBase : entity
         tick++;
         if (tick >= tickMax)
         {
+            //每秒一次
             tick = 0;
             AttrLoop();
             BuffLoop();
@@ -146,13 +158,67 @@ public class unitBase : entity
 
     void AttrLoop()
     {
-        int v = iGet(UIA.full);
-        if (v > 0)
+        int t = iGet(UIA.fullTick);
+        t++;
+        if( t >= unitDefault.Instance.fullDecSec )
         {
-            v -= iGet(UIA.fullDec);
-            v = v < 0 ? 0 : v;
-            iSet(UIA.full, v);
+            int v = iGet(UIA.full);
+            if (v > 0)
+            {
+                v -= iGet(UIA.fullDec);
+                full = v;
+            }
+            t = 0;
+        }
+        iSet(UIA.fullTick, t);
 
+        t = iGet(UIA.energyTick);
+        t++;
+        if (t >= unitDefault.Instance.energyDecSec)
+        {
+            int v = iGet(UIA.energy);
+            if (v > 0)
+            {
+                v -= iGet(UIA.energyDec);
+                energy = v;
+            }
+            t = 0;
+        }
+        iSet(UIA.energyTick, t);
+
+        SelfLoop();
+    }
+
+    public int energy
+    {
+        get { return iGet(UIA.energy); }
+        set
+        {
+            int v = value;
+            v = v < 0 ? 0 : v;
+            v = v > iGet(UIA.energyMax) ? iGet(UIA.energyMax) : v;
+            if (v < iGet(UIA.tired) && v >= iGet(UIA.exhausted))
+            {
+                TryAddBuff(3);
+            }
+            else if (v < iGet(UIA.exhausted))
+            {
+                //Debug.Log("111111111");
+                TryAddBuff(4);
+            }
+            //Debug.Log("iGet(UIA.energyMax)=" + iGet(UIA.energyMax) + " , value=" + value);
+            iSet(UIA.energy, v);
+        }
+    }
+
+    public int full
+    {
+        get { return iGet(UIA.full); }
+        set
+        {
+            int v = value;
+            v = v < 0 ? 0 : v;
+            v = v > iGet(UIA.fullMax) ? iGet(UIA.fullMax) : v;
             if (v < iGet(UIA.hungry) && v >= iGet(UIA.exHungry))
             {
                 TryAddBuff(0);
@@ -161,9 +227,9 @@ public class unitBase : entity
             {
                 TryAddBuff(1);
             }
+            //Debug.Log("iGet(UIA.fullMax)=" + iGet(UIA.fullMax) + " , value="+ value);
+            iSet(UIA.full, v);
         }
-
-        SelfLoop();
     }
 
     void BuffLoop()
@@ -436,11 +502,6 @@ public class unitBase : entity
     public void onFreeSelect()
     {
         bDebugInfo = false;
-    }
-
-    public void setName(string v)
-    {
-        name = v;
     }
 }
 

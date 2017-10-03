@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour {
         {
             GTime.Instance.tick();
             unitPool.Instance.loop();
-            
         }
     }
 

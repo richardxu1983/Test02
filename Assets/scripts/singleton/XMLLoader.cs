@@ -42,6 +42,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         loadSkincolorConfig();
         loadGSurConfig();
         loadCondition();
+        loadUnitDefault();
     }
 
     public void surfaceInit()
@@ -162,6 +163,32 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             i++;
         }
         utils.Instance.maxColors = i;
+    }
+
+    public void loadUnitDefault()
+    {
+        XmlDocument xmlDoc = ReadAndLoadXml("unitDefault");
+        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+
+        unitDefault.Instance.fullMax = int.Parse(xmlNodeList.Item(0).InnerText);
+        unitDefault.Instance.fullDecSec = int.Parse(xmlNodeList.Item(1).InnerText);
+        unitDefault.Instance.fullDec = int.Parse(xmlNodeList.Item(2).InnerText);
+        unitDefault.Instance.moodBase = int.Parse(xmlNodeList.Item(3).InnerText);
+        unitDefault.Instance.hungry = int.Parse(xmlNodeList.Item(4).InnerText);
+        unitDefault.Instance.exHungey = int.Parse(xmlNodeList.Item(5).InnerText);
+        unitDefault.Instance.hpMax = int.Parse(xmlNodeList.Item(6).InnerText);
+        unitDefault.Instance.hpInit = int.Parse(xmlNodeList.Item(7).InnerText);
+        unitDefault.Instance.runSpeed = int.Parse(xmlNodeList.Item(8).InnerText);
+        unitDefault.Instance.fullInit = int.Parse(xmlNodeList.Item(9).InnerText);
+        unitDefault.Instance.energyMax = int.Parse(xmlNodeList.Item(10).InnerText);
+        unitDefault.Instance.energyDec = int.Parse(xmlNodeList.Item(11).InnerText);
+        unitDefault.Instance.energyDecSec = int.Parse(xmlNodeList.Item(12).InnerText);
+        unitDefault.Instance.energyInit = int.Parse(xmlNodeList.Item(13).InnerText);
+        unitDefault.Instance.tired = int.Parse(xmlNodeList.Item(14).InnerText);
+        unitDefault.Instance.exhausted = int.Parse(xmlNodeList.Item(15).InnerText);
+
+        //Debug.Log("unitDefault.Instance.exhausted=" + unitDefault.Instance.exhausted);
+        //Debug.Log("unitDefault.Instance.energyMax=" + unitDefault.Instance.energyMax);
     }
 
     public int GetNodeInt(XmlElement node,string v)

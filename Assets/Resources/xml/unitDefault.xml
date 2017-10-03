@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <fullMax>100</fullMax>
+  <fullDecSec>1</fullDecSec>
+  <fullDec>1</fullDec>
+  <moodBase>50</moodBase>
+  <hungry>60</hungry>
+  <exHungey>15</exHungey>
+  <hpMax>100</hpMax>
+  <hpInit>100</hpInit>
+  <runSpeed>4</runSpeed>
+  <fullInit>70</fullInit>
+  <energyMax>100</energyMax>
+  <energyDec>1</energyDec>
+  <energyDecSec>1</energyDecSec>
+  <energyInit>100</energyInit>
+  <tired>40</tired>
+  <exhausted>10</exhausted>
+</objects>

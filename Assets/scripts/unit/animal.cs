@@ -14,19 +14,23 @@ public class animal : unitBase
 
     public void create(int uid)
     {
+
+        iSet(UIA.fullMax, unitDefault.Instance.fullMax);
+        iSet(UIA.fullDec, unitDefault.Instance.fullDec);
+        iSet(UIA.energyMax, unitDefault.Instance.energyMax);
+        iSet(UIA.energyDec, unitDefault.Instance.energyDec);
+
         id          = uid;
         headSkin    = XMLLoader.Instance.animalConfig[typeId].headId;
         skinColor   = utils.Instance.getSkinColor(skinColorId);
         bodySkin    = XMLLoader.Instance.animalConfig[typeId].bodyId;
         name        = XMLLoader.Instance.animalConfig[typeId].name;
         runSpeed    = XMLLoader.Instance.animalConfig[typeId].speed;
-        hpMax       = 100;
+        hpMax       = unitDefault.Instance.hpMax;
         mood        = Globals.MOOD_BASE;
         hp          = 100;
-
-        iSet(UIA.full, 70);
-        iSet(UIA.fullMax, 100);
-        iSet(UIA.fullDec, 1);
+        energy      = unitDefault.Instance.energyInit;
+        full        = unitDefault.Instance.fullInit;
     }
 
     public override void SelfLoop()

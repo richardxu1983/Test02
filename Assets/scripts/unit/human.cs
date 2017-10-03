@@ -13,6 +13,12 @@ public class human : unitBase
 
     public void create(int uid)
     {
+
+        iSet(UIA.fullDec, unitDefault.Instance.fullDec);
+        iSet(UIA.energyMax, unitDefault.Instance.energyMax);
+        iSet(UIA.energyDec, unitDefault.Instance.energyDec);
+        iSet(UIA.fullMax, unitDefault.Instance.fullMax);
+
         id          = uid;
         typeId      = 1;
         skinColorId = Globals.rd.Next(utils.Instance.maxColors);
@@ -20,14 +26,12 @@ public class human : unitBase
         bodySkin    = 1000;
         skinColor   = utils.Instance.getSkinColor(skinColorId);
         name        = "human";
-        runSpeed    = 4;
-        hpMax       = 100;
+        runSpeed    = unitDefault.Instance.runSpeed;
+        hpMax       = unitDefault.Instance.hpMax;
         mood        = Globals.MOOD_BASE;
-        hp          = 100;
- 
-        iSet(UIA.full, 70);
-        iSet(UIA.fullMax, 100);
-        iSet(UIA.fullDec, 1);
+        hp          = unitDefault.Instance.hpMax;
+        energy      = unitDefault.Instance.energyInit;
+        full        = unitDefault.Instance.fullInit;
     }
 
     public override void SelfLoop()

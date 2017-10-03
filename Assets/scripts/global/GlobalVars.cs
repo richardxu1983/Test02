@@ -70,3 +70,24 @@ public static class Files
     public static string GSUR_CONFIG = "groundSurface";
     public static string SKIN_COLOR_CONFIG = "skinColor";
 }
+
+
+public class unitDefault : Singleton<unitDefault>
+{
+    public int fullMax;
+    public int fullDecSec;
+    public int fullDec;
+    public int moodBase;
+    public int hungry;
+    public int exHungey;
+    public int hpMax;
+    public int hpInit;
+    public float runSpeed;
+    public int fullInit;
+    public int energyMax;
+    public int energyDec;
+    public int energyDecSec;
+    public int energyInit;
+    public int tired;
+    public int exhausted;
+}

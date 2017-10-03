@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class unitInfo : MonoBehaviour {
 
     public Text txtFull;
+    public Text txtEnergy;
     public Text txtName;
     public Text txtCondition;
     public Text txtCondtionValue;
@@ -120,7 +121,8 @@ public class unitInfo : MonoBehaviour {
     public void refresh(unitBase unit)
     {
         setName(unit.name);
-        setFull(unit.iGet(UIA.full));
+        setFull(unit.full);
+        txtEnergy.text = unit.energy.ToString();
         moodProgress(unit.mood, unit);
 
         string s = "";
