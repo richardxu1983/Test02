@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    System.Timers.Timer t = new System.Timers.Timer(Globals.GAME_LOOP_INTERVAL);
+    System.Timers.Timer t = new System.Timers.Timer(250);
 
     // Use this for initialization
     void Start () {

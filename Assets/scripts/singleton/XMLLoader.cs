@@ -42,6 +42,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         loadGSurConfig();
         loadCondition();
         loadUnitDefault();
+        loadTimeData();
     }
 
     public void surfaceInit()
@@ -191,10 +192,26 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         unitDefault.Instance.energyInit = int.Parse(xmlNodeList.Item(13).InnerText);
         unitDefault.Instance.tired = int.Parse(xmlNodeList.Item(14).InnerText);
         unitDefault.Instance.exhausted = int.Parse(xmlNodeList.Item(15).InnerText);
+        unitDefault.Instance.slightHungry = int.Parse(xmlNodeList.Item(16).InnerText);
 
         //Debug.Log("unitDefault.Instance.exhausted=" + unitDefault.Instance.exhausted);
         //Debug.Log("unitDefault.Instance.energyMax=" + unitDefault.Instance.energyMax);
     }
+
+    public void loadTimeData()
+    {
+        XmlDocument xmlDoc = ReadAndLoadXml("timeData");
+        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+
+        timeData.Instance.TIME_IN_TICK = int.Parse(xmlNodeList.Item(0).InnerText);     //
+        timeData.Instance.MIN_IN_TICK = int.Parse(xmlNodeList.Item(1).InnerText);    //多少tick是1分钟
+        timeData.Instance.HOUR_IN_MINUTE = int.Parse(xmlNodeList.Item(2).InnerText);     //多少游戏分钟是游戏1小时
+        timeData.Instance.MONTH_IN_DAY = int.Parse(xmlNodeList.Item(3).InnerText);     //一个月多少天
+        timeData.Instance.DAY_IN_HOUR = int.Parse(xmlNodeList.Item(4).InnerText);      //一天几小时
+        timeData.Instance.YEAR_IN_MONTH = int.Parse(xmlNodeList.Item(5).InnerText);    //一年几个月
+        timeData.Instance.INIT_HOUR = int.Parse(xmlNodeList.Item(6).InnerText);          //初始的小时
+        timeData.Instance.INIT_YEAR = int.Parse(xmlNodeList.Item(7).InnerText);          //初始的年
+}
 
     public int GetNodeInt(XmlElement node,string v)
     {

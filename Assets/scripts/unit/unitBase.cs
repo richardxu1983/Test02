@@ -199,12 +199,12 @@ public class unitBase : entity
             v = v > iGet(UIA.energyMax) ? iGet(UIA.energyMax) : v;
             if (v < iGet(UIA.tired) && v >= iGet(UIA.exhausted))
             {
-                TryAddBuff(3);
+                TryAddBuff(4);
             }
             else if (v < iGet(UIA.exhausted))
             {
                 //Debug.Log("111111111");
-                TryAddBuff(4);
+                TryAddBuff(5);
             }
             //Debug.Log("iGet(UIA.energyMax)=" + iGet(UIA.energyMax) + " , value=" + value);
             iSet(UIA.energy, v);
@@ -219,13 +219,17 @@ public class unitBase : entity
             int v = value;
             v = v < 0 ? 0 : v;
             v = v > iGet(UIA.fullMax) ? iGet(UIA.fullMax) : v;
-            if (v < iGet(UIA.hungry) && v >= iGet(UIA.exHungry))
+            if (v < unitDefault.Instance.slightHungry && v >= iGet(UIA.hungry))
             {
                 TryAddBuff(0);
             }
-            else if (v < iGet(UIA.exHungry))
+            else if (v < iGet(UIA.hungry) && v >= iGet(UIA.exHungry))
             {
                 TryAddBuff(1);
+            }
+            else if (v < iGet(UIA.exHungry))
+            {
+                TryAddBuff(2);
             }
             //Debug.Log("iGet(UIA.fullMax)=" + iGet(UIA.fullMax) + " , value="+ value);
             iSet(UIA.full, v);

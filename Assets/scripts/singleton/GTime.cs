@@ -33,18 +33,19 @@ public class GTime : Singleton<GTime>
     //
     public void init()
     {
-        m_minInTick = Globals.MIN_IN_TICK;
-        m_hourInMinuts = Globals.HOUR_IN_MINUTE;
-        m_monthInDays = Globals.MONTH_IN_DAY;
-        m_yearInMonths = Globals.YEAR_IN_MONTH;
-        m_dayInHours = Globals.DAY_IN_HOUR;
+        m_minInTick = timeData.Instance.MIN_IN_TICK;
+        m_hourInMinuts = timeData.Instance.HOUR_IN_MINUTE;
+        m_monthInDays = timeData.Instance.MONTH_IN_DAY;
+        m_yearInMonths = timeData.Instance.YEAR_IN_MONTH;
+        m_dayInHours = timeData.Instance.DAY_IN_HOUR;
         m_minute = 0;
         m_tick = 0;
         m_day = 1;
         m_month = 1;
         m_cur_tick = 0;
         m_GTick = 0;
-        m_year = Globals.INIT_YEAR;
+        m_hour = timeData.Instance.INIT_HOUR;
+        m_year = timeData.Instance.INIT_YEAR;
         m_totalDaysInYear = m_monthInDays * m_yearInMonths;
         m_MinutsInDay = m_dayInHours * m_hourInMinuts;
     }
@@ -52,7 +53,7 @@ public class GTime : Singleton<GTime>
     public void tick()
     {
         m_cur_tick++;
-        if(m_cur_tick>=Globals.TIME_IN_TICK)
+        if(m_cur_tick>= timeData.Instance.TIME_IN_TICK)
         {
             StepTickTime();
             m_cur_tick = 0;

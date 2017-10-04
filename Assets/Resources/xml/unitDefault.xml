@@ -4,8 +4,8 @@
   <fullDecSec>1</fullDecSec>
   <fullDec>1</fullDec>
   <moodBase>50</moodBase>
-  <hungry>60</hungry>
-  <exHungey>15</exHungey>
+  <hungry>35</hungry>
+  <exHungey>10</exHungey>
   <hpMax>100</hpMax>
   <hpInit>100</hpInit>
   <runSpeed>4</runSpeed>
@@ -16,4 +16,5 @@
   <energyInit>100</energyInit>
   <tired>40</tired>
   <exhausted>10</exhausted>
+  <slightHungry>65</slightHungry>
 </objects>
