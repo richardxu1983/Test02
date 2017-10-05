@@ -23,6 +23,8 @@ public class GlobalControl : UnitySingleton<GlobalControl>
             conditionData.Instance.init();
             SpManager.Instance.init();
             utils.Instance.init();
+            animalXML.Instance.init();
+            unitDefault.Instance.init();
             XMLLoader.Instance.init();
             XMLLoader.Instance.load();
             unitPool.Instance.init();

@@ -98,14 +98,41 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         foreach (XmlElement node in xmlNodeList)
         {
             //Debug.Log(node.GetAttribute("name"));
-            animalConfig[i].typeId = i;
-            animalConfig[i].bodyId = GetNodeInt(node, "bodyId");
-            animalConfig[i].headId = GetNodeInt(node, "headId");
-            animalConfig[i].name = GetNodeStr(node, "name");
-            animalConfig[i].speed = GetNodeFl(node, "speed");
-            animalConfig[i].r = GetNodeFl(node, "r");
-            animalConfig[i].g = GetNodeFl(node, "r");
-            animalConfig[i].b = GetNodeFl(node, "r");
+            animalXML.Instance.get(i).typeId = i;
+            animalXML.Instance.get(i).bodyId = GetNodeInt(node, "bodyId");
+            animalXML.Instance.get(i).headId = GetNodeInt(node, "headId");
+            animalXML.Instance.get(i).name = GetNodeStr(node, "name");
+
+            animalXML.Instance.get(i).hp = childNodeInt(node, 0, "hp");
+            animalXML.Instance.get(i).hpMax = childNodeInt(node, 0, "hpMax");
+            animalXML.Instance.get(i).runSpeed = childNodeInt(node, 0, "run");
+
+            animalXML.Instance.get(i).mood = childNodeInt(node, 1, "init");
+            animalXML.Instance.get(i).moodMax = childNodeInt(node, 1, "max");
+            animalXML.Instance.get(i).mood_level_1 = childNodeInt(node, 1, "level_1");
+            animalXML.Instance.get(i).mood_level_2 = childNodeInt(node, 1, "level_2");
+            animalXML.Instance.get(i).mood_level_3 = childNodeInt(node, 1, "level_3");
+            animalXML.Instance.get(i).mood_level_4 = childNodeInt(node, 1, "level_4");
+            animalXML.Instance.get(i).mood_level_5 = childNodeInt(node, 1, "level_5");
+
+            animalXML.Instance.get(i).full = childNodeInt(node, 2, "init");
+            animalXML.Instance.get(i).fullDec = childNodeInt(node, 2, "dec");
+            animalXML.Instance.get(i).fullDecSec = childNodeInt(node, 2, "decSec");
+            animalXML.Instance.get(i).fullMax = childNodeInt(node, 2, "max");
+
+            animalXML.Instance.get(i).hungry_slight = childNodeInt(node, 3, "slight");
+            animalXML.Instance.get(i).hungry_medium = childNodeInt(node, 3, "medium");
+            animalXML.Instance.get(i).hungry_extream = childNodeInt(node, 3, "extream");
+
+            animalXML.Instance.get(i).energy = childNodeInt(node, 4, "init");
+            animalXML.Instance.get(i).energyDec = childNodeInt(node, 4, "dec");
+            animalXML.Instance.get(i).energyDecSec = childNodeInt(node, 4, "decSec");
+            animalXML.Instance.get(i).energyMax = childNodeInt(node, 4, "max");
+
+            animalXML.Instance.get(i).tired_slight = childNodeInt(node, 5, "slight");
+            animalXML.Instance.get(i).tired_medium = childNodeInt(node, 5, "medium");
+            animalXML.Instance.get(i).tired_extream = childNodeInt(node, 5, "extream");
+
             MaxAnimalConfig++;
             i++;
         }
@@ -174,28 +201,38 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public void loadUnitDefault()
     {
         XmlDocument xmlDoc = ReadAndLoadXml("unitDefault");
-        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+        XmlNodeList node = xmlDoc.SelectSingleNode("objects").ChildNodes;
 
-        unitDefault.Instance.fullMax = int.Parse(xmlNodeList.Item(0).InnerText);
-        unitDefault.Instance.fullDecSec = int.Parse(xmlNodeList.Item(1).InnerText);
-        unitDefault.Instance.fullDec = int.Parse(xmlNodeList.Item(2).InnerText);
-        unitDefault.Instance.moodBase = int.Parse(xmlNodeList.Item(3).InnerText);
-        unitDefault.Instance.hungry = int.Parse(xmlNodeList.Item(4).InnerText);
-        unitDefault.Instance.exHungey = int.Parse(xmlNodeList.Item(5).InnerText);
-        unitDefault.Instance.hpMax = int.Parse(xmlNodeList.Item(6).InnerText);
-        unitDefault.Instance.hpInit = int.Parse(xmlNodeList.Item(7).InnerText);
-        unitDefault.Instance.runSpeed = int.Parse(xmlNodeList.Item(8).InnerText);
-        unitDefault.Instance.fullInit = int.Parse(xmlNodeList.Item(9).InnerText);
-        unitDefault.Instance.energyMax = int.Parse(xmlNodeList.Item(10).InnerText);
-        unitDefault.Instance.energyDec = int.Parse(xmlNodeList.Item(11).InnerText);
-        unitDefault.Instance.energyDecSec = int.Parse(xmlNodeList.Item(12).InnerText);
-        unitDefault.Instance.energyInit = int.Parse(xmlNodeList.Item(13).InnerText);
-        unitDefault.Instance.tired = int.Parse(xmlNodeList.Item(14).InnerText);
-        unitDefault.Instance.exhausted = int.Parse(xmlNodeList.Item(15).InnerText);
-        unitDefault.Instance.slightHungry = int.Parse(xmlNodeList.Item(16).InnerText);
+        unitDefault.Instance.data.hp = childNodeInt(node, 0, "hp");
+        unitDefault.Instance.data.hpMax = childNodeInt(node, 0, "hpMax");
+        unitDefault.Instance.data.runSpeed = childNodeInt(node, 0, "run");
 
-        //Debug.Log("unitDefault.Instance.exhausted=" + unitDefault.Instance.exhausted);
-        //Debug.Log("unitDefault.Instance.energyMax=" + unitDefault.Instance.energyMax);
+        unitDefault.Instance.data.mood = childNodeInt(node, 1, "init");
+        unitDefault.Instance.data.moodMax = childNodeInt(node, 1, "max");
+        unitDefault.Instance.data.mood_level_1 = childNodeInt(node, 1, "level_1");
+        unitDefault.Instance.data.mood_level_2 = childNodeInt(node, 1, "level_2");
+        unitDefault.Instance.data.mood_level_3 = childNodeInt(node, 1, "level_3");
+        unitDefault.Instance.data.mood_level_4 = childNodeInt(node, 1, "level_4");
+        unitDefault.Instance.data.mood_level_5 = childNodeInt(node, 1, "level_5");
+
+        unitDefault.Instance.data.full = childNodeInt(node, 2, "init");
+        unitDefault.Instance.data.fullDec = childNodeInt(node, 2, "dec");
+        unitDefault.Instance.data.fullDecSec = childNodeInt(node, 2, "decSec");
+        unitDefault.Instance.data.fullMax = childNodeInt(node, 2, "max");
+
+        unitDefault.Instance.data.hungry_slight = childNodeInt(node, 3, "slight");
+        unitDefault.Instance.data.hungry_medium = childNodeInt(node, 3, "medium");
+        unitDefault.Instance.data.hungry_extream = childNodeInt(node, 3, "extream");
+
+        unitDefault.Instance.data.energy = childNodeInt(node, 4, "init");
+        unitDefault.Instance.data.energyDec = childNodeInt(node, 4, "dec");
+        unitDefault.Instance.data.energyDecSec = childNodeInt(node, 4, "decSec");
+        unitDefault.Instance.data.energyMax = childNodeInt(node, 4, "max");
+
+        unitDefault.Instance.data.tired_slight = childNodeInt(node, 5, "slight");
+        unitDefault.Instance.data.tired_medium = childNodeInt(node, 5, "medium");
+        unitDefault.Instance.data.tired_extream = childNodeInt(node, 5, "extream");
+
     }
 
     public void loadTimeData()
@@ -242,6 +279,16 @@ public class XMLLoader : UnitySingleton<XMLLoader>
     public string childNodeStr(XmlElement node, int v, string attr)
     {
         return node.ChildNodes.Item(v).Attributes[attr].InnerText;
+    }
+
+    public int childNodeInt(XmlNodeList node, int v, string attr)
+    {
+        return int.Parse(node.Item(v).Attributes[attr].InnerText);
+    }
+
+    public string childNodeStr(XmlNodeList node, int v, string attr)
+    {
+        return node.Item(v).Attributes[attr].InnerText;
     }
 }
 

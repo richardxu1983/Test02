@@ -1,20 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <objects>
-  <fullMax>100</fullMax>
-  <fullDecSec>1</fullDecSec>
-  <fullDec>1</fullDec>
-  <moodBase>50</moodBase>
-  <hungry>35</hungry>
-  <exHungey>10</exHungey>
-  <hpMax>100</hpMax>
-  <hpInit>100</hpInit>
-  <runSpeed>4</runSpeed>
-  <fullInit>70</fullInit>
-  <energyMax>100</energyMax>
-  <energyDec>1</energyDec>
-  <energyDecSec>1</energyDecSec>
-  <energyInit>100</energyInit>
-  <tired>40</tired>
-  <exhausted>10</exhausted>
-  <slightHungry>65</slightHungry>
+  <basic hp="100" hpMax="100" run="4" />
+  <mood init="70" max="100" level_1="10" level_2="30" level_3="60" level_4="85" level_5="100" />
+  <full init ="70" max="100" decSec="1" dec="1" />
+  <hungry slight="65" medium="35" extream="10" />
+  <energy init="100" max="100" decSec="1" dec="1" />
+  <tired slight="65" medium="35" extream="10" />
 </objects>

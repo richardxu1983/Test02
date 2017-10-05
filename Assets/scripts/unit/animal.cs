@@ -14,23 +14,30 @@ public class animal : unitBase
 
     public void create(int uid)
     {
+        animalData data = animalXML.Instance.get(typeId);
 
-        iSet(UIA.fullMax, unitDefault.Instance.fullMax);
-        iSet(UIA.fullDec, unitDefault.Instance.fullDec);
-        iSet(UIA.energyMax, unitDefault.Instance.energyMax);
-        iSet(UIA.energyDec, unitDefault.Instance.energyDec);
+        iSet(UIA.fullMax, data.fullMax);
+        iSet(UIA.fullDec, data.fullDec);
+        iSet(UIA.energyMax, data.energyMax);
+        iSet(UIA.energyDec, data.energyDec);
+        iSet(UIA.hungry_slight, data.hungry_slight);
+        iSet(UIA.hungry_medium, data.hungry_medium);
+        iSet(UIA.hungry_extream, data.hungry_extream);
+        iSet(UIA.tired_slight, data.tired_slight);
+        iSet(UIA.tired_medium, data.tired_medium);
+        iSet(UIA.tired_extream, data.tired_extream);
 
         id          = uid;
-        headSkin    = XMLLoader.Instance.animalConfig[typeId].headId;
+        headSkin    = data.headId;
         skinColor   = utils.Instance.getSkinColor(skinColorId);
-        bodySkin    = XMLLoader.Instance.animalConfig[typeId].bodyId;
-        name        = XMLLoader.Instance.animalConfig[typeId].name;
-        runSpeed    = XMLLoader.Instance.animalConfig[typeId].speed;
-        hpMax       = unitDefault.Instance.hpMax;
-        mood        = Globals.MOOD_BASE;
-        hp          = 100;
-        energy      = unitDefault.Instance.energyInit;
-        full        = unitDefault.Instance.fullInit;
+        bodySkin    = data.bodyId;
+        name        = data.name;
+        runSpeed    = data.runSpeed;
+        hpMax       = data.hpMax;
+        mood        = data.mood;
+        hp          = data.hp;
+        energy      = data.energy;
+        full        = data.full;
     }
 
     public override void SelfLoop()

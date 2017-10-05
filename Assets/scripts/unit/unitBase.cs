@@ -3,33 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum UIA
-{
-    uid,
-    hp,
-    hpMax,
-    skinColorId,
-    headSkin,
-    bodySkin,
-    mood,
-    moodMax,
-    moodLevel,
-    full,
-    fullMax,
-    fullDec,
-    fullDecSec,
-    fullTick,
-    hungry,
-    exHungry,
-    energy,
-    energyDec,
-    energyDecSec,
-    energyMax,
-    energyTick,
-    tired,
-    exhausted,
-}
-
 public enum UFA
 {
     run_speed,
@@ -67,8 +40,8 @@ public enum AIR
 public class unitBase : entity
 {
 
-    private int[] iAttr;              //int 属性
-    private float[] fAttr;              //float 属性
+    private int[] iAttr;             //int 属性
+    private float[] fAttr;           //float 属性
     private bool m_isDead = false;   //是否死亡
     private int tick = 0;
     private int tickMax = 4;
@@ -107,10 +80,6 @@ public class unitBase : entity
         debuff = new Dictionary<int, Condition>();
         buffExist = new int[64];
         targetGrid = new GridID(0, 0);
-        iSet(UIA.hungry, unitDefault.Instance.hungry);
-        iSet(UIA.exHungry, unitDefault.Instance.exHungey);
-        iSet(UIA.tired, unitDefault.Instance.tired);
-        iSet(UIA.exhausted, unitDefault.Instance.exhausted);
         ai.init(this);
     }
 
@@ -160,7 +129,7 @@ public class unitBase : entity
     {
         int t = iGet(UIA.fullTick);
         t++;
-        if( t >= unitDefault.Instance.fullDecSec )
+        if( t >= iGet(UIA.fullDecSec))
         {
             int v = iGet(UIA.full);
             if (v > 0)
@@ -174,7 +143,7 @@ public class unitBase : entity
 
         t = iGet(UIA.energyTick);
         t++;
-        if (t >= unitDefault.Instance.energyDecSec)
+        if (t >= iGet(UIA.energyDecSec))
         {
             int v = iGet(UIA.energy);
             if (v > 0)
@@ -197,14 +166,17 @@ public class unitBase : entity
             int v = value;
             v = v < 0 ? 0 : v;
             v = v > iGet(UIA.energyMax) ? iGet(UIA.energyMax) : v;
-            if (v < iGet(UIA.tired) && v >= iGet(UIA.exhausted))
+            if (v < iGet(UIA.tired_slight) && v >= iGet(UIA.tired_medium))
             {
                 TryAddBuff(4);
             }
-            else if (v < iGet(UIA.exhausted))
+            else if (v < iGet(UIA.tired_medium) && v >= iGet(UIA.tired_extream))
             {
-                //Debug.Log("111111111");
                 TryAddBuff(5);
+            }
+            else if (v < iGet(UIA.tired_extream))
+            {
+                TryAddBuff(6);
             }
             //Debug.Log("iGet(UIA.energyMax)=" + iGet(UIA.energyMax) + " , value=" + value);
             iSet(UIA.energy, v);
@@ -219,15 +191,15 @@ public class unitBase : entity
             int v = value;
             v = v < 0 ? 0 : v;
             v = v > iGet(UIA.fullMax) ? iGet(UIA.fullMax) : v;
-            if (v < unitDefault.Instance.slightHungry && v >= iGet(UIA.hungry))
+            if (v < iGet(UIA.hungry_slight) && v >= iGet(UIA.hungry_medium))
             {
                 TryAddBuff(0);
             }
-            else if (v < iGet(UIA.hungry) && v >= iGet(UIA.exHungry))
+            else if (v < iGet(UIA.hungry_medium) && v >= iGet(UIA.hungry_extream))
             {
                 TryAddBuff(1);
             }
-            else if (v < iGet(UIA.exHungry))
+            else if (v < iGet(UIA.hungry_extream))
             {
                 TryAddBuff(2);
             }

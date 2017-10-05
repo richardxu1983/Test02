@@ -41,8 +41,6 @@ public static class Globals
     public static int humanType = 1000;
     public static int animalType = 2000;
     public static System.Random rd = new System.Random();
-    public static int HUNGRY_INT = 60;
-    public static int EXHUNGRY_INT = 10;
     public static int MOOD_BASE = 60;
     public static int MOOD_LEVEL_1 = 11;
     public static int MOOD_LEVEL_2 = 30;
@@ -61,26 +59,7 @@ public static class Files
 }
 
 //
-public class unitDefault : Singleton<unitDefault>
-{
-    public int fullMax;
-    public int fullDecSec;
-    public int fullDec;
-    public int moodBase;
-    public int hungry;
-    public int exHungey;
-    public int hpMax;
-    public int hpInit;
-    public float runSpeed;
-    public int fullInit;
-    public int energyMax;
-    public int energyDec;
-    public int energyDecSec;
-    public int energyInit;
-    public int tired;
-    public int exhausted;
-    public int slightHungry;
-}
+
 
 public class timeData : Singleton<timeData>
 {
