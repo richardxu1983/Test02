@@ -85,7 +85,8 @@ public class unitMovement : MonoBehaviour {
         if(g!=null)
         {
             Vector3 movement = GSceneMap.Instance.nodeFromGrid(g).worldPosition - transform.position;
-            //Debug.Log(GSceneMap.Instance.nodeFromGrid(g).worldPosition + " :" + transform.position+" : "+movement);
+            movement.y = 0;
+            
             if (Mathf.Abs(movement.x) >= 0.03f || Mathf.Abs(movement.z) >= 0.03f)
             {
                 movement.Normalize();
@@ -114,7 +115,9 @@ public class unitMovement : MonoBehaviour {
                 }
                 
                 m_movement = movement * m_manager.runSpeed * Time.deltaTime;
-                transform.Translate(m_movement);
+
+                //Debug.Log(movement+" , "+m_movement+","+ m_manager.runSpeed+" , "+ Time.deltaTime);
+                transform.position += m_movement;
             }
         }
     }

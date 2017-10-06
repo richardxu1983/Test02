@@ -75,6 +75,7 @@ public class unitBase : entity
     {
         iAttr = new int[256];
         fAttr = new float[16];
+
         ai = new UnitAiBase();
         buff = new Dictionary<int, Condition>();
         debuff = new Dictionary<int, Condition>();

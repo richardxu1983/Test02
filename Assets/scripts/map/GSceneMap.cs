@@ -12,7 +12,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     float gridSize = 2.2f;
     public Vector2 gridWorldSize;
     public Node[,] grid;
-    Vector3 worldBottomLeft;
+    public Vector3 worldBottomLeft;
     private float _seedX = 0.0f, _seedZ = 0.0f;
     private float _relief = 15f;
     float xSample, zSample;

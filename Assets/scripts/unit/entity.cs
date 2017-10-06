@@ -92,6 +92,13 @@ public class plant : entity
         renderer.sprite = SpManager.Instance.LoadSprite(spritename);
         m_Instance.transform.parent = GameObject.Find(parentname).transform;
         renderer.sortingOrder = Mathf.RoundToInt(m_Instance.transform.position.z * -100);
+
+        renderer.receiveShadows = false;
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        Vector3 v3 = m_Instance.transform.position;
+        v3.y = Mathf.RoundToInt(m_Instance.transform.position.z/100)+ GSceneMap.Instance.gridWorldSize.y/100;
+        m_Instance.transform.position = v3;
         mo = m_Instance.GetComponent<plantMo>();
         mo.init(this);
     }

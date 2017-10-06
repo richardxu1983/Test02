@@ -61,14 +61,3 @@ public static class Files
 //
 
 
-public class timeData : Singleton<timeData>
-{
-    public int TIME_IN_TICK;     //
-    public int MIN_IN_TICK;     //多少tick是1分钟
-    public int HOUR_IN_MINUTE;     //多少游戏分钟是游戏1小时
-    public int MONTH_IN_DAY;      //一个月多少天
-    public int DAY_IN_HOUR;      //一天几小时
-    public int YEAR_IN_MONTH;    //一年几个月
-    public int INIT_HOUR;          //初始的小时
-    public int INIT_YEAR;          //初始的年
-}

@@ -3,6 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public class timeData : Singleton<timeData>
+{
+    public int TIME_IN_TICK;     //
+    public int MIN_IN_TICK;     //多少tick是1分钟
+    public int HOUR_IN_MINUTE;     //多少游戏分钟是游戏1小时
+    public int MONTH_IN_DAY;      //一个月多少天
+    public int DAY_IN_HOUR;      //一天几小时
+    public int YEAR_IN_MONTH;    //一年几个月
+    public int INIT_HOUR;          //初始的小时
+    public int INIT_YEAR;          //初始的年
+    public int NIGHT_HOUR;        //晚上开始于几点
+    public int DAY_HOUR;          //白天开始于几点
+}
+
 [Serializable]
 public class GTime : Singleton<GTime>
 {
@@ -23,6 +37,8 @@ public class GTime : Singleton<GTime>
     private int m_totalDaysInYear;
     private int m_cur_tick;
     private int m_GTick;
+    private int m_dayHour;
+    private int m_nightHour;
 
     public delegate void NotifyMin();
     public event NotifyMin MinNotifier;
@@ -48,6 +64,8 @@ public class GTime : Singleton<GTime>
         m_year = timeData.Instance.INIT_YEAR;
         m_totalDaysInYear = m_monthInDays * m_yearInMonths;
         m_MinutsInDay = m_dayInHours * m_hourInMinuts;
+        m_dayHour = timeData.Instance.DAY_HOUR;
+        m_nightHour = timeData.Instance.NIGHT_HOUR;
     }
 
     public void tick()
@@ -71,6 +89,30 @@ public class GTime : Singleton<GTime>
         m_day = m_day > m_monthInDays ? m_monthInDays : m_day;
         m_MinuteNowInDay = m_minute + m_hour * m_hourInMinuts;
         m_daysInYear = m_month * m_monthInDays + m_day;
+    }
+
+    public bool IsDay()
+    {
+        if(m_hour > m_dayHour &&m_hour<= m_nightHour)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public string dayString()
+    {
+        if(IsDay())
+        {
+            return "白天";
+        }
+        else
+        {
+            return "夜晚";
+        }
     }
 
     public int monthInDay()
@@ -122,6 +164,7 @@ public class GTime : Singleton<GTime>
             {
                 m_minute = 0;
                 m_hour++;
+                onStepHour();
                 if (m_hour >= m_dayInHours)
                 {
                     m_hour = 0;
@@ -147,7 +190,19 @@ public class GTime : Singleton<GTime>
 
     public string TimeString()
     {
-        return m_hour.ToString() + " h , " + m_day + " day , " + m_month + " month , " + m_year + "\n";
+        return ""+m_year + "年" + " " + m_month + "月"+" , "+ "第" + " " + m_day + "天"+" , " + m_hour.ToString() + "点" + " [ " +dayString()+" ] "+"";
+    }
+
+    public void onStepHour()
+    {
+        if(IsDay() && m_hour == m_nightHour - 1)
+        {
+            //turn into night
+        }
+        else if(!IsDay() && m_hour == m_dayHour-1)
+        {
+            //turn into day
+        }
     }
 
     //

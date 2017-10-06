@@ -205,6 +205,10 @@ public class unitSkin : MonoBehaviour {
             headRenderer.sortingOrder = so+1;
             hairRenderer.sortingOrder = so+2;
         }
+
+        Vector3 v3 = transform.position;
+        v3.y = Mathf.RoundToInt(transform.position.z / 100) + GSceneMap.Instance.gridWorldSize.y / 100;
+        transform.position = v3;
     }
 	
 	// Update is called once per frame

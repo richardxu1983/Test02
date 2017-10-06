@@ -248,7 +248,9 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         timeData.Instance.YEAR_IN_MONTH = int.Parse(xmlNodeList.Item(5).InnerText);    //一年几个月
         timeData.Instance.INIT_HOUR = int.Parse(xmlNodeList.Item(6).InnerText);          //初始的小时
         timeData.Instance.INIT_YEAR = int.Parse(xmlNodeList.Item(7).InnerText);          //初始的年
-}
+        timeData.Instance.NIGHT_HOUR = int.Parse(xmlNodeList.Item(8).InnerText);
+        timeData.Instance.DAY_HOUR = int.Parse(xmlNodeList.Item(9).InnerText);
+    }
 
     public int GetNodeInt(XmlElement node,string v)
     {
