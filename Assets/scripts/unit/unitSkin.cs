@@ -41,9 +41,11 @@ public class unitSkin : MonoBehaviour {
         m_collider = GetComponent<BoxCollider>();
         //shadowRenderer.sprite = SpManager.Instance.LoadSprite("shadow");
         bodyRenderer.color = m_manager.skinColor;
+        bodyRenderer.material.SetColor("_Color", m_manager.skinColor);
         if (hasHead)
         {
             headRenderer.color = m_manager.skinColor;
+            headRenderer.material.SetColor("_Color", m_manager.skinColor);
         }
         else
         {

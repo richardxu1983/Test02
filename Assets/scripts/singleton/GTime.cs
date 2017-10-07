@@ -15,6 +15,8 @@ public class timeData : Singleton<timeData>
     public int INIT_YEAR;          //初始的年
     public int NIGHT_HOUR;        //晚上开始于几点
     public int DAY_HOUR;          //白天开始于几点
+    public float DAY_LIGHT;          
+    public float NIGHT_LIGHT;          
 }
 
 [Serializable]
@@ -37,8 +39,8 @@ public class GTime : Singleton<GTime>
     private int m_totalDaysInYear;
     private int m_cur_tick;
     private int m_GTick;
-    private int m_dayHour;
-    private int m_nightHour;
+    public int m_dayHour;
+    public int m_nightHour;
 
     public delegate void NotifyMin();
     public event NotifyMin MinNotifier;
@@ -93,7 +95,7 @@ public class GTime : Singleton<GTime>
 
     public bool IsDay()
     {
-        if(m_hour > m_dayHour &&m_hour<= m_nightHour)
+        if(m_hour >= m_dayHour && m_hour< m_nightHour)
         {
             return true;
         }
@@ -195,14 +197,7 @@ public class GTime : Singleton<GTime>
 
     public void onStepHour()
     {
-        if(IsDay() && m_hour == m_nightHour - 1)
-        {
-            //turn into night
-        }
-        else if(!IsDay() && m_hour == m_dayHour-1)
-        {
-            //turn into day
-        }
+
     }
 
     //

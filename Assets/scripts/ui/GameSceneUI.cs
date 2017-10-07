@@ -8,6 +8,7 @@ public class GameSceneUI : UnitySingleton<GameSceneUI>
 
     public GameObject unitPanel;
     public unitInfo unitInfoScript;
+   
 
     // Use this for initialization
     public void init ()
@@ -16,5 +17,4 @@ public class GameSceneUI : UnitySingleton<GameSceneUI>
         unitInfoScript = unitPanel.GetComponent<unitInfo>();
         unitPanel.SetActive(false);
     }
-
 }

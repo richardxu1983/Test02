@@ -3,8 +3,8 @@
 	Properties{
 		_Color("Main Color", Color) = (1,1,1,1)
 		_MainTex("Base (RGB) Trans (A)", 2D) = "white" {}
-	_BumpMap("Normalmap", 2D) = "bump" {}
-	_Cutoff("Cutoff", Float) = 0.01
+		_BumpMap("Normalmap", 2D) = "bump" {}
+		_Cutoff("Cutoff", Float) = 0.01
 	}
 
 		SubShader{

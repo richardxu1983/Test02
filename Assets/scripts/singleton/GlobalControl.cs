@@ -20,6 +20,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     {
         if(!binit)
         {
+            Debug.Log("初始数据读取及初始化");
             conditionData.Instance.init();
             SpManager.Instance.init();
             utils.Instance.init();
@@ -33,8 +34,38 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         }
     }
 
+    public void beforeEnterScene()
+    {
+        Debug.Log("进入场景之前处理数据");
+        processSceneData();
+    }
+
+    public void processSceneData()
+    {
+        if (newGame)
+        {
+            GTime.Instance.init();
+        }
+        else
+        {
+            Debug.Log("开始读取");
+            string path = Application.persistentDataPath + "/saveData.dat";
+            //time
+            GTime.Instance.init();
+            SerializeHelper.LoadStart(path);
+            GSceneMap.Instance.gridNum = SerializeHelper.Load<int>();
+            GSceneMap.Instance.LoadMap();
+            GSceneMap.Instance.grid = SerializeHelper.Load<Node[,]>();
+            unitPool.Instance.units = SerializeHelper.Load<nList<unitBase>>();
+            GTime.Instance = SerializeHelper.Load<GTime>();
+            SerializeHelper.LoadEnd();
+            Debug.Log("读取结束");
+        }
+    }
+
     public void onEnterScene()
     {
+        Debug.Log("进入场景");
         bLogicPause = true;
         if (newGame)
         {
@@ -54,8 +85,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
 
     public void newGameInit()
     {
-        Debug.Log("newGameInit");
-        GTime.Instance.init();
+        Debug.Log("进入场景-新建游戏");
         GSceneMap.Instance.CreateMap();
         PathFind.Instance.init();
         GameSceneUI.Instance.init();
@@ -64,19 +94,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
 
     public void loadGame()
     {
-        Debug.Log("开始读取");
-        string path = Application.persistentDataPath + "/saveData.dat";
-        //time
-        GTime.Instance.init();
-
-        SerializeHelper.LoadStart(path);
-        GSceneMap.Instance.gridNum = SerializeHelper.Load<int>();
-        GSceneMap.Instance.LoadMap();
-        GSceneMap.Instance.grid = SerializeHelper.Load<Node[,]>();
-        unitPool.Instance.units = SerializeHelper.Load<nList<unitBase>>();
-        GTime.Instance = SerializeHelper.Load<GTime>();
-        SerializeHelper.LoadEnd();
-        Debug.Log("读取结束");
+        Debug.Log("进入场景-读取游戏");
         GSceneMap.Instance.CreateTerrain();
         GSceneMap.Instance.spawnAll();
         unitPool.Instance.spawnAll();
@@ -89,7 +107,6 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     {
         Debug.Log("开始存档");
         string path = Application.persistentDataPath + "/saveData.dat";
-
         SerializeHelper.SaveStart(path);
         SerializeHelper.Save<int>(GSceneMap.Instance.gridNum);
         SerializeHelper.Save<Node[,]>(GSceneMap.Instance.grid);

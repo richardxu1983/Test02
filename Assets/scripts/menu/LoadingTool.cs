@@ -16,6 +16,7 @@ public class LoadingTool : MonoBehaviour {
     {
         //在这里开启一个异步任务，
         //进入loadScene方法。
+        GlobalControl.Instance.beforeEnterScene();
         sliderProgress.value = 0;
         txtProgress.text = "0 %";
         StartCoroutine(loadScene());
