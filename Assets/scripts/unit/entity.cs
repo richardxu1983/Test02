@@ -115,7 +115,7 @@ public class grass: plant
     public grass(int x, int y) : base(x, y, 1, 1)
     {
         prefabname = "grass";
-        spritename = "grass_" + Globals.rd.Next(1, 4);
+        spritename = "grass_1";// + Globals.rd.Next(1, 4);
         parentname = "grasses";
     }
 }

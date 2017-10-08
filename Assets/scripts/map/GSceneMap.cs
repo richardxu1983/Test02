@@ -9,7 +9,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
     public int gridNum = 200;
     int gridSizeX, gridSizeY;
     float mapWidth, mapLength;
-    float gridSize = 2.2f;
+    float gridSize = 1f;
     public Vector2 gridWorldSize;
     public Node[,] grid;
     public Vector3 worldBottomLeft;
@@ -28,25 +28,15 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     public void CreateMap()
     {
-        CreateData();
-        CreateTerrain();
-    }
-
-    public void LoadMap()
-    {
-        gridSizeX = gridNum;
-        gridSizeY = gridNum;
-        mapWidth = gridSizeX * gridSize;
-        mapLength = gridSizeY * gridSize;
-        gridWorldSize = new Vector2(mapWidth, mapLength);
-        grid = new Node[gridSizeX, gridSizeY];
-        worldBottomLeft = new Vector3(0, 0, 0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        Debug.Log("创建地图");
+        CreateBasicData();
+        CreateGrid();
     }
 
     public void CreateTerrain()
     {
+        /*
         int sur;
-  
         terrain = new GameObject();
         _terraindata = new TerrainData();
         //_terraindata.heightmapResolution = 100;
@@ -86,11 +76,12 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         t = terrain.GetComponent<Terrain>();
         t.materialType = Terrain.MaterialType.BuiltInLegacyDiffuse;
         t.Flush();
+        */
     }
 
-    void CreateData()
+    public void CreateBasicData()
     {
-        Debug.Log("CreateData");
+        Debug.Log("创建基础地图数据");
         gridSizeX = gridNum;
         gridSizeY = gridNum;
         mapWidth = gridSizeX * gridSize;
@@ -98,7 +89,6 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         gridWorldSize = new Vector2(mapWidth, mapLength);
         grid = new Node[gridSizeX, gridSizeY];
         worldBottomLeft = new Vector3(0, 0, 0) - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
-        CreateGrid();
     }
 
     public Node nodeFromWorldPoint(Vector3 worldPosition)
@@ -137,6 +127,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
 
     void CreateGrid()
     {
+        Debug.Log("创建地图物件数据");
         Vector3 worldPoint;
         int sur;
         int h;
@@ -149,27 +140,29 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 
                 grid[x, y] = new Node(false, worldPoint, new GridID(x,y));
                 sur = Globals.rd.Next(XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].begin, XMLLoader.Instance.GSurSearch[Globals.BASIC_MAP_SUR].end + 1);
-                grid[x, y].terrainIndex = sur;
-                grid[x, y].surfaceId = XMLLoader.Instance.GsurIndex[sur].id;
+                //grid[x, y].terrainIndex = sur;
+                grid[x, y].surfaceId = sur;
                 xSample = (x + _seedX) / _relief;
                 zSample = (y + _seedZ) / _relief;
                 h = (int)(Mathf.PerlinNoise(xSample, zSample) * 20);
                 if (h > 10)
                 {
-                    grid[x, y].growGrass();
+                    grid[x, y].m_grass = new grass(x, y);
                 }
                 bool tree = Globals.rd.Next(0, 100) > 95 ? true : false;
                 if (tree)
                 {
-                    grid[x, y].growTree();
+                    grid[x, y].m_tree = new tree(x, y);
+                    grid[x, y].block = true;
                 }
+                
             }
         }
     }
 
     public void spawnAll()
     {
-        Debug.Log("spawnAll");
+        Debug.Log("生成地图物件");
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
@@ -182,13 +175,17 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 {
                     grid[x, y].m_tree.spawn();
                 }
+                //Debug.Log(XMLLoader.Instance.GsurIndex[sur].name);
+                GameObject m_Instance = Instantiate(Resources.Load("Prefab/tile"), grid[x, y].worldPosition, new Quaternion(0, 0, 0, 0)) as GameObject;
+                m_Instance.transform.Find("img").GetComponent<SpriteRenderer>().sprite = SpManager.Instance.LoadSprite(XMLLoader.Instance.GsurIndex[grid[x, y].surfaceId].name);
+                m_Instance.transform.parent = GameObject.Find("tiles").transform;
             }
         }
     }
 
     public void Clear()
     {
-        Debug.Log("Clear");
+        //Debug.Log("Clear");
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)

@@ -45,6 +45,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
         if (newGame)
         {
             GTime.Instance.init();
+            GSceneMap.Instance.CreateMap();
         }
         else
         {
@@ -54,7 +55,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
             GTime.Instance.init();
             SerializeHelper.LoadStart(path);
             GSceneMap.Instance.gridNum = SerializeHelper.Load<int>();
-            GSceneMap.Instance.LoadMap();
+            GSceneMap.Instance.CreateBasicData();
             GSceneMap.Instance.grid = SerializeHelper.Load<Node[,]>();
             unitPool.Instance.units = SerializeHelper.Load<nList<unitBase>>();
             GTime.Instance = SerializeHelper.Load<GTime>();
@@ -86,7 +87,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
     public void newGameInit()
     {
         Debug.Log("进入场景-新建游戏");
-        GSceneMap.Instance.CreateMap();
+        GSceneMap.Instance.spawnAll();
         PathFind.Instance.init();
         GameSceneUI.Instance.init();
         bLogicPause = false;
