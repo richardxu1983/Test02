@@ -25,6 +25,7 @@ public class GlobalControl : UnitySingleton<GlobalControl>
             SpManager.Instance.init();
             utils.Instance.init();
             animalXML.Instance.init();
+            treeXML.Instance.init();
             unitDefault.Instance.init();
             XMLLoader.Instance.init();
             XMLLoader.Instance.load();

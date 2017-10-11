@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <config id="0" name="tree0" img="tree-0" eatable="0" foodType="-1" havest="1" res="wood" amount="100">
+  </config>
+  <config id="1" name="tree1" img="tree-1" eatable="0" foodType="-1" havest="1" res="wood" amount="100">
+  </config>
+</objects>

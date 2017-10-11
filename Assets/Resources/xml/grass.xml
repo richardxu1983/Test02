@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <config typeId="0" name="grass0" img="grass-0" eatable="1" foodType="0" havest="0" res="-1" amount="100">
+  </config>
+</objects>

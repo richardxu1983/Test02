@@ -37,9 +37,13 @@ public class Node : IHeapItem<Node>
 
     public void deleteTree()
     {
-        m_tree.delete();
-        m_tree = default(tree);
-        block = false;
+        if(m_tree!=null)
+        {
+            m_tree.delete();
+            m_tree = default(tree);
+            block = false;
+        }
+
     }
 
     public void growGrass()
@@ -48,9 +52,9 @@ public class Node : IHeapItem<Node>
         m_grass.spawn();
     }
 
-    public void growTree()
+    public void growTree(int id)
     {
-        m_tree = new tree(gridId.x, gridId.y);
+        m_tree = new tree(gridId.x, gridId.y, id);
         m_tree.spawn();
         block = true;
     }

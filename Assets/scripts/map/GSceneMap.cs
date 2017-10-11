@@ -131,6 +131,7 @@ public class GSceneMap : UnitySingleton<GSceneMap>
         Vector3 worldPoint;
         int sur;
         int h;
+        int treetrig;
 
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -145,17 +146,26 @@ public class GSceneMap : UnitySingleton<GSceneMap>
                 xSample = (x + _seedX) / _relief;
                 zSample = (y + _seedZ) / _relief;
                 h = (int)(Mathf.PerlinNoise(xSample, zSample) * 20);
-                if (h > 10)
+                if (h > 7)
                 {
                     grid[x, y].m_grass = new grass(x, y);
                 }
-                bool tree = Globals.rd.Next(0, 100) > 95 ? true : false;
-                if (tree)
+                h = (int)(Mathf.PerlinNoise((x + 100) / _relief, (y + 100) / _relief) * 20);
+                if (h > 12)
                 {
-                    grid[x, y].m_tree = new tree(x, y);
+                    if(Globals.rd.Next(0, 1000)>900)
+                    {
+                        grid[x, y].m_tree = new tree(x, y, 1);
+                        grid[x, y].block = true;
+                    }
+                }
+                treetrig = Globals.rd.Next(0, 1000);
+                //bool tree = Globals.rd.Next(0, 100) > 95 ? true : false;
+                if (treetrig > 992)
+                {
+                    grid[x, y].m_tree = new tree(x, y,0);
                     grid[x, y].block = true;
                 }
-                
             }
         }
     }

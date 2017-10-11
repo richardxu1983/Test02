@@ -225,37 +225,54 @@ public class unitSkin : MonoBehaviour {
     public void die()
     {
         updateSkin();
-        switch(m_umovement.getFaceTo())
+        getDown();
+    }
+
+    public void getDown()
+    {
+        if (m_manager.unitAngle != 0)
+            return;
+ 
+        switch (m_umovement.getFaceTo())
         {
             case faceTo.down:
                 {
                     if (Globals.rd.Next(10) > 5)
-                        mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                        m_manager.unitAngle = -130 + Globals.rd.Next(60);
                     else
-                        mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                        m_manager.unitAngle = 70 + Globals.rd.Next(60);
                     break;
                 }
             case faceTo.up:
                 {
                     if (Globals.rd.Next(10) > 5)
-                        mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                        m_manager.unitAngle = -130 + Globals.rd.Next(60);
                     else
-                        mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                        m_manager.unitAngle = 70 + Globals.rd.Next(60);
                     break;
                 }
             case faceTo.left:
                 {
-                    mainImg.transform.Rotate(Vector3.up * (-130 + Globals.rd.Next(60)));
+                    m_manager.unitAngle = -130 + Globals.rd.Next(60);
                     break;
                 }
             case faceTo.right:
                 {
-                    mainImg.transform.Rotate(Vector3.up * (70 + Globals.rd.Next(60)));
+                    m_manager.unitAngle = 70 + Globals.rd.Next(60);
                     break;
                 }
             default:
                 break;
+        }
+        mainImg.transform.Rotate(Vector3.up * m_manager.unitAngle);
+    }
 
+    public void standUp()
+    {
+        if(m_manager.unitAngle!=0)
+        {
+            mainImg.transform.Rotate(Vector3.up * (-1) * m_manager.unitAngle);
+            m_manager.unitAngle = 0;
         }
     }
 }

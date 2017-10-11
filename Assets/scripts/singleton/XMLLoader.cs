@@ -43,6 +43,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         loadCondition();
         loadUnitDefault();
         loadTimeData();
+        loadTreeData();
     }
 
     public void surfaceInit()
@@ -58,6 +59,23 @@ public class XMLLoader : UnitySingleton<XMLLoader>
             GSHelper[i] = 0;
         }
         MaxGSurConfig = 0;
+    }
+
+    public void loadTreeData()
+    {
+        XmlDocument xmlDoc = ReadAndLoadXml("tree");
+        XmlNodeList xmlNodeList = xmlDoc.SelectSingleNode("objects").ChildNodes;
+        int i = 0;
+
+        foreach (XmlElement node in xmlNodeList)
+        {
+            Debug.Log(node.GetAttribute("img"));
+            treeXML.Instance.get(i).img = GetNodeStr(node, "img");
+            treeXML.Instance.get(i).name = GetNodeStr(node, "name");
+            treeXML.Instance.get(i).id = GetNodeInt(node, "id");
+            i++;
+        }
+        
     }
 
     public void loadGSurConfig()

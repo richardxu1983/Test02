@@ -123,6 +123,22 @@ public class unitPool : UnitySingleton<unitPool>
         }
     }
 
+    public void debugTest()
+    {
+        if (currentSelHuman >= 0)
+        {
+            OP v = units.get(currentSelHuman).getOp();
+            if(v!=OP.down)
+            {
+                units.get(currentSelHuman).setOp(OP.down);
+            }
+            else
+            {
+                units.get(currentSelHuman).setOp(OP.idle);
+            }
+        }
+    }
+
     public void MoveSelectToWorldPos(Vector3 v)
     {
         //Debug.Log(v);

@@ -100,6 +100,15 @@ public class MainCancas : MonoBehaviour {
     {
         Debug.Log("test");
 
+        for(int i=0; i<100; i=i+1)
+        {
+            for (int j = 0; j < 100; j = j + 1)
+            {
+                GSceneMap.Instance.grid[i, j].deleteTree();
+            }
+        }
+        
+
         /*
         string path = Application.persistentDataPath + "/saveData.dat";
 

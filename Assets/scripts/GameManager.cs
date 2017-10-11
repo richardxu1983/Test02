@@ -59,6 +59,10 @@ public class GameManager : MonoBehaviour {
         {
             unitPool.Instance.debug_AtkSelectUnit();
         }
+        if (Input.GetKeyDown("t"))
+        {
+            unitPool.Instance.debugTest();
+        }
         //
         if (Input.GetMouseButtonDown(1))
         {

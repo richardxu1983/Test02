@@ -15,6 +15,8 @@ public enum OP
     idle,
     moving,
     walking,
+    down,
+    sleep,
     die,
 }
 
@@ -39,13 +41,13 @@ public enum AIR
 [Serializable]
 public class unitBase : entity
 {
-
     private int[] iAttr;             //int 属性
     private float[] fAttr;           //float 属性
     private bool m_isDead = false;   //是否死亡
     private int tick = 0;
     private int tickMax = 4;
     private int[] buffExist;
+    public int unitAngle = 0;
 
     public GridID targetGrid;
     public entity target;
@@ -359,8 +361,6 @@ public class unitBase : entity
         return m;
     }
 
-    //public int hp() { return iGet(UIA.hp); }
-
     public int hp
     {
         get { return iGet(UIA.hp); }
@@ -453,6 +453,26 @@ public class unitBase : entity
         get { return iGet(UIA.headSkin); }
     }
 
+    public void setOp(OP v)
+    {
+        ai.op = v;
+    }
+
+    public OP getOp()
+    {
+        return ai.op;
+    }
+
+    public void setAi(AI v)
+    {
+        ai.ai = v;
+    }
+
+    public AI getAi()
+    {
+        return ai.ai;
+    }
+
     public int skinColorId
     {
         set { iSet(UIA.skinColorId, value); }
@@ -501,8 +521,8 @@ public class UnitAiBase
     public int tick;
     public int m_tickMax;
     public int timeLeft;
-    public OP op = OP.idle;
-    public AI ai = AI.idle;
+    public OP m_op = OP.idle;
+    public AI m_ai = AI.idle;
     public AIR reason = AIR.none;
     public entity targetUnit;
     public List<Node> path;
@@ -530,6 +550,37 @@ public class UnitAiBase
         {
             tick++;
         }
+    }
+
+    public OP op
+    {
+        get { return m_op; }
+        set
+        {
+            if( value==OP.down || value == OP.sleep )
+            {
+                stopMove();
+                baseUnit.m_skin.getDown();
+            }
+            if((m_op == OP.down || m_op == OP.sleep)&&(value != OP.down || value != OP.sleep))
+            {
+                baseUnit.m_skin.standUp();
+            }
+            m_op = value;
+        }
+    }
+
+    public void stopMove()
+    {
+        path.Clear();
+        pathIndex = 0;
+        targetUnit = default(unitBase);
+    }
+
+    public AI ai
+    {
+        get { return m_ai; }
+        set { m_ai = value; }
     }
 
     public void init(unitBase m)
@@ -575,19 +626,23 @@ public class UnitAiBase
         }
     }
 
+    //移动到某个位置
     public void moveTo(GridID v, bool isCmd)
     {
         if (baseUnit.dead)
             return;
 
+        if (op == OP.down || op == OP.sleep)
+            return;
+
         ai = AI.moveTo;
         op = OP.moving;
-        baseUnit.targetGrid = v;
-        targetUnit = default(unitBase);
 
-        path.Clear();
+        stopMove();
+
+        baseUnit.targetGrid = v;
+        
         PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(baseUnit.targetGrid), ref path);
-        pathIndex = 0;
 
         if (isCmd)
         {
@@ -596,21 +651,26 @@ public class UnitAiBase
         }
     }
 
+    //移动到某个实体
     public void TryMoveToTarget(entity t, bool isCmd)
     {
         if (baseUnit.dead)
             return;
 
+        if (op == OP.down || op == OP.sleep)
+            return;
+
         if (baseUnit.v3Dis(t) <= 3)
             return;
+
+        stopMove();
 
         targetUnit = t;
         baseUnit.targetGrid = t.grid;
         ai = AI.moveTo;
         op = OP.moving;
-        path.Clear();
+
         PathFind.Instance.FindPath(GSceneMap.Instance.nodeFromGrid(baseUnit.grid), GSceneMap.Instance.nodeFromGrid(t.grid), ref path);
-        pathIndex = 0;
 
         if (isCmd)
         {
@@ -621,14 +681,16 @@ public class UnitAiBase
 
     public void moveToTarget()
     {
+        if (op == OP.down || op == OP.sleep)
+            return;
+
         //Debug.Log("moveToTarget");
         if (baseUnit.dead || baseUnit.v3Dis(targetUnit) <= 3)
         {
             ai = AI.idle;
             op = OP.idle;
             reason = AIR.none;
-            targetUnit = default(entity);
-            path.Clear();
+            stopMove();
         }
 
         if(baseUnit.targetGrid!= targetUnit.grid)
@@ -641,6 +703,9 @@ public class UnitAiBase
 
     public void TryToMoveToVector3(Vector3 pos, bool isCmd)
     {
+        if (op == OP.down || op == OP.sleep)
+            return;
+
         Node n = GSceneMap.Instance.nodeFromWorldPoint(pos);
         if (!n.block)
         {
@@ -662,7 +727,9 @@ public class UnitAiBase
 
     public void doMoveTo()
     {
-        //Debug.Log("doMoveTo");
+        if (op == OP.down || op == OP.sleep)
+            return;
+ 
         if (targetUnit!=null)
         {
             moveToTarget();

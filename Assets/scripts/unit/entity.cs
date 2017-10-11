@@ -99,13 +99,13 @@ public class plant : entity
         Vector3 v3 = m_Instance.transform.position;
         v3.y = Mathf.RoundToInt(m_Instance.transform.position.z/100)+ GSceneMap.Instance.gridWorldSize.y/100;
         m_Instance.transform.position = v3;
-        mo = m_Instance.GetComponent<plantMo>();
-        mo.init(this);
+        //mo = m_Instance.GetComponent<plantMo>();
+        //mo.init(this);
     }
 
     public void delete()
     {
-        toDelete = 1;
+        UnityEngine.Object.Destroy(m_Instance);
     }
 }
 
@@ -115,18 +115,46 @@ public class grass: plant
     public grass(int x, int y) : base(x, y, 1, 1)
     {
         prefabname = "grass";
-        spritename = "grass_1";// + Globals.rd.Next(1, 4);
+        spritename = "grass_" + Globals.rd.Next(1, 4);
         parentname = "grasses";
+    }
+}
+
+
+public class treeData
+{
+    public string img;     //
+    public string name;     //
+    public int id;
+}
+
+public class treeXML : Singleton<treeXML>
+{
+    public treeData[] data;
+
+    public void init()
+    {
+        data = new treeData[256];
+        for (int i = 0; i < data.Length; i++)
+        {
+            data[i] = new treeData();
+        }
+    }
+
+    public treeData get(int v)
+    {
+        return data[v];
     }
 }
 
 [Serializable]
 public class tree : plant
 {
-    public tree(int x, int y) : base(x, y, 2, 1)
+    public tree(int x, int y,int typeid) : base(x, y, 2, typeid)
     {
         prefabname = "tree";
-        spritename = "tree";
+        spritename = treeXML.Instance.get(typeid).img;
+        //Debug.Log(spritename);
         parentname = "trees";
     }
 }
