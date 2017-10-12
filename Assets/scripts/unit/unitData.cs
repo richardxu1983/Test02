@@ -10,6 +10,7 @@ public enum UIA
     mood,
     moodMax,
     moodLevel,
+    dead_time,
     full,
     fullMax,
     fullDec,
@@ -32,6 +33,7 @@ public class unitData
 {
     //int
     public int hp;
+    public int corpseTime;
     public int typeId;
     public int bodyId;
     public int headId;

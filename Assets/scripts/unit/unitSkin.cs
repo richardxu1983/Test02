@@ -6,6 +6,8 @@ public class unitSkin : MonoBehaviour {
 
     private int bodySkinIdNow = 0;
     private int headSkinIdNow = 0;
+    private string emotion;
+    private string dir;
     public SpriteRenderer bodyRenderer;
     public SpriteRenderer headRenderer;
     public SpriteRenderer hairRenderer;
@@ -32,7 +34,7 @@ public class unitSkin : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        emotion = "normal";
         bodyRenderer = transform.Find("img/body").GetComponent<SpriteRenderer>();
         hairRenderer = transform.Find("img/hair").GetComponent<SpriteRenderer>();
         headRenderer = transform.Find("img/head").GetComponent<SpriteRenderer>();
@@ -104,73 +106,46 @@ public class unitSkin : MonoBehaviour {
         {
             case faceTo.down:
                 {
-                    faceDown();
+                    dir = "front";
                     break;
                 }
             case faceTo.up:
                 {
-                    faceUp();
+                    dir = "back";
                     break;
                 }
             case faceTo.left:
                 {
-                    faceLeft();
+                    dir = "left";
                     break;
                 }
             case faceTo.right:
                 {
-                    faceRight();
+                    dir = "right";
                     break;
                 }
             default:
                 {
-                    faceDown();
+                    dir = "front";
                     break;
                 }
         }
-    }
 
-    private void faceDown()
-    {
-        setBodySprite(m_manager.bodySkin+"_body_front");
-        if(hasHead)
-        {
-            setheadSprite(m_manager.headSkin+"_head_front");
-            sethairSprite(m_manager.headSkin + "_hair_front");
-        }
-    }
+        setBodySprite(m_manager.bodySkin + "_body_"+ dir);
 
-    private void faceUp()
-    {
-        setBodySprite(m_manager.bodySkin + "_body_back");
         if (hasHead)
         {
-            setheadSprite(m_manager.headSkin + "_head_back");
-            sethairSprite(m_manager.headSkin + "_hair_back");
+            sethairSprite(m_manager.headSkin + "_hair_" + dir);
+            if (m_umovement.getFaceTo() == faceTo.up)
+            {
+                setheadSprite("human_face_" + dir);
+            }
+            else
+            {
+                setheadSprite("human_face_" + dir + "_" + m_manager.emotion);
+            }
         }
     }
-
-    private void faceLeft()
-    {
-        setBodySprite(m_manager.bodySkin + "_body_left");
-        if (hasHead)
-        {
-            setheadSprite(m_manager.headSkin + "_head_left");
-            sethairSprite(m_manager.headSkin + "_hair_left");
-        }
-    }
-
-    private void faceRight()
-    {
-        setBodySprite(m_manager.bodySkin + "_body_right");
-        if (hasHead)
-        {
-            setheadSprite(m_manager.headSkin + "_head_right");
-            sethairSprite(m_manager.headSkin + "_hair_right");
-        }
-    }
-
-
 
     void setCollider()
     {
@@ -190,11 +165,12 @@ public class unitSkin : MonoBehaviour {
 
     public void updateSkin()
     {
-        if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin != bodySkinIdNow || m_manager.headSkin != headSkinIdNow)
+        if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin != bodySkinIdNow || m_manager.headSkin != headSkinIdNow || m_manager.emotion != emotion)
         {
             PlayAnim();
             headSkinIdNow = m_manager.headSkin;
             bodySkinIdNow = m_manager.bodySkin;
+            emotion = m_manager.emotion;
             m_umovement.setLastFace(m_umovement.getFaceTo());
             setCollider();
         }

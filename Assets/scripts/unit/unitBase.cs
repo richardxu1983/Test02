@@ -48,6 +48,7 @@ public class unitBase : entity
     private int tickMax = 4;
     private int[] buffExist;
     public int unitAngle = 0;
+    public string emotion = "normal";
 
     public GridID targetGrid;
     public entity target;
@@ -118,14 +119,34 @@ public class unitBase : entity
     public void loop()
     {
         tick++;
-        if (tick >= tickMax)
+        if(ai.op!=OP.die)
         {
-            //每秒一次
-            tick = 0;
-            AttrLoop();
-            BuffLoop();
+            if (tick >= tickMax)
+            {
+                //每秒一次
+                tick = 0;
+                AttrLoop();
+                BuffLoop();
+            }
+            ai.loop();
         }
-        ai.loop();
+        else
+        {
+            if (tick >= tickMax)
+            {
+                tick = 0;
+                int t = iGet(UIA.dead_time);
+                if(t >= unitDefault.Instance.data.corpseTime)
+                {
+                    toDelete = 1;
+                }
+                else
+                {
+                    t++;
+                    iSet(UIA.dead_time, t);
+                }
+            }
+        }
     }
 
     void AttrLoop()
@@ -380,7 +401,8 @@ public class unitBase : entity
     public void die()
     {
         dead = true;
-        toDelete = 1;
+        ai.die();
+        m_skin.die();
     }
 
     public bool dead
@@ -566,6 +588,20 @@ public class UnitAiBase
             {
                 baseUnit.m_skin.standUp();
             }
+
+            if (value == OP.down)
+            {
+                baseUnit.emotion = "hurt";
+            }
+            else if(value == OP.die)
+            {
+                baseUnit.emotion = "dead";
+            }
+            else
+            {
+                baseUnit.emotion = "normal";
+            }
+
             m_op = value;
         }
     }
@@ -606,6 +642,7 @@ public class UnitAiBase
 
     public void die()
     {
+        stopMove();
         ai = AI.die;
         op = OP.die;
     }

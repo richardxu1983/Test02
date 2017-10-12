@@ -224,6 +224,7 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         unitDefault.Instance.data.hp = childNodeInt(node, 0, "hp");
         unitDefault.Instance.data.hpMax = childNodeInt(node, 0, "hpMax");
         unitDefault.Instance.data.runSpeed = childNodeInt(node, 0, "run");
+        unitDefault.Instance.data.corpseTime = childNodeInt(node, 0, "corpsetime");
 
         unitDefault.Instance.data.mood = childNodeInt(node, 1, "init");
         unitDefault.Instance.data.moodMax = childNodeInt(node, 1, "max");

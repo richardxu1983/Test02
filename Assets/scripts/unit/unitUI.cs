@@ -26,7 +26,7 @@ public class unitUI : MonoBehaviour {
         bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
         bPanel = transform.Find("Canvas/bottomPanel").gameObject;
         hpBarObj = transform.Find("Canvas/hpBar").gameObject;
-        txtUnitName.text = m_manager.name;
+        //txtUnitName.text = m_manager.name;
         bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
         setNamePos();
     }
@@ -46,7 +46,6 @@ public class unitUI : MonoBehaviour {
         {
             float hp = m_manager.hp;
             float hpMax = m_manager.hpMax;
-
             if (m_manager.hp < m_manager.hpMax)
             {
                 float rate = hp / hpMax;
@@ -70,6 +69,10 @@ public class unitUI : MonoBehaviour {
             {
                 hpBarObj.SetActive(false);
             }
+        }
+        else
+        {
+            hpBarObj.SetActive(false);
         }
     }
 
@@ -106,6 +109,7 @@ public class unitUI : MonoBehaviour {
         setNamePos();
         refresHpBar();
 
+        /*
         if (GlobalControl.Instance.showUnitName)
         {
             bPanel.SetActive(true);
@@ -114,6 +118,7 @@ public class unitUI : MonoBehaviour {
         {
             bPanel.SetActive(false);
         }
+        */
     }
 
     // Update is called once per frame
