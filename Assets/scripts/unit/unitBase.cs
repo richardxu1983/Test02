@@ -119,7 +119,8 @@ public class unitBase : entity
     public void loop()
     {
         tick++;
-        if(ai.op!=OP.die)
+        //Debug.Log("ai.op="+ai.op);
+        if(!dead)
         {
             if (tick >= tickMax)
             {
@@ -309,8 +310,12 @@ public class unitBase : entity
                 AddBuff(id);
                 if (cover > -1)
                 {
-                    buff[id].onCover(cover);
-                    TryDeleteBuff(cover);
+                    //Debug.Log("cover:" + cover + " , buffExist[cover]="+ buffExist[cover]);
+                    if (buffExist[cover] == 1)
+                    {
+                        buff[id].onCover(cover);
+                        TryDeleteBuff(cover);
+                    }
                 }
             }
             else
@@ -318,8 +323,12 @@ public class unitBase : entity
                 AddDeBuff(id);
                 if (cover > -1)
                 {
-                    debuff[id].onCover(cover);
-                    TryDeleteBuff(cover);
+                    //Debug.Log("cover:" + cover + " , buffExist[cover]=" + buffExist[cover]);
+                    if (buffExist[cover]==1)
+                    {
+                        debuff[id].onCover(cover);
+                        TryDeleteBuff(cover);
+                    }
                 }
             }
 
@@ -360,17 +369,31 @@ public class unitBase : entity
 
     public void AttrCheck()
     {
+        if (dead)
+            return;
+ 
         int m = Globals.MOOD_BASE;
+        bool down = false;
 
         foreach (KeyValuePair<int, Condition> v in buff)
         {
             m += processCondAttr(v.Value);
+            down = down || v.Value.down;
         }
         foreach (KeyValuePair<int, Condition> v in debuff)
         {
             m += processCondAttr(v.Value);
+            down = down || v.Value.down;
         }
         mood = m;
+        if(down&&ai.op!=OP.down)
+        {
+            setOp(OP.down);
+        }
+        else if(!down&&ai.op==OP.down)
+        {
+            setOp(OP.idle);
+        }
     }
 
     int processCondAttr(Condition c)
@@ -402,7 +425,7 @@ public class unitBase : entity
     {
         dead = true;
         ai.die();
-        m_skin.die();
+        //m_skin.die();
     }
 
     public bool dead
@@ -579,14 +602,14 @@ public class UnitAiBase
         get { return m_op; }
         set
         {
-            if( value==OP.down || value == OP.sleep )
+            if( value==OP.down || value == OP.sleep || value == OP.die)
             {
                 stopMove();
-                baseUnit.m_skin.getDown();
+                baseUnit.m_skin.statusTag = 1;
             }
-            if((m_op == OP.down || m_op == OP.sleep)&&(value != OP.down || value != OP.sleep))
+            if((m_op == OP.down || m_op == OP.sleep)&&(value != OP.down && value != OP.sleep && value != OP.die))
             {
-                baseUnit.m_skin.standUp();
+                baseUnit.m_skin.statusTag = 2;
             }
 
             if (value == OP.down)
@@ -603,6 +626,7 @@ public class UnitAiBase
             }
 
             m_op = value;
+            Debug.Log(m_op);
         }
     }
 
@@ -645,6 +669,7 @@ public class UnitAiBase
         stopMove();
         ai = AI.die;
         op = OP.die;
+        Debug.Log("die");
     }
 
     public void Do()

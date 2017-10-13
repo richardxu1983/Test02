@@ -20,6 +20,7 @@ public class unitSkin : MonoBehaviour {
     private Vector3 bottomPos;
     private Vector3 headPos;
     private float imgHeight = 0;
+    public int statusTag = 0;
 
     public void init(unitBase v)
     {
@@ -165,6 +166,16 @@ public class unitSkin : MonoBehaviour {
 
     public void updateSkin()
     {
+        if(statusTag == 1)
+        {
+            getDown();
+            statusTag = 0;
+        }
+        else if (statusTag == 2)
+        {
+            standUp();
+            statusTag = 0;
+        }
         if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin != bodySkinIdNow || m_manager.headSkin != headSkinIdNow || m_manager.emotion != emotion)
         {
             PlayAnim();
@@ -196,12 +207,6 @@ public class unitSkin : MonoBehaviour {
         {
             updateSkin();
         }
-    }
-
-    public void die()
-    {
-        updateSkin();
-        getDown();
     }
 
     public void getDown()

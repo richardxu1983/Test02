@@ -187,13 +187,32 @@ public class XMLLoader : UnitySingleton<XMLLoader>
 
             conditionData.Instance.condi[i].deleteTime = childNodeInt(node, 0, "value");
             conditionData.Instance.condi[i].deleteValue = childNodeInt(node, 0, "time");
+
             conditionData.Instance.condi[i].trigCondi = childNodeInt(node, 1, "cond");
             conditionData.Instance.condi[i].trigTime = childNodeInt(node, 1, "time");
+
             conditionData.Instance.condi[i].actionTime = childNodeInt(node, 2, "time");
             conditionData.Instance.condi[i].trigAction = childNodeInt(node, 2, "act");
+
             conditionData.Instance.condi[i].intvalTime = childNodeInt(node, 3, "time");
             conditionData.Instance.condi[i].intvalMood = childNodeInt(node, 3, "mood");
             conditionData.Instance.condi[i].intvalMaxMood = childNodeInt(node, 3, "maxMood");
+
+            conditionData.Instance.condi[i].delay = childNodeInt(node, 4, "delay");
+            conditionData.Instance.condi[i].delay_act = childNodeInt(node, 4, "act");
+
+            switch (childNodeStr(node, 4, "attr"))
+            {
+                case "hp":
+                    conditionData.Instance.condi[i].delay_attr = UIA.hp;
+                    break;
+                default:
+                    conditionData.Instance.condi[i].delay_attr = UIA.hp;
+                    break;
+            }
+
+            conditionData.Instance.condi[i].delay_intval = childNodeInt(node, 4, "intval");
+            conditionData.Instance.condi[i].delay_value = childNodeInt(node, 4, "value");
 
             i++;
         }

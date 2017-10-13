@@ -2,7 +2,7 @@
 <objects>
   <basic hp="100" hpMax="100" run="4" corpsetime="15"/>
   <mood init="70" max="100" level_1="10" level_2="30" level_3="60" level_4="85" level_5="100" />
-  <full init ="70" max="100" decSec="1" dec="1" />
+  <full init ="12" max="100" decSec="1" dec="1" />
   <hungry slight="65" medium="35" extream="10" />
   <energy init="100" max="100" decSec="1" dec="1" />
   <tired slight="65" medium="35" extream="10" />
