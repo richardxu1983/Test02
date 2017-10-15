@@ -203,10 +203,7 @@ public class unitSkin : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if(m_manager.dead==false)
-        {
-            updateSkin();
-        }
+        updateSkin();
     }
 
     public void getDown()
