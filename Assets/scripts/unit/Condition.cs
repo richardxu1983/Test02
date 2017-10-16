@@ -13,6 +13,7 @@ public struct ST_Condition
     public int duration;
     public UIA deleteAttr;
     public int deleteValue;
+    public int deleteMethod;
     public int deleteTime;
     public int trigTime;
     public int trigCondi;
@@ -56,6 +57,7 @@ public class Condition
     public unitBase unit;
     public int tick = 0;
     public int intvalData = 0;
+    public int deleteTick = -1;
     public int delayData = 0;
     public int delayTick = 0;
     public bool delayFirst = true;
@@ -67,6 +69,104 @@ public class Condition
         id = _id;
         startTime = GTime.Instance.GTick;
         unit = _unit;
+        if (conditionData.Instance.get(id).deleteMethod == 0 && conditionData.Instance.get(id).deleteTime >= 0)
+        {
+            deleteTick = GTime.Instance.GTick;
+        }
+    }
+
+    public bool deleteCheck()
+    {
+        if(conditionData.Instance.get(id).deleteMethod > 0 || conditionData.Instance.get(id).deleteTime>=0)
+        {
+            if(conditionData.Instance.get(id).deleteMethod==1)
+            {
+                //Debug.Log("检测1 : "+ conditionData.Instance.get(id).deleteAttr +" = "+ unit.iGet(conditionData.Instance.get(id).deleteAttr) + " : "+ conditionData.Instance.get(id).deleteValue);
+                if(unit.iGet(conditionData.Instance.get(id).deleteAttr)>= conditionData.Instance.get(id).deleteValue)
+                {
+                    if(conditionData.Instance.get(id).deleteTime>=0)
+                    {
+                        if (deleteTick > 0)
+                        {
+                            if (GTime.Instance.GTick - deleteTick >= conditionData.Instance.get(id).deleteTime)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            deleteTick = GTime.Instance.GTick;
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (deleteTick > 0)
+                    {
+                        deleteTick = GTime.Instance.GTick;
+                        return false;
+                    }
+                }
+            }
+            else if(conditionData.Instance.get(id).deleteMethod == 2)
+            {
+                if (unit.iGet(conditionData.Instance.get(id).deleteAttr) <= conditionData.Instance.get(id).deleteValue)
+                {
+                    if (conditionData.Instance.get(id).deleteTime >= 0)
+                    {
+                        if (deleteTick > 0)
+                        {
+                            if (GTime.Instance.GTick - deleteTick >= conditionData.Instance.get(id).deleteTime)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            deleteTick = GTime.Instance.GTick;
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (deleteTick > 0)
+                    {
+                        deleteTick = GTime.Instance.GTick;
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                if (GTime.Instance.GTick - deleteTick >= conditionData.Instance.get(id).deleteTime)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     public void loop()

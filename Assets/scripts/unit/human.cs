@@ -19,6 +19,10 @@ public class human : unitBase
         iSet(UIA.fullDec, data.fullDec);
         iSet(UIA.energyMax, data.energyMax);
         iSet(UIA.energyDec, data.energyDec);
+        Debug.Log("data.energyReg=" + data.energyReg);
+        iSet(UIA.energyReg, data.energyReg);
+        iSet(UIA.energyDec, data.energyDecNight);
+        iSet(UIA.energyRegSec, data.energyRegSec);
         iSet(UIA.fullMax, data.fullMax);
 
         iSet(UIA.hungry_slight, data.hungry_slight);
@@ -43,7 +47,78 @@ public class human : unitBase
         full        = data.full;
     }
 
-    public override void SelfLoop()
+    public override void SelfAttrLoop()
     {
+        bool isDay = GTime.Instance.IsDay();
+        if (isDay)
+        {
+            //如果是白天
+            if (ai.ai != AI.sleep)
+            {
+                //极度疲倦
+                if (hasBuff(6))
+                {
+                    Debug.Log("睡觉把!!");
+                    ai.ai = AI.sleep;
+                }
+                else
+                {
+                    if(ai.op==OP.sleep)
+                        ai.op = OP.idle;
+                }
+            }
+            else
+            {
+                if (energy >= iGet(UIA.tired_slight))
+                {
+                    Debug.Log("起床吧！");
+                    ai.ai = AI.die;
+                    ai.op = OP.idle;
+                }
+            }
+        }
+        else
+        {
+            //如果是晚上
+            if (ai.ai != AI.sleep)
+            {
+                //有一点累就睡觉
+                if (hasBuff(4) || hasBuff(5) || hasBuff(6))
+                {
+                    Debug.Log("睡觉把!!");
+                    ai.ai = AI.sleep;
+                }
+                else
+                {
+                    if (ai.op == OP.sleep)
+                        ai.op = OP.idle;
+                }
+            }
+            else
+            {
+                if(energy >= iGet(UIA.tired_slight))
+                {
+                    Debug.Log("起床吧！");
+                    ai.ai = AI.die;
+                    if (ai.op == OP.sleep)
+                        ai.op = OP.idle;
+                }
+            }
+        }
+    }
+
+    public override void SelfAiLoop()
+    {
+        if (ai.cmdMode())
+            return;
+
+        if(ai.ai==AI.sleep)
+        {
+            if(ai.op!=OP.sleep)
+            {
+                
+                ai.op = OP.sleep;
+            }
+        }
     }
 }

@@ -27,6 +27,7 @@ public enum AI
     wander,
     moveTo,
     die,
+    sleep,
 }
 
 [Serializable]
@@ -45,7 +46,7 @@ public class unitBase : entity
     private float[] fAttr;           //float 属性
     private bool m_isDead = false;   //是否死亡
     private int tick = 0;
-    private int tickMax = 4;
+    private int tickMax = timeData.Instance.MIN_IN_TICK;
     private int[] buffExist;
     public int unitAngle = 0;
     public string emotion = "normal";
@@ -122,14 +123,16 @@ public class unitBase : entity
         //Debug.Log("ai.op="+ai.op);
         if(!dead)
         {
+            //每游戏分钟一次
+            ai.loop();
             if (tick >= tickMax)
             {
                 //每秒一次
                 tick = 0;
                 AttrLoop();
                 BuffLoop();
+                SelfAiLoop();
             }
-            ai.loop();
         }
         else
         {
@@ -153,6 +156,9 @@ public class unitBase : entity
     void AttrLoop()
     {
         int t = iGet(UIA.fullTick);
+        bool isDay = GTime.Instance.IsDay();
+        bool isSleep = ai.op == OP.sleep ? true : false;
+
         t++;
         if( t >= iGet(UIA.fullDecSec))
         {
@@ -168,19 +174,45 @@ public class unitBase : entity
 
         t = iGet(UIA.energyTick);
         t++;
-        if (t >= iGet(UIA.energyDecSec))
-        {
-            int v = iGet(UIA.energy);
-            if (v > 0)
-            {
-                v -= iGet(UIA.energyDec);
-                energy = v;
-            }
-            t = 0;
-        }
-        iSet(UIA.energyTick, t);
 
-        SelfLoop();
+        if (isSleep)
+        {
+            //Debug.Log("睡眠中 : "+ iGet(UIA.energyRegSec)+" , "+ iGet(UIA.energyReg));
+            //如果在睡眠状态，则恢复
+            if (t >= iGet(UIA.energyRegSec))
+            {
+                int v = iGet(UIA.energy);
+                v = v + iGet(UIA.energyReg);
+                energy = v;
+                t = 0;
+            }
+            iSet(UIA.energyTick, t);
+        }
+        else
+        {
+            //不在睡眠状态，消耗
+            if (t >= iGet(UIA.energyDecSec))
+            {
+                int v = iGet(UIA.energy);
+                if (v > 0)
+                {
+                    if (isDay)
+                    {
+                        //白天
+                        v -= iGet(UIA.energyDec);
+                    }
+                    else
+                    {
+                        //夜晚
+                        v -= iGet(UIA.energyDecNight);
+                    }
+                    energy = v;
+                }
+                t = 0;
+            }
+            iSet(UIA.energyTick, t);
+        }
+        SelfAttrLoop();
     }
 
     public int energy
@@ -188,6 +220,7 @@ public class unitBase : entity
         get { return iGet(UIA.energy); }
         set
         {
+            //Debug.Log("value=" + value);
             int v = value;
             v = v < 0 ? 0 : v;
             v = v > iGet(UIA.energyMax) ? iGet(UIA.energyMax) : v;
@@ -290,12 +323,29 @@ public class unitBase : entity
                 }
             }
         }
-        c.loop();
+        
+        if(c.deleteCheck())
+        {
+            TryDeleteBuff(c.id);
+        }
+        else
+        {
+            c.loop();
+        }
         AttrCheck();
     }
 
-    public virtual void SelfLoop()
+    public virtual void SelfAttrLoop()
     {
+    }
+
+    public virtual void SelfAiLoop()
+    {
+    }
+
+    public bool hasBuff(int id)
+    {
+        return buffExist[id] == 1 ? true : false;
     }
 
     public void TryAddBuff(int id)
@@ -589,6 +639,7 @@ public class UnitAiBase
         if (tick >= m_tickMax)
         {
             Do();
+            
             tick = 0;
         }
         else
@@ -605,11 +656,11 @@ public class UnitAiBase
             if( value==OP.down || value == OP.sleep || value == OP.die)
             {
                 stopMove();
-                baseUnit.m_skin.statusTag = 1;
+                baseUnit.m_skin.statusTag = 1;//躺下
             }
             if((m_op == OP.down || m_op == OP.sleep)&&(value != OP.down && value != OP.sleep && value != OP.die))
             {
-                baseUnit.m_skin.statusTag = 2;
+                baseUnit.m_skin.statusTag = 2;//站起
             }
 
             if (value == OP.down)
@@ -626,7 +677,7 @@ public class UnitAiBase
             }
 
             m_op = value;
-            Debug.Log(m_op);
+            //Debug.Log(m_op);
         }
     }
 
@@ -641,6 +692,11 @@ public class UnitAiBase
     {
         get { return m_ai; }
         set { m_ai = value; }
+    }
+
+    public bool cmdMode()
+    {
+        return reason == AIR.cmd ? true : false;
     }
 
     public void init(unitBase m)

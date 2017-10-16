@@ -20,6 +20,8 @@ public class animal : unitBase
         iSet(UIA.fullDec, data.fullDec);
         iSet(UIA.energyMax, data.energyMax);
         iSet(UIA.energyDec, data.energyDec);
+        iSet(UIA.energyReg, data.energyReg);
+        iSet(UIA.energyDec, data.energyDecNight);
         iSet(UIA.hungry_slight, data.hungry_slight);
         iSet(UIA.hungry_medium, data.hungry_medium);
         iSet(UIA.hungry_extream, data.hungry_extream);
@@ -40,7 +42,10 @@ public class animal : unitBase
         full        = data.full;
     }
 
-    public override void SelfLoop()
+    public override void SelfAttrLoop()
+    {
+    }
+    public override void SelfAiLoop()
     {
     }
 }

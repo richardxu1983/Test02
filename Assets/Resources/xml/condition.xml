@@ -2,7 +2,7 @@
 <objects>
   
   <config id="0" name="有点饿" cover="-1" buff="0" mood="-3"  duration="-1">
-    <deleteAttr attr="full" value="65" time =" 0" ></deleteAttr>
+    <deleteAttr attr="full" value="65" method="1" time =" 0" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="-1" act ="0"></action>
     <intval time="-1" mood ="0" maxMood="-1"></intval>
@@ -10,7 +10,7 @@
   </config>
 
   <config id="1" name="饥饿" cover="0" buff="0" mood="-10"  duration="-1">
-    <deleteAttr attr="full" value="35" time =" 0" ></deleteAttr>
+    <deleteAttr attr="full" value="35" method="1" time =" 0" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="-1" act ="0"></action>
     <intval time="-1" mood ="0" maxMood="-1"></intval>
@@ -18,7 +18,7 @@
   </config>
   
   <config id="2" name="极度饥饿"  cover="1"  buff="0" mood="-15"  duration="-1">
-    <deleteAttr attr="full" value="20" time =" 10" ></deleteAttr>
+    <deleteAttr attr="full" value="20" method="1" time ="0" ></deleteAttr>
     <trig time ="10" cond="2" > </trig>
     <action time="-1" act ="1"></action>
     <intval time="1" mood ="-1" maxMood="-25"></intval>
@@ -26,7 +26,7 @@
   </config>
   
   <config id="3" name="营养不良"  cover="-1"  buff="0" mood="-5"  duration="-1">
-    <deleteAttr attr="full" value="20" time ="40" ></deleteAttr>
+    <deleteAttr attr="full" value="20" method="1" time ="40" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="-1" act ="-1"></action>
     <intval time="-1" mood ="0" maxMood="-1"></intval>
@@ -34,7 +34,7 @@
   </config>
 
   <config id="4" name="有点累"     cover="-1" buff="0" mood="-3"  duration="-1">
-    <deleteAttr attr="energy" value="60" time =" 0" ></deleteAttr>
+    <deleteAttr attr="energy" value="60" method="1" time ="-1" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="-1" act ="0"></action>
     <intval time="-1" mood ="0" maxMood="-1"></intval>
@@ -42,7 +42,7 @@
   </config>
   
   <config id="5" name="疲劳"     cover="4" buff="0" mood="-8"  duration="-1">
-    <deleteAttr attr="energy" value="40" time =" 0" ></deleteAttr>
+    <deleteAttr attr="energy" value="40" method="1" time ="-1" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="-1" act ="0"></action>
     <intval time="-1" mood ="0" maxMood="-1"></intval>
@@ -50,7 +50,7 @@
   </config>
 
   <config id="6" name="极度疲惫"  cover="5"  buff="0" mood="-15"  duration="-1">
-    <deleteAttr attr="energy" value="15" time =" 0" ></deleteAttr>
+    <deleteAttr attr="energy" value="15" method="1" time ="-1" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="120" act ="-1"></action>
     <intval time="1" mood ="-1" maxMood="-25"></intval>

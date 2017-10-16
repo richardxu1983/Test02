@@ -21,12 +21,16 @@ public enum UIA
     hungry_extream,
     energy,
     energyDec,
+    energyDecNight,
     energyDecSec,
     energyMax,
+    energyReg,      //体力恢复：需要睡眠状态
+    energyRegSec,
     energyTick,
     tired_slight,
     tired_medium,
     tired_extream,
+    
 }
 
 public class unitData
@@ -51,9 +55,12 @@ public class unitData
     public int hungry_extream;
     public int energy;
     public int energyDec;
+    public int energyDecNight;
     public int energyDecSec;
     public int energyMax;
     public int energyTick;
+    public int energyReg;
+    public int energyRegSec;
     public int tired_slight;
     public int tired_medium;
     public int tired_extream;

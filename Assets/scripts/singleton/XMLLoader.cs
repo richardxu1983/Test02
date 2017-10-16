@@ -185,8 +185,9 @@ public class XMLLoader : UnitySingleton<XMLLoader>
                     break;
             }
 
-            conditionData.Instance.condi[i].deleteTime = childNodeInt(node, 0, "value");
-            conditionData.Instance.condi[i].deleteValue = childNodeInt(node, 0, "time");
+            conditionData.Instance.condi[i].deleteTime = childNodeInt(node, 0, "time");
+            conditionData.Instance.condi[i].deleteMethod = childNodeInt(node, 0, "method");
+            conditionData.Instance.condi[i].deleteValue = childNodeInt(node, 0, "value");
 
             conditionData.Instance.condi[i].trigCondi = childNodeInt(node, 1, "cond");
             conditionData.Instance.condi[i].trigTime = childNodeInt(node, 1, "time");
@@ -266,6 +267,9 @@ public class XMLLoader : UnitySingleton<XMLLoader>
         unitDefault.Instance.data.energyDec = childNodeInt(node, 4, "dec");
         unitDefault.Instance.data.energyDecSec = childNodeInt(node, 4, "decSec");
         unitDefault.Instance.data.energyMax = childNodeInt(node, 4, "max");
+        unitDefault.Instance.data.energyDecNight = childNodeInt(node, 4, "decNight");
+        unitDefault.Instance.data.energyReg = childNodeInt(node, 4, "reg");
+        unitDefault.Instance.data.energyRegSec = childNodeInt(node, 4, "regSec");
 
         unitDefault.Instance.data.tired_slight = childNodeInt(node, 5, "slight");
         unitDefault.Instance.data.tired_medium = childNodeInt(node, 5, "medium");
