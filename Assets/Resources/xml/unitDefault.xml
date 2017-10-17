@@ -5,5 +5,5 @@
   <full init ="12" max="100" decSec="1" dec="0" />
   <hungry slight="65" medium="35" extream="10" />
   <energy init="100" max="100" decSec="1" dec="2" decNight="6" regSec="1" reg="4" />
-  <tired slight="65" medium="35" extream="10" />
+  <tired slight="60" medium="40" extream="10" />
 </objects>

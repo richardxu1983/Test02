@@ -9,10 +9,10 @@ public class unitInfo : MonoBehaviour {
     public Text txtEnergy;
     public Text txtName;
     public Text txtCondition;
-    public Text txtCondtionValue;
+    //public Text txtCondtionValue;
     public Text txtMood;
-    public Slider MoodProgress;
-    public Image moodFill;
+    //public Slider MoodProgress;
+    //public Image moodFill;
 
     public Color color_ghuang = new Color(255 / 255.0f, 153 / 255.0f, 18 / 255.0f);
     public Color color_tianlan = new Color(135 / 255.0f, 206 / 255.0f, 235 / 255.0f);
@@ -48,6 +48,7 @@ public class unitInfo : MonoBehaviour {
 
     public void moodProgress(int v, unitBase unit)
     {
+        /*
         int moodLevel = unit.iGet(UIA.moodLevel);
         MoodProgress.value = v;
         switch (moodLevel)
@@ -78,6 +79,7 @@ public class unitInfo : MonoBehaviour {
                     break;
                 }
         }
+        */
     }
 
     public void setTxtMood(unitBase unit)
@@ -123,26 +125,26 @@ public class unitInfo : MonoBehaviour {
         setName(unit.name);
         setFull(unit.full);
         txtEnergy.text = unit.energy.ToString();
-        moodProgress(unit.mood, unit);
+        //moodProgress(unit.mood, unit);
 
         string s = "";
-        string k = "";
+        //string k = "";
 
         foreach (KeyValuePair<int, Condition> v in unit.buff)
         {
             //Console.WriteLine("姓名：{0},电影：{1}", v.Key, v.Value);
             s += "<color=green>" + conditionData.Instance.get(v.Value.id).name + "</color>\n";
-            k += "<color=green>+" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
+            //k += "<color=green>+" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
         }
 
         foreach (KeyValuePair<int, Condition> v in unit.debuff)
         {
             //Debug.Log("v.Value.id=" + v.Value.id);
             s += "<color=red>" + conditionData.Instance.get(v.Value.id).name + "</color>\n";
-            k += "<color=red>" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
+            //k += "<color=red>" + conditionData.Instance.get(v.Value.id).mood + "</color>\n";
         }
         txtCondition.text = s;
-        txtCondtionValue.text = k;
+        //txtCondtionValue.text = k;
         setTxtMood(unit);
     }
 }

@@ -21,7 +21,7 @@ public class human : unitBase
         iSet(UIA.energyDec, data.energyDec);
         Debug.Log("data.energyReg=" + data.energyReg);
         iSet(UIA.energyReg, data.energyReg);
-        iSet(UIA.energyDec, data.energyDecNight);
+        iSet(UIA.energyDecNight, data.energyDecNight);
         iSet(UIA.energyRegSec, data.energyRegSec);
         iSet(UIA.fullMax, data.fullMax);
 
@@ -58,22 +58,15 @@ public class human : unitBase
                 //极度疲倦
                 if (hasBuff(6))
                 {
-                    Debug.Log("睡觉把!!");
                     ai.ai = AI.sleep;
-                }
-                else
-                {
-                    if(ai.op==OP.sleep)
-                        ai.op = OP.idle;
                 }
             }
             else
             {
-                if (energy >= iGet(UIA.tired_slight))
+                if (energy >= iGet(UIA.energyMax))
                 {
                     Debug.Log("起床吧！");
-                    ai.ai = AI.die;
-                    ai.op = OP.idle;
+                    ai.ai = AI.idle;
                 }
             }
         }
@@ -85,7 +78,6 @@ public class human : unitBase
                 //有一点累就睡觉
                 if (hasBuff(4) || hasBuff(5) || hasBuff(6))
                 {
-                    Debug.Log("睡觉把!!");
                     ai.ai = AI.sleep;
                 }
                 else
@@ -96,12 +88,10 @@ public class human : unitBase
             }
             else
             {
-                if(energy >= iGet(UIA.tired_slight))
+                if(energy >= iGet(UIA.energyMax) && GTime.Instance.Hour() > 4)
                 {
                     Debug.Log("起床吧！");
-                    ai.ai = AI.die;
-                    if (ai.op == OP.sleep)
-                        ai.op = OP.idle;
+                    ai.ai = AI.idle;
                 }
             }
         }
@@ -116,7 +106,7 @@ public class human : unitBase
         {
             if(ai.op!=OP.sleep)
             {
-                
+                Debug.Log("睡觉把!!");
                 ai.op = OP.sleep;
             }
         }

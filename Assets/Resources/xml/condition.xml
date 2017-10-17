@@ -50,7 +50,7 @@
   </config>
 
   <config id="6" name="极度疲惫"  cover="5"  buff="0" mood="-15"  duration="-1">
-    <deleteAttr attr="energy" value="15" method="1" time ="-1" ></deleteAttr>
+    <deleteAttr attr="energy" value="10" method="1" time ="-1" ></deleteAttr>
     <trig time ="-1" cond="-1" > </trig>
     <action time="120" act ="-1"></action>
     <intval time="1" mood ="-1" maxMood="-25"></intval>

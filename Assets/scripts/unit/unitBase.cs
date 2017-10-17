@@ -21,6 +21,22 @@ public enum OP
 }
 
 [Serializable]
+public enum STU
+{
+    stand,
+    down,
+}
+
+[Serializable]
+public enum EMO
+{
+    normal,
+    hurt,
+    die,
+    sleep,
+}
+
+[Serializable]
 public enum AI
 {
     idle,
@@ -46,10 +62,12 @@ public class unitBase : entity
     private float[] fAttr;           //float 属性
     private bool m_isDead = false;   //是否死亡
     private int tick = 0;
-    private int tickMax = timeData.Instance.MIN_IN_TICK;
+    private int tickMax = timeData.Instance.TIME_IN_TICK;
     private int[] buffExist;
     public int unitAngle = 0;
     public string emotion = "normal";
+    public STU m_sta = STU.stand;
+    public EMO m_emo = EMO.normal;
 
     public GridID targetGrid;
     public entity target;
@@ -129,8 +147,8 @@ public class unitBase : entity
             {
                 //每秒一次
                 tick = 0;
-                AttrLoop();
                 BuffLoop();
+                AttrLoop();
                 SelfAiLoop();
             }
         }
@@ -280,56 +298,55 @@ public class unitBase : entity
 
     public void buffCheck(Condition c)
     {
-        int t = GTime.Instance.GTick;
-        //持续时间
-        int dura = conditionData.Instance.get(c.id).duration;
-        if (dura > 0)
-        {
-            if (t - c.startTime >= dura)
-            {
-                TryDeleteBuff(c.id);
-            }
-        }
-
-        int trigTime = conditionData.Instance.get(c.id).trigTime;
-        //Debug.Log("trigTime=" + trigTime);
-        if (trigTime > 0)
-        {
-            //Debug.Log("t=" + t+ " , c.startTime="+ c.startTime);
-            if (t - c.startTime >= trigTime)
-            {
-                int trigCondi = conditionData.Instance.get(c.id).trigCondi;
-                if (trigCondi > -1)
-                {
-                    TryAddBuff(trigCondi);
-                }
-            }
-        }
-
-        int actionTime = conditionData.Instance.get(c.id).actionTime;
-        if (actionTime > 0)
-        {
-            if (t - c.startTime >= actionTime)
-            {
-                int trigAction = conditionData.Instance.get(c.id).trigAction;
-                //Debug.Log("trigAction=" + trigAction);
-                switch (trigAction)
-                {
-                    case 1:
-                        {
-                            hp = iGet(UIA.hpMax) * -1;
-                            break;
-                        }
-                }
-            }
-        }
-        
         if(c.deleteCheck())
         {
             TryDeleteBuff(c.id);
         }
         else
         {
+            int t = GTime.Instance.GTick;
+            //持续时间
+            int dura = conditionData.Instance.get(c.id).duration;
+            if (dura > 0)
+            {
+                if (t - c.startTime >= dura)
+                {
+                    TryDeleteBuff(c.id);
+                }
+            }
+
+            int trigTime = conditionData.Instance.get(c.id).trigTime;
+            //Debug.Log("trigTime=" + trigTime);
+            if (trigTime > 0)
+            {
+                //Debug.Log("t=" + t+ " , c.startTime="+ c.startTime);
+                if (t - c.startTime >= trigTime)
+                {
+                    int trigCondi = conditionData.Instance.get(c.id).trigCondi;
+                    if (trigCondi > -1)
+                    {
+                        TryAddBuff(trigCondi);
+                    }
+                }
+            }
+
+            int actionTime = conditionData.Instance.get(c.id).actionTime;
+            if (actionTime > 0)
+            {
+                if (t - c.startTime >= actionTime)
+                {
+                    int trigAction = conditionData.Instance.get(c.id).trigAction;
+                    //Debug.Log("trigAction=" + trigAction);
+                    switch (trigAction)
+                    {
+                        case 1:
+                            {
+                                hp = iGet(UIA.hpMax) * -1;
+                                break;
+                            }
+                    }
+                }
+            }
             c.loop();
         }
         AttrCheck();
@@ -614,7 +631,7 @@ public class unitBase : entity
 public class UnitAiBase
 {
     public int tick;
-    public int m_tickMax;
+    public int m_tickMax = timeData.Instance.TIME_IN_TICK;
     public int timeLeft;
     public OP m_op = OP.idle;
     public AI m_ai = AI.idle;
@@ -639,7 +656,6 @@ public class UnitAiBase
         if (tick >= m_tickMax)
         {
             Do();
-            
             tick = 0;
         }
         else
@@ -691,7 +707,15 @@ public class UnitAiBase
     public AI ai
     {
         get { return m_ai; }
-        set { m_ai = value; }
+        set
+        {
+            if(value!=AI.sleep)
+            {
+                if (op == OP.sleep)
+                    op = OP.idle;
+            }
+            m_ai = value;
+        }
     }
 
     public bool cmdMode()
