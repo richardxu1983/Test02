@@ -190,7 +190,7 @@ public class unitBase : entity
             }
             else if(sleep)
             {
-                emotion = "normal";
+                emotion = "sleep";
             }
             else
             {
@@ -202,6 +202,8 @@ public class unitBase : entity
 
         if(down)
         {
+            if (sta != STU.down)
+                ai.stopMove();
             sta = STU.down;
         }
         else

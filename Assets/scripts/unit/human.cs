@@ -76,7 +76,7 @@ public class human : unitBase
             if (ai.ai != AI.sleep)
             {
                 //有一点累就睡觉
-                if (hasBuff(4) || hasBuff(5) || hasBuff(6))
+                if (energy <= iGet(UIA.tired_slight))
                 {
                     ai.ai = AI.sleep;
                 }
@@ -99,8 +99,8 @@ public class human : unitBase
 
     public override void SelfAiLoop()
     {
-        if (ai.cmdMode())
-            return;
+        //if (ai.cmdMode())
+        //    return;
 
         if(ai.ai==AI.sleep)
         {
