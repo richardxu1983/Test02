@@ -28,15 +28,6 @@ public enum STU
 }
 
 [Serializable]
-public enum EMO
-{
-    normal,
-    hurt,
-    die,
-    sleep,
-}
-
-[Serializable]
 public enum AI
 {
     idle,
@@ -67,7 +58,6 @@ public class unitBase : entity
     public int unitAngle = 0;
     public string emotion = "normal";
     public STU m_sta = STU.stand;
-    public EMO m_emo = EMO.normal;
 
     public GridID targetGrid;
     public entity target;
@@ -150,6 +140,7 @@ public class unitBase : entity
                 BuffLoop();
                 AttrLoop();
                 SelfAiLoop();
+                refreshStatus();
             }
         }
         else
@@ -167,8 +158,62 @@ public class unitBase : entity
                     t++;
                     iSet(UIA.dead_time, t);
                 }
+                refreshStatus();
             }
         }
+    }
+
+    void refreshStatus()
+    {
+        bool down = false;
+
+        foreach (KeyValuePair<int, Condition> v in buff)
+        {
+            down = down || v.Value.down;
+        }
+        foreach (KeyValuePair<int, Condition> v in debuff)
+        {
+            down = down || v.Value.down;
+        }
+
+        bool sleep = ai.op == OP.sleep ? true : false;
+
+        if(dead)
+        {
+            emotion = "dead";
+        }
+        else
+        {
+            if(down&&!sleep)
+            {
+                emotion = "hurt";
+            }
+            else if(sleep)
+            {
+                emotion = "normal";
+            }
+            else
+            {
+                emotion = "normal";
+            }
+        }
+
+        down = down || sleep || m_isDead;
+
+        if(down)
+        {
+            sta = STU.down;
+        }
+        else
+        {
+            sta = STU.stand;
+        }
+    }
+
+    public STU sta
+    {
+        get { return m_sta; }
+        set { m_sta = value; }
     }
 
     void AttrLoop()
@@ -440,27 +485,15 @@ public class unitBase : entity
             return;
  
         int m = Globals.MOOD_BASE;
-        bool down = false;
-
         foreach (KeyValuePair<int, Condition> v in buff)
         {
             m += processCondAttr(v.Value);
-            down = down || v.Value.down;
         }
         foreach (KeyValuePair<int, Condition> v in debuff)
         {
             m += processCondAttr(v.Value);
-            down = down || v.Value.down;
         }
         mood = m;
-        if(down&&ai.op!=OP.down)
-        {
-            setOp(OP.down);
-        }
-        else if(!down&&ai.op==OP.down)
-        {
-            setOp(OP.idle);
-        }
     }
 
     int processCondAttr(Condition c)
@@ -669,29 +702,6 @@ public class UnitAiBase
         get { return m_op; }
         set
         {
-            if( value==OP.down || value == OP.sleep || value == OP.die)
-            {
-                stopMove();
-                baseUnit.m_skin.statusTag = 1;//躺下
-            }
-            if((m_op == OP.down || m_op == OP.sleep)&&(value != OP.down && value != OP.sleep && value != OP.die))
-            {
-                baseUnit.m_skin.statusTag = 2;//站起
-            }
-
-            if (value == OP.down)
-            {
-                baseUnit.emotion = "hurt";
-            }
-            else if(value == OP.die)
-            {
-                baseUnit.emotion = "dead";
-            }
-            else
-            {
-                baseUnit.emotion = "normal";
-            }
-
             m_op = value;
             //Debug.Log(m_op);
         }
@@ -774,7 +784,7 @@ public class UnitAiBase
         if (baseUnit.dead)
             return;
 
-        if (op == OP.down || op == OP.sleep)
+        if (baseUnit.sta == STU.down)
             return;
 
         ai = AI.moveTo;
@@ -799,7 +809,7 @@ public class UnitAiBase
         if (baseUnit.dead)
             return;
 
-        if (op == OP.down || op == OP.sleep)
+        if (baseUnit.sta == STU.down)
             return;
 
         if (baseUnit.v3Dis(t) <= 3)
@@ -823,7 +833,7 @@ public class UnitAiBase
 
     public void moveToTarget()
     {
-        if (op == OP.down || op == OP.sleep)
+        if (baseUnit.sta == STU.down)
             return;
 
         //Debug.Log("moveToTarget");
@@ -845,7 +855,7 @@ public class UnitAiBase
 
     public void TryToMoveToVector3(Vector3 pos, bool isCmd)
     {
-        if (op == OP.down || op == OP.sleep)
+        if (baseUnit.sta == STU.down)
             return;
 
         Node n = GSceneMap.Instance.nodeFromWorldPoint(pos);
@@ -869,9 +879,9 @@ public class UnitAiBase
 
     public void doMoveTo()
     {
-        if (op == OP.down || op == OP.sleep)
+        if (baseUnit.sta == STU.down)
             return;
- 
+
         if (targetUnit!=null)
         {
             moveToTarget();

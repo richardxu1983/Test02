@@ -24,7 +24,7 @@ public class unitUI : MonoBehaviour {
     void Start () {
         bodyRenderer = transform.Find("img/body").GetComponent<SpriteRenderer>();
         bottomPanel = transform.Find("Canvas/bottomPanel").GetComponent<Image>();
-        bPanel = transform.Find("Canvas/bottomPanel").gameObject;
+        //bPanel = transform.Find("Canvas/bottomPanel").gameObject;
         hpBarObj = transform.Find("Canvas/hpBar").gameObject;
         //txtUnitName.text = m_manager.name;
         bottomPanel.rectTransform.sizeDelta = new Vector2(txtUnitName.preferredWidth+1, 1);
@@ -35,8 +35,8 @@ public class unitUI : MonoBehaviour {
     {
         if(m_manager.m_setFinish)
         {
-            bPanel.transform.position = m_manager.m_skin.getBottomPos(0f);
-            hpBarObj.transform.position = m_manager.m_skin.getHeadPos();
+            //bPanel.transform.position = m_manager.m_skin.getBottomPos(0f);
+            hpBarObj.transform.position = m_manager.m_skin.getBottomPos(0f);
         }
     }
 

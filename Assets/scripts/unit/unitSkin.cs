@@ -21,6 +21,7 @@ public class unitSkin : MonoBehaviour {
     private Vector3 headPos;
     private float imgHeight = 0;
     public int statusTag = 0;
+    public STU sta = STU.stand;
 
     public void init(unitBase v)
     {
@@ -63,8 +64,8 @@ public class unitSkin : MonoBehaviour {
     public Vector3 getBottomPos(float v)
     {
         float zOffset = (bodyRenderer.sprite.pivot.y / bodyRenderer.sprite.rect.height) * -1 * bodyRenderer.bounds.size.z - Globals.UNIT_IMG_BOTTOM + v;
-        Vector3 p1 = new Vector3(0, 0, zOffset);
-        bottomPos = transform.position + p1;
+        Vector3 p1 = new Vector3(0, 0, bodyRenderer.bounds.extents.z * 1.6f);
+        bottomPos = bodyRenderer.bounds.center  - p1;
         return bottomPos;
     }
 
@@ -166,15 +167,17 @@ public class unitSkin : MonoBehaviour {
 
     public void updateSkin()
     {
-        if(statusTag == 1)
+        if(sta!=m_manager.sta)
         {
-            getDown();
-            statusTag = 0;
-        }
-        else if (statusTag == 2)
-        {
-            standUp();
-            statusTag = 0;
+            if(m_manager.sta==STU.down)
+            {
+                getDown();
+            }
+            else
+            {
+                standUp();
+            }
+            sta = m_manager.sta;
         }
         if ((m_umovement.getLastFaceTo() != m_umovement.getFaceTo()) || m_manager.bodySkin != bodySkinIdNow || m_manager.headSkin != headSkinIdNow || m_manager.emotion != emotion)
         {
